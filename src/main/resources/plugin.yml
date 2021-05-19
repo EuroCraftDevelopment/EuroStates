@@ -1,0 +1,7 @@
+name: EuroStates
+version: ${project.version}
+main: org.eurostates.EuroStates
+api-version: 1.15
+prefix: <EuroStates>
+authors: [ColonelKai]
+description: EuroStates plugin for EuroCraft Server.
