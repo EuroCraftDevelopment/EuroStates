@@ -1,13 +1,15 @@
 package org.eurostates;
 
+
 import org.bukkit.plugin.java.JavaPlugin;
+import org.eurostates.commands.CommandHandler;
 
 public final class EuroStates extends JavaPlugin {
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        //test
+        CommandHandler.launchCommands(this);
     }
 
     @Override

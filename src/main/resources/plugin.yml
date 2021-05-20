@@ -5,3 +5,7 @@ api-version: 1.15
 prefix: <EuroStates>
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
+commands:
+  helloworld:
+    description: Hello World
+    usage: /<command>
