@@ -3,6 +3,7 @@ package org.eurostates;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eurostates.commands.CommandHandler;
+import org.eurostates.events.Listeners;
 
 public final class EuroStates extends JavaPlugin {
 

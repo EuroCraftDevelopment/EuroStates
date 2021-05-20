@@ -1,13 +1,15 @@
 package org.eurostates.state;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.permissions.Permission;
+import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class State {
     private String tag; // 3-Letter Identifier for the state.
@@ -35,7 +37,41 @@ public class State {
     public static State getFromFile(File file){
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         String tag = config.getString(TAG_NODE);
-
+        if (tag == null || tag.length() > 3) {
+            throw new IOException("Tag is not valid");
+        }
+        String name = config.getString(NAME_NODE);
+        if (name == null) {
+            throw new IOException("Name is missing");
+        }
+        UUID owner;
+        try {
+            String ownerString = config.getString(OWNER_NODE);
+            if (ownerString == null) {
+                throw new IOException("Owner is not present");
+            }
+            owner = UUID.fromString(ownerString);
+        } catch (Throwable e) {
+            throw new IOException("Owner is not a valid UUID", e);
+        }
+        String colour = config.getString(COLOUR_NODE); //of course bukkit doesn't have 'getCharacter'
+        if (colour == null || colour.length() != 1) {
+            throw new IOException("colour is missing");
+        }
+        Set<UUID> citizens = config
+                .getStringList(CITIZENS_NODE)
+                .parallelStream()
+                .filter(str -> {
+                    try {
+                        UUID.fromString(str);
+                        return true;
+                    } catch (Throwable e) {
+                        return false;
+                    }
+                })
+                .map(UUID::fromString)
+                .collect(Collectors.toSet()); // what is this wizardry -> lambda wizardry
+        List<String> permissions = config.getStringList(PERMISSIONS_NODE);
 
         State state = new State();
 
