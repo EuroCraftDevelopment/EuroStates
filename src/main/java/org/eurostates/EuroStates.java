@@ -1,11 +1,10 @@
 package org.eurostates;
 
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eurostates.commands.CommandHandler;
+import org.eurostates.commands.states.States;
 import org.eurostates.events.EventHandler;
-import org.eurostates.events.Listeners;
 
 public final class EuroStates extends JavaPlugin {
 
@@ -15,7 +14,7 @@ public final class EuroStates extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         plugin = this; // For further plugin obj access
-        CommandHandler.launchCommands(this);
+        CommandHandler.commandLauncher();
         EventHandler.registerEvents();
     }
 
