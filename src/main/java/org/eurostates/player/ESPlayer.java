@@ -1,6 +1,8 @@
 package org.eurostates.player;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.eurostates.EuroStates;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +16,32 @@ public class ESPlayer {
     public static final String UUID_NODE = "uuid";
 
     public ESPlayer(UUID id){
-        this.state_tag="Nomad";
+        this.state_tag="NOMAD";
         this.id = id;
     }
 
     public ESPlayer(UUID id, String state_tag){
         this.state_tag=state_tag;
         this.id=id;
+    }
+
+    public String getStateTag(){return this.state_tag;}
+
+    public static File getFile(String uuid){
+        Plugin plugin = EuroStates.getPlugin();
+        return new File(plugin.getDataFolder()+File.separator+"data"+File.separator+"player"+File.separator+uuid+".yml");
+    }
+
+    public void saveToFile(String uuid) throws IOException {
+        File file = getFile(uuid);
+        saveToFile(file);
+    }
+
+    public void saveToFile(File file) throws IOException {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config.set(UUID_NODE, this.id.toString());
+        config.set(STATE_TAG_NODE, this.state_tag);
+        config.save(file);
     }
 
     public static ESPlayer getFromFile(File file) throws IOException {

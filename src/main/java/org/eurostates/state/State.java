@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.eurostates.EuroStates;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,6 +129,16 @@ public class State {
         state.citizens.addAll(citizens);
         state.permissions.addAll(permissions);
         return state;
+    }
+
+    public static File getFile(String tag){
+        Plugin plugin = EuroStates.getPlugin();
+        return new File(plugin.getDataFolder()+File.separator+"data"+File.separator+"state"+File.separator+tag+".yml");
+    }
+
+    public void saveToFile(String tag) throws IOException {
+        File file = getFile(tag);
+        saveToFile(file);
     }
 
     // Save Data to File
