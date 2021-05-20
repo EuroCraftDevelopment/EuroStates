@@ -6,9 +6,12 @@ import org.eurostates.commands.CommandHandler;
 
 public final class EuroStates extends JavaPlugin {
 
+    static EuroStates plugin;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
+        plugin = this; // For further plugin obj access
         CommandHandler.launchCommands(this);
     }
 
@@ -16,4 +19,6 @@ public final class EuroStates extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    public static EuroStates retPlugin(){return plugin;}
 }
