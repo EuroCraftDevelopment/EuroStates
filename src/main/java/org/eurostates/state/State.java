@@ -15,13 +15,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class State {
-    private final String tag; // 3-Letter Identifier for the state.
-    private final String name; // Actual Human Readable Name
-    private final UUID owner; // Owner UUID
-    private final char colour; // Color for the chat prefix
-    private final Set<UUID> citizens = new HashSet<>();
-    private final Set<String> permissions = new HashSet<>();
-    private final Set<String> towns = new HashSet<>(); // For member towns
+    private String tag; // 3-Letter Identifier for the state. ex: TUR JAP
+    private String name; // Actual Human Readable Name. ex: Turkey Japan
+    private UUID owner; // Owner UUID
+    private char colour; // Color for the chat prefix
+    private Set<UUID> citizens = new HashSet<>();
+    private Set<String> permissions = new HashSet<>();
+    private Set<String> towns = new HashSet<>(); // For member towns ex: ISTN TOKY
 
     public static final String TAG_NODE = "meta.tag";
     public static final String NAME_NODE = "meta.name";
@@ -44,49 +44,30 @@ public class State {
         this.colour = colour; // bloody American spelling :( LMAO
     }
 
-    public String getTag() {
-        return this.tag;
-    }
 
-    public String getName() {
-        return this.name;
-    }
+    // GETTER and SETTERs
+    public String getTag() { return this.tag; }
+    public void setTag(String tag) { this.tag = tag; }
 
-    public UUID getOwner() {
-        return this.owner;
-    }
+    public String getName() { return this.name; }
+    public void setName(String name) { this.name = name; }
 
-    public OfflinePlayer getOwnerPlayer() {
-        return Bukkit.getOfflinePlayer(this.owner);
-    }
+    public UUID getOwner() { return this.owner; }
+    public OfflinePlayer getOwnerPlayer() { return Bukkit.getOfflinePlayer(this.owner); }
+    public void setOwner(UUID owner) { this.owner = owner; }
 
-    public char getColour() {
-        return this.colour;
-    }
+    public char getColour() { return this.colour; }
+    public String getColourCode() { return "§" + this.getColour(); }
+    public ChatColor getBukkitColor() { return ChatColor.getByChar(this.getColour()); }
+    public void setColour(char colour) { this.colour = colour; }
 
-    public String getColourCode() {
-        return "§" + this.getColour();
-    }
+    public Set<UUID> getCitizens() { return this.citizens; }
+    public Set<OfflinePlayer> getOfflineCitizens() { return this.citizens.stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toSet()); }
+    public Set<Player> getOnlineCitizens() { return Bukkit.getOnlinePlayers().stream().filter(p -> this.citizens.contains(p.getUniqueId())).collect(Collectors.toSet()); }
+    public void setCitizens(Set<UUID> citizens) { this.citizens =citizens; }
 
-    public ChatColor getBukkitColor() {
-        return ChatColor.getByChar(this.getColour());
-    }
-
-    public Set<UUID> getCitizens() {
-        return this.citizens;
-    }
-
-    public Set<OfflinePlayer> getOfflineCitizens() {
-        return this.citizens.stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toSet());
-    }
-
-    public Set<Player> getOnlineCitizens() {
-        return Bukkit.getOnlinePlayers().stream().filter(p -> this.citizens.contains(p.getUniqueId())).collect(Collectors.toSet());
-    }
-
-    public Set<String> getPermissions() {
-        return this.permissions;
-    }
+    public Set<String> getPermissions() { return this.permissions; }
+    public void setPermissions(Set<String> permissions) { this.permissions = permissions; }
 
     // Load Data from File
     public static State getFromFile(File file) throws IOException {
@@ -100,15 +81,18 @@ public class State {
         UUID owner = ParseLoadedData.getUUID(config, OWNER_NODE);
 
         String colour = ParseLoadedData.getString(config, COLOUR_NODE);
-        if (colour.length() != 1) { throw new IOException("\"[ES_ERR]: Parse for .yml value load failed: Invalid Color Value, needs to be 1 character."); }
+        if (colour.length() != 1) { throw new IOException("[ES_ERR]: Parse for .yml value load failed: Invalid Color Value, needs to be 1 character."); }
 
         Set<UUID> citizens = ParseLoadedData.getUUIDSet(config, CITIZENS_NODE);
 
         List<String> permissions = ParseLoadedData.getStringList(config, PERMISSIONS_NODE);
 
+        List<String> towns = ParseLoadedData.getStringList(config, TOWNS_NODE);
+
         State state = new State(tag, name, owner, colour.charAt(0));
         state.citizens.addAll(citizens);
         state.permissions.addAll(permissions);
+        state.towns.addAll(towns);
         return state;
     }
 
