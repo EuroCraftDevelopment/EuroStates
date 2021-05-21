@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.eurostates.EuroStates;
+import org.eurostates.functions.ParseLoadedData;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class State {
     private final char colour; // Color for the chat prefix
     private final Set<UUID> citizens = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
+    private final Set<String> towns = new HashSet<>(); // For member towns
 
     public static final String TAG_NODE = "meta.tag";
     public static final String NAME_NODE = "meta.name";
@@ -28,6 +30,7 @@ public class State {
 
     public static final String CITIZENS_NODE = "citizens";
     public static final String PERMISSIONS_NODE = "permissions";
+    public static final String TOWNS_NODE = "towns";
 
 
     public State(String tag) {
@@ -88,42 +91,20 @@ public class State {
     // Load Data from File
     public static State getFromFile(File file) throws IOException {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        String tag = config.getString(TAG_NODE);
-        if (tag == null || tag.length() > 3) {
-            throw new IOException("Tag is not valid");
-        }
-        String name = config.getString(NAME_NODE);
-        if (name == null) {
-            throw new IOException("Name is missing");
-        }
-        UUID owner;
-        try {
-            String ownerString = config.getString(OWNER_NODE);
-            if (ownerString == null) {
-                throw new IOException("Owner is not present");
-            }
-            owner = UUID.fromString(ownerString);
-        } catch (Throwable e) {
-            throw new IOException("Owner is not a valid UUID", e);
-        }
-        String colour = config.getString(COLOUR_NODE); //of course bukkit doesn't have 'getCharacter'
-        if (colour == null || colour.length() != 1) {
-            throw new IOException("colour is missing");
-        }
-        Set<UUID> citizens = config
-                .getStringList(CITIZENS_NODE)
-                .parallelStream()
-                .filter(str -> {
-                    try {
-                        UUID.fromString(str);
-                        return true;
-                    } catch (Throwable e) {
-                        return false;
-                    }
-                })
-                .map(UUID::fromString)
-                .collect(Collectors.toSet()); // what is this wizardry -> lambda wizardry
-        List<String> permissions = config.getStringList(PERMISSIONS_NODE);
+
+        String tag = ParseLoadedData.getString(config, TAG_NODE);
+        if (tag.length() != 3) {throw new IOException("[ES_ERR]: State Tag Invalid (Not 3 Characters.)");}
+
+        String name = ParseLoadedData.getString(config, NAME_NODE);
+
+        UUID owner = ParseLoadedData.getUUID(config, OWNER_NODE);
+
+        String colour = ParseLoadedData.getString(config, COLOUR_NODE);
+        if (colour.length() != 1) { throw new IOException("\"[ES_ERR]: Parse for .yml value load failed: Invalid Color Value, needs to be 1 character."); }
+
+        Set<UUID> citizens = ParseLoadedData.getUUIDSet(config, CITIZENS_NODE);
+
+        List<String> permissions = ParseLoadedData.getStringList(config, PERMISSIONS_NODE);
 
         State state = new State(tag, name, owner, colour.charAt(0));
         state.citizens.addAll(citizens);
@@ -150,7 +131,8 @@ public class State {
         config.set(COLOUR_NODE, Character.toString(this.colour));
         config.set(CITIZENS_NODE, this.citizens.parallelStream().map(UUID::toString).collect(Collectors.toList())); // ;) yeah i mean, yeah.
         config.set(PERMISSIONS_NODE, new ArrayList<>(this.permissions));
-//i g2g now
+        config.set(TOWNS_NODE, new ArrayList<>(this.towns));
+
         config.save(file);
     }
 

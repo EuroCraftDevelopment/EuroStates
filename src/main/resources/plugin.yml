@@ -6,28 +6,13 @@ prefix: EuroStates
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
 commands:
-  eurostates:
-    description: EuroStates made by ColonelKai
-    aliases: [states, es]
+  states:
+    description: Main Command for States
+    aliases: [eurostatesstates, es, s]
     usage: |
-        /eurostates guide - Gives you a guide for the plugin.
-        /eurostates admin - Admin Tools.
-        /eurostates state - Manage your state.
-        /eurostates chat - Manage your chat.
-
-  eurostates admin:
-    description: Main EuroStates Admin Command.
-    aliases: [states admin, es a, es admin, states a]
-    usage: |
-        /eurostates admin createstate - Create a State.
-        /eurostates admin deletestate - Delete a State.
-        /eurostates admin changeowner - Change the owner of a state forcibly.
-        /eurostates admin changeattr - Change an attribute of the state.
-
-  eurostates admin createstate:
-    description: Create a state.
-    aliases: [states admin createstate, es a createstate, es admin createstate, states a createstate]
-    usage: /eurostates admin createstate [NationName] [Owner]
+        /states admin - Admin Tools.
+        /states state - State Tools.
+        /states town - Town Tools.
 
 
 

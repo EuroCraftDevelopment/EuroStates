@@ -6,6 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.eurostates.commands.CommandInterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 // Following a tutorial for this one
@@ -21,6 +23,7 @@ public class States implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String command_label, String[] args) {
+        ArrayList<String> p_args = new ArrayList<String>(Arrays.asList(args));
         if(args.length==0){getCommandExec("states").onCommand(sender, cmd, command_label, args); return true;}
         if(args.length > 0){
             if(checkIfExists(args[0])){
