@@ -5,17 +5,28 @@ import org.bukkit.plugin.Plugin;
 import org.eurostates.EuroStates;
 import org.eurostates.commands.states.StatesBase;
 import org.eurostates.commands.states.StatesCmdHandler;
+import org.eurostates.commands.town.TownBase;
+import org.eurostates.commands.town.TownCmdHandler;
+import org.eurostates.commands.town.user.ViewTown;
+
+import java.util.Objects;
 
 public class CommandHandler {
     public static void commandLauncher(){
         Plugin plugin = EuroStates.getPlugin();
 
         // States command reg
-        StatesCmdHandler handler = new StatesCmdHandler();
-        handler.register("states", new StatesBase());
+        StatesCmdHandler states_handler = new StatesCmdHandler();
+        states_handler.register("states", new StatesBase());
 
-        // States
-        Bukkit.getPluginCommand("states").setExecutor(new StatesCmdHandler());
+        Objects.requireNonNull(Bukkit.getPluginCommand("eurostates states")).setExecutor(states_handler);
 
+
+        // Town command reg
+        TownCmdHandler town_handler = new TownCmdHandler();
+        town_handler.register("town", new TownBase());
+        town_handler.register("view", new ViewTown());
+
+        Objects.requireNonNull(Bukkit.getPluginCommand("eurostates town")).setExecutor(town_handler);
     }
 }

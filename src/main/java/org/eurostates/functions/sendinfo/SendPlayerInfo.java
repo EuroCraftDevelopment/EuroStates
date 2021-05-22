@@ -1,4 +1,4 @@
-package org.eurostates.functions;
+package org.eurostates.functions.sendinfo;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -24,6 +24,7 @@ public class SendPlayerInfo {
 
 
         // Send Player Info
+        player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
         player.sendMessage(ChatColor.BLUE+"EuroStates "+ChatColor.WHITE+"Player Info");
         player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
         player.sendMessage(ChatColor.WHITE+"Name: "+ChatColor.GRAY+username);

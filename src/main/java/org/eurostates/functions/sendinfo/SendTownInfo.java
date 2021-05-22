@@ -1,0 +1,44 @@
+package org.eurostates.functions.sendinfo;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.eurostates.player.ESPlayer;
+import org.eurostates.town.Town;
+
+import java.io.IOException;
+
+public class SendTownInfo {
+    public static void sendTownInfo(String town_tag, Player player) throws IOException {
+
+        Town town = Town.getFromFile(Town.getFile(town_tag));
+
+        if(town.getName()==null){
+            player.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"This is not a valid town!");
+            return;
+        }
+
+        String town_name = town.getName();
+        String state = town.getState();
+        OfflinePlayer mayor_off = town.getMayorPlayer();
+
+        String mayor;
+        if(!mayor_off.isOnline()){mayor = mayor_off.getName();}
+        else{mayor=mayor_off.getPlayer().getDisplayName();}
+
+        Location center = town.getCenter();
+
+        player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
+        player.sendMessage(ChatColor.BLUE+"EuroStates "+ChatColor.WHITE+"Town Info");
+        player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
+
+        player.sendMessage(ChatColor.WHITE+"Town Name: "+ChatColor.GRAY+town_name);
+        player.sendMessage(ChatColor.WHITE+"State: "+ChatColor.GRAY+state);
+        player.sendMessage(ChatColor.WHITE+"Mayor: "+ChatColor.GRAY+mayor);
+        player.sendMessage(ChatColor.WHITE+"Location: "+ChatColor.GRAY+center.toString());
+
+        player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
+    }
+}

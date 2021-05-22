@@ -6,14 +6,18 @@ prefix: EuroStates
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
 commands:
-  states:
+  eurostates states:
     description: Main Command for States
-    aliases: [eurostatesstates, es, s]
+    aliases: [es s, es states, eurostates s]
     usage: |
         /states admin - Admin Tools.
         /states state - State Tools.
-        /states town - Town Tools.
 
+  eurostates town:
+    description: Main Command for Towns
+    aliases: [es t, es town, eurostates t]
+    usage: |
+      balls
 
 
 

@@ -1,5 +1,6 @@
 package org.eurostates.functions;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.yaml.snakeyaml.Yaml;
 
@@ -51,5 +52,12 @@ public class ParseLoadedData {
         // if(uuidSet.size()==0){throw new IOException("ES_ERR]: Parse for .yml value load failed: UUIDSet has length of 0.");}
 
         return uuidSet;
+    }
+
+    public static Location getLocation(YamlConfiguration config, String node) throws IOException{
+        Location location = config.getLocation(node);
+        if(location==null){throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: "+node);}
+
+        return location;
     }
 }

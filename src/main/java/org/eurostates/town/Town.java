@@ -1,6 +1,7 @@
 package org.eurostates.town;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,22 +23,28 @@ public class Town {
     private String name; // Actual Human Readable Name
     private UUID mayor; // Mayor UUID
     private String state; // 3-Letter Identifier for the State the Town Belongs to.
+    private Location center; // Center of the town
 
     public static final String TAG_NODE = "meta.tag";
     public static final String NAME_NODE = "meta.name";
     public static final String MAYOR_NODE = "meta.mayor";
     public static final String STATE_NODE = "meta.state";
+    public static final String LOCATION_NODE = "meta.location";
 
     public Town(String tag) {
-        this(tag, null, null, null); // there is reset :)
+        this(tag, null, null, null, null); // there is reset :)
     }
 
-    public Town(String tag, String name, UUID mayor, String state) {
+    public Town(String tag, String name, UUID mayor, String state, Location center) {
         this.tag = tag;
         this.name = name;
         this.mayor = mayor;
         this.state = state;
+        this.center = center;
     }
+
+    public Location getCenter() { return this.center; }
+    public void setCenter(Location center) { this.center = center; }
 
     public String getTag() { return this.tag; }
     public void setTag(String tag) { this.tag = tag; }
@@ -67,7 +74,9 @@ public class Town {
         String state = ParseLoadedData.getString(config, STATE_NODE);
         if(state.length()!=3){throw new IOException("[ES_ERR]: Parse for .yml value load failed: State Tags must be 3 letters.");}
 
-        return new Town(tag, name, mayor, state);
+        Location location = ParseLoadedData.getLocation(config, LOCATION_NODE);
+
+        return new Town(tag, name, mayor, state, location);
     }
 
     public static File getFile(String tag){

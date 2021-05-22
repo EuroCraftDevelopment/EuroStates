@@ -1,13 +1,15 @@
 package org.eurostates.commands.states.admin;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.eurostates.commands.CommandInterface;
 
-public class CreateState implements CommandExecutor {
+import java.util.ArrayList;
+
+public class CreateState implements CommandInterface {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        sender.sendMessage(args[0]);
+    public boolean onCommand(CommandSender sender, Command cmd, String label, ArrayList<String> args) {
+        sender.sendMessage(args.get(0));
         return true;
     }
 }

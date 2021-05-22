@@ -1,4 +1,4 @@
-package org.eurostates.commands.states;
+package org.eurostates.commands.town;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 // Following a tutorial for this one
 
-public class StatesCmdHandler implements CommandExecutor {
+public class TownCmdHandler implements CommandExecutor {
     private static HashMap<String, CommandInterface> commands = new HashMap<String, CommandInterface>();
 
     public void register(String name, CommandInterface cmd){ commands.put(name, cmd); }
@@ -28,7 +28,7 @@ public class StatesCmdHandler implements CommandExecutor {
 
         if(args.length==0){
             try {
-                getCommandExec("states").onCommand(sender, cmd, command_label, p_args);
+                getCommandExec("town").onCommand(sender, cmd, command_label, p_args);
             } catch (IOException e) {
                 e.printStackTrace();
             }
