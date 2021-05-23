@@ -12,13 +12,16 @@ import java.io.IOException;
 
 public class SendTownInfo {
     public static void sendTownInfo(String town_tag, Player player) throws IOException {
+        Town town = new Town(town_tag);
 
-        Town town = Town.getFromFile(Town.getFile(town_tag));
-
-        if(town.getName()==null){
+        try{town = Town.getFromFile(Town.getFile(town_tag));} catch (IOException e) {
             player.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"This is not a valid town!");
             return;
         }
+
+
+
+
 
         String town_name = town.getName();
         String state = town.getState();
@@ -35,9 +38,10 @@ public class SendTownInfo {
         player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
 
         player.sendMessage(ChatColor.WHITE+"Town Name: "+ChatColor.GRAY+town_name);
+        player.sendMessage(ChatColor.WHITE+"Town Tag: "+ChatColor.GRAY+town_tag);
         player.sendMessage(ChatColor.WHITE+"State: "+ChatColor.GRAY+state);
         player.sendMessage(ChatColor.WHITE+"Mayor: "+ChatColor.GRAY+mayor);
-        player.sendMessage(ChatColor.WHITE+"Location: "+ChatColor.GRAY+center.toString());
+        player.sendMessage(ChatColor.WHITE+"Location: "+ChatColor.GRAY+center.getBlockX()+" "+center.getBlockY()+" "+center.getBlockZ());
 
         player.sendMessage(ChatColor.RED +""+ ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
     }

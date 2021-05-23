@@ -72,7 +72,7 @@ public class Town {
         UUID mayor = ParseLoadedData.getUUID(config, MAYOR_NODE);
 
         String state = ParseLoadedData.getString(config, STATE_NODE);
-        if(state.length()!=3){throw new IOException("[ES_ERR]: Parse for .yml value load failed: State Tags must be 3 letters.");}
+        if(state.length()!=3 && !state.equals("None")){throw new IOException("[ES_ERR]: Parse for .yml value load failed: State Tags must be 3 letters.");}
 
         Location location = ParseLoadedData.getLocation(config, LOCATION_NODE);
 
@@ -93,8 +93,9 @@ public class Town {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(TAG_NODE, this.tag);
         config.set(NAME_NODE, this.name);
-        config.set(MAYOR_NODE, this.mayor);
+        config.set(MAYOR_NODE, this.mayor.toString());
         config.set(STATE_NODE, this.state);
+        config.set(LOCATION_NODE, this.center);
 
         config.save(file);
     }

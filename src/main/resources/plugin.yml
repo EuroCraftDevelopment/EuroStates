@@ -1,21 +1,21 @@
 name: EuroStates
-version: Alpha_1.9
+version: Alpha_2.2
 main: org.eurostates.EuroStates
 api-version: 1.15
 prefix: EuroStates
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
 commands:
-  eurostates states:
+  states:
     description: Main Command for States
-    aliases: [es s, es states, eurostates s]
+    aliases: [s]
     usage: |
         /states admin - Admin Tools.
         /states state - State Tools.
 
-  eurostates town:
+  town:
     description: Main Command for Towns
-    aliases: [es t, es town, eurostates t]
+    aliases: [t]
     usage: |
       balls
 

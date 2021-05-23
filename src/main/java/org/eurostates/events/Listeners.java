@@ -33,7 +33,7 @@ public class Listeners implements Listener {
         if(state==null){prefix_color=ChatColor.GRAY;}
         else{prefix_color = state.getBukkitColor();}
 
-        event.setFormat(prefix_color + prefix + " %s : %s" + ChatColor.RESET);
+        event.setFormat(prefix_color + prefix + ChatColor.RESET +" %s : %s");
     }
 
     @EventHandler
