@@ -16,7 +16,7 @@ public class CreateTown implements CommandInterface {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, ArrayList<String> args) throws IOException {
-        if(!sender.hasPermission("eurostates.createtown")){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"You lack the permission: eurostates.createtown");}
+        if(!sender.hasPermission("eurostates.town.create")){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"You lack the permission: eurostates.createtown");}
 
         if(args.size()!=2){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"Correct Usage: /town create [TownName] [TownMayor]"); return false;}
 

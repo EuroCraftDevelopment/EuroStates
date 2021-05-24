@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 import org.eurostates.EuroStates;
 import org.eurostates.commands.states.StatesBase;
 import org.eurostates.commands.states.StatesCmdHandler;
+import org.eurostates.commands.states.admin.CreateState;
 import org.eurostates.commands.town.TownBase;
 import org.eurostates.commands.town.TownCmdHandler;
 import org.eurostates.commands.town.admin.CreateTown;
@@ -19,6 +20,7 @@ public class CommandHandler {
         // States command reg
         StatesCmdHandler states_handler = new StatesCmdHandler();
         states_handler.register("states", new StatesBase());
+        states_handler.register("create", new CreateState());
 
         Objects.requireNonNull(Bukkit.getPluginCommand("states")).setExecutor(states_handler);
 

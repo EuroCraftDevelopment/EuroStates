@@ -64,10 +64,20 @@ public class State {
     public Set<UUID> getCitizens() { return this.citizens; }
     public Set<OfflinePlayer> getOfflineCitizens() { return this.citizens.stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toSet()); }
     public Set<Player> getOnlineCitizens() { return Bukkit.getOnlinePlayers().stream().filter(p -> this.citizens.contains(p.getUniqueId())).collect(Collectors.toSet()); }
+    public boolean addCitizen(UUID citizen) { return this.citizens.add(citizen); }
+    public boolean removeCitizen(UUID citizen) { return this.citizens.remove(citizen); }
     public void setCitizens(Set<UUID> citizens) { this.citizens =citizens; }
+
+    public Set<String> getTowns() { return this.towns; }
+    public void setTowns(Set<String> towns) { this.towns = towns; }
+    public boolean addTown(String town) { return this.towns.add(town); }
+    public boolean removeTown(String town) { return this.towns.remove(town); }
 
     public Set<String> getPermissions() { return this.permissions; }
     public void setPermissions(Set<String> permissions) { this.permissions = permissions; }
+    public boolean addPermission(String permission) { return this.permissions.add(permission); }
+    public boolean removePermission(String permission) { return this.permissions.remove(permission); }
+
 
     // Load Data from File
     public static State getFromFile(File file) throws IOException {

@@ -19,10 +19,6 @@ public class SendTownInfo {
             return;
         }
 
-
-
-
-
         String town_name = town.getName();
         String state = town.getState();
         OfflinePlayer mayor_off = town.getMayorPlayer();
