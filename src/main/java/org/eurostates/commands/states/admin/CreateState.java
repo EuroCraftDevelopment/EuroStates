@@ -32,7 +32,7 @@ public class CreateState implements CommandInterface {
         Character state_color = args.get(2).charAt(0);
 
         String state_tag = state_name.substring(0,3).toUpperCase();
-
+    
         Town town;
         try {
             town = Town.getFromFile(Town.getFile(town_tag));
