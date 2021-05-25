@@ -13,30 +13,38 @@ public class ESPlayer {
     private String state_tag;
     private String rank;
     private UUID id;
+    private String mayor_of;
 
     public static final String STATE_TAG_NODE= "state_tag";
     public static final String UUID_NODE = "uuid";
     public static final String RANK_NODE = "rank";
+    public static final String MAYOR_OF_NODE = "mayor_of";
 
     public ESPlayer(UUID id){
         this.state_tag="NOMAD";
         this.rank="NO NATION";
+        this.mayor_of="None";
         this.id = id;
     }
 
-    public ESPlayer(UUID id, String state_tag, String rank){
+    public ESPlayer(UUID id, String state_tag, String rank, String mayor_of){
         this.state_tag=state_tag;
         this.rank=rank;
         this.id=id;
+        this.mayor_of=mayor_of;
     }
 
     public String getStateTag(){return this.state_tag;}
     public void setStateTag(String tag){this.state_tag = tag;}
 
     public UUID getId(){return this.id;}
+    public void setId(UUID id){this.id = id;}
 
     public String getRank(){return this.rank;}
     public void setRank(String rank){this.rank = rank;}
+
+    public String getMayorOf(){return this.mayor_of;}
+    public void setMayorOf(String mayor_of){this.mayor_of=mayor_of;}
 
     public static File getFile(String uuid){
         Plugin plugin = EuroStates.getPlugin();
@@ -53,27 +61,21 @@ public class ESPlayer {
         config.set(UUID_NODE, this.id.toString());
         config.set(STATE_TAG_NODE, this.state_tag);
         config.set(RANK_NODE,this.rank);
+        config.set(MAYOR_OF_NODE, this.mayor_of);
         config.save(file);
     }
 
-    public static ESPlayer getFromFile(File file) throws IOException {
+    public static ESPlayer getFromFile(String uuid) throws IOException {
+        File file = getFile(uuid);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        UUID p_UUID;
-        try {
-            String p_string = config.getString(UUID_NODE);
-            if (p_string==null){throw new IOException("UUID Not Found");}
-            p_UUID = UUID.fromString(p_string);
-        } catch (Throwable e) {
-            throw new IOException("UUID Not Valid" + e);
-        }
+        ESPlayer player = new ESPlayer(UUID.fromString(uuid));
 
-        String p_state_tag = config.getString(STATE_TAG_NODE);
-        if(p_state_tag == null){throw new IOException("State Tag Not Found");}
-        String rank = ParseLoadedData.getString(config,RANK_NODE);
+        player.setId(ParseLoadedData.getUUID(config, UUID_NODE));
+        player.setStateTag(ParseLoadedData.getString(config, STATE_TAG_NODE));
+        player.setRank(ParseLoadedData.getString(config, RANK_NODE));
+        player.setMayorOf(ParseLoadedData.getString(config, RANK_NODE));
 
-        ESPlayer player = new ESPlayer(p_UUID, p_state_tag, rank);
         return player;
     }
-
 }

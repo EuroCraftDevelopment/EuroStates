@@ -34,14 +34,17 @@ public class State {
 
 
     public State(String tag) {
-        this(tag, null, null, 'r'); // there is reset :)
+        this(tag, null, null, 'r', new HashSet<>(), new HashSet<>(), new HashSet<>()); // there is reset :)
     }
 
-    public State(String tag, String name, UUID owner, char colour) {
+    public State(String tag, String name, UUID owner, char colour, Set<UUID> citizens, Set<String> permissions, Set<String> towns) {
         this.tag = tag;
         this.name = name;
         this.owner = owner;
         this.colour = colour; // bloody American spelling :( LMAO
+        this.citizens = citizens;
+        this.permissions = permissions;
+        this.towns = towns;
     }
 
 
@@ -80,18 +83,24 @@ public class State {
 
 
     // Load Data from File
-    public static State getFromFile(File file) throws IOException {
+    public static State getFromFile(String tag) throws IOException {
+        File file = getFile(tag);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        State state = new State(tag);
 
-        String tag = ParseLoadedData.getString(config, TAG_NODE);
+        String ttag = ParseLoadedData.getString(config, TAG_NODE);
         if (tag.length() != 3) {throw new IOException("[ES_ERR]: State Tag Invalid (Not 3 Characters.)");}
+        state.setTag(ttag);
 
         String name = ParseLoadedData.getString(config, NAME_NODE);
+        state.setName(name);
 
         UUID owner = ParseLoadedData.getUUID(config, OWNER_NODE);
+        state.setOwner(owner);
 
         String colour = ParseLoadedData.getString(config, COLOUR_NODE);
         if (colour.length() != 1) { throw new IOException("[ES_ERR]: Parse for .yml value load failed: Invalid Color Value, needs to be 1 character."); }
+        state.setColour(colour.charAt(0));
 
         Set<UUID> citizens = ParseLoadedData.getUUIDSet(config, CITIZENS_NODE);
 
@@ -99,7 +108,7 @@ public class State {
 
         List<String> towns = ParseLoadedData.getStringList(config, TOWNS_NODE);
 
-        State state = new State(tag, name, owner, colour.charAt(0));
+
         state.citizens.addAll(citizens);
         state.permissions.addAll(permissions);
         state.towns.addAll(towns);
