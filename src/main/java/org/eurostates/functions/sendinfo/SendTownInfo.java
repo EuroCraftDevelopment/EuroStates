@@ -14,7 +14,7 @@ public class SendTownInfo {
     public static void sendTownInfo(String town_tag, Player player) throws IOException {
         Town town = new Town(town_tag);
 
-        try{town = Town.getFromFile(Town.getFile(town_tag));} catch (IOException e) {
+        try{town = Town.getFromFile(town_tag);} catch (IOException e) {
             player.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"This is not a valid town!");
             return;
         }

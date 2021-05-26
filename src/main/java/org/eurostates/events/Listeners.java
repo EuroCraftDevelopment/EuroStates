@@ -22,11 +22,11 @@ public class Listeners implements Listener {
 
         String p_uuid = event.getPlayer().getUniqueId().toString();
 
-        ESPlayer player = ESPlayer.getFromFile(ESPlayer.getFile(p_uuid));
+        ESPlayer player = ESPlayer.getFromFile(p_uuid);
         String stag = player.getStateTag();
 
         // If state tag is NOMAD, it means they are stateless, so keep as is.
-        if(!stag.equals("NOMAD")){state = State.getFromFile(State.getFile(stag));}
+        if(!stag.equals("NOMAD")){state = State.getFromFile(stag);}
 
         String prefix = "["+stag+"]";
 

@@ -57,12 +57,14 @@ public class Town {
     public void setMayor(UUID mayor) { this.mayor = mayor; }
 
     public String getState() { return this.state; }
-    public State getStateObj() throws IOException { return State.getFromFile(State.getFile(this.state)); }
+    public State getStateObj() throws IOException { return State.getFromFile(this.state); }
     public void setState(String state) { this.state = state; }
 
 
-    public static Town getFromFile(File file) throws IOException {
+    public static Town getFromFile(String townid) throws IOException {
+        File file = getFile(townid);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        Town town = new Town(townid);
 
         String tag = ParseLoadedData.getString(config, TAG_NODE);
         if(tag.length()!=4){throw new IOException("[ES_ERR]: Parse for .yml value load failed: Town Tags must be 4 letters.");}
@@ -76,7 +78,7 @@ public class Town {
 
         Location location = ParseLoadedData.getLocation(config, LOCATION_NODE);
 
-        return new Town(tag, name, mayor, state, location);
+        return town;
     }
 
     public static File getFile(String tag){

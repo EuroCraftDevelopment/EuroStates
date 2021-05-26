@@ -13,6 +13,7 @@ import org.eurostates.town.Town;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CreateState implements CommandInterface {
     @Override
@@ -35,17 +36,19 @@ public class CreateState implements CommandInterface {
     
         Town town;
         try {
-            town = Town.getFromFile(Town.getFile(town_tag));
+            town = Town.getFromFile(town_tag);
         } catch(IOException e){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+
                 ChatColor.RED+"No town with the tag "+town_tag+" exists."); return false;}
 
         OfflinePlayer mayor = town.getMayorPlayer();
 
-        State state = new State(state_tag, state_name, mayor.getUniqueId(), state_color);
+
+        State state = new State(state_tag, state_name, mayor.getUniqueId(), state_color, new HashSet<>(), new HashSet<>(), new HashSet<>());
+        state.addTown(town.getTag());
 
         state.saveToFile(state.getTag());
 
-        ESPlayer esplayer = ESPlayer.getFromFile(ESPlayer.getFile(mayor.getUniqueId().toString()));
+        ESPlayer esplayer = ESPlayer.getFromFile(mayor.getUniqueId().toString());
 
         esplayer.setStateTag(state_tag);
         esplayer.setRank("King");

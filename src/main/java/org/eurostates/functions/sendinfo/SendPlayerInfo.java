@@ -17,9 +17,9 @@ public class SendPlayerInfo {
         String nation_rank;
 
         // Player Info
-        ESPlayer esplayer = ESPlayer.getFromFile(ESPlayer.getFile(player.getUniqueId().toString()));
+        ESPlayer esplayer = ESPlayer.getFromFile(player.getUniqueId().toString());
         if(esplayer.getStateTag().equals("NOMAD")){nation_name="Nomad";}
-        else{State state = State.getFromFile(State.getFile(esplayer.getStateTag())); nation_name=state.getName();}
+        else{State state = State.getFromFile(esplayer.getStateTag()); nation_name=state.getName();}
         nation_rank = esplayer.getRank();
 
 
