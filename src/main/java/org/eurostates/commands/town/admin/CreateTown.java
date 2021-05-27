@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eurostates.commands.CommandInterface;
-import org.eurostates.town.Town;
+import org.eurostates.area.town.LegacyTown;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class CreateTown implements CommandInterface {
 
         if(mayor==null){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"No online player with name "+args.get(1)+"found."); return false;}
 
-        Town town = new Town(town_name.substring(0, 4).toUpperCase(), town_name, mayor.getUniqueId(), "None", new Location(null, 0, 0, 0));
+        LegacyTown town = new LegacyTown(town_name.substring(0, 4).toUpperCase(), town_name, mayor.getUniqueId(), "None", new Location(null, 0, 0, 0));
         town.saveToFile(town.getTag());
 
         sender.getServer().broadcastMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.WHITE+
