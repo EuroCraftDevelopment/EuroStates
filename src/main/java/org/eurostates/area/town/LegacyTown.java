@@ -1,10 +1,9 @@
-package org.eurostates.town;
+package org.eurostates.area.town;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.eurostates.EuroStates;
 import org.eurostates.functions.ParseLoadedData;
@@ -12,13 +11,9 @@ import org.eurostates.state.State;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-public class Town {
+public class LegacyTown {
     private String tag; // 4-Letter Identifier for the town.
     private String name; // Actual Human Readable Name
     private UUID mayor; // Mayor UUID
@@ -31,11 +26,11 @@ public class Town {
     public static final String STATE_NODE = "meta.state";
     public static final String LOCATION_NODE = "meta.location";
 
-    public Town(String tag) {
+    public LegacyTown(String tag) {
         this(tag, null, null, null, null); // there is reset :)
     }
 
-    public Town(String tag, String name, UUID mayor, String state, Location center) {
+    public LegacyTown(String tag, String name, UUID mayor, String state, Location center) {
         this.tag = tag;
         this.name = name;
         this.mayor = mayor;
@@ -61,10 +56,10 @@ public class Town {
     public void setState(String state) { this.state = state; }
 
 
-    public static Town getFromFile(String townid) throws IOException {
+    public static LegacyTown getFromFile(String townid) throws IOException {
         File file = getFile(townid);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        Town town = new Town(townid);
+        LegacyTown town = new LegacyTown(townid);
 
         String tag = ParseLoadedData.getString(config, TAG_NODE);
         if(tag.length()!=4){throw new IOException("[ES_ERR]: Parse for .yml value load failed: Town Tags must be 4 letters.");}
