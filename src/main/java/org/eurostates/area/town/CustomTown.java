@@ -2,29 +2,27 @@ package org.eurostates.area.town;
 
 import org.bukkit.Location;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class CustomTown implements Town {
 
     private final UUID uuid;
-    private final Set<UUID> citizens = new HashSet<>();
     private String tag;
     private String name;
     private UUID owner;
     private UUID state;
     private Location centre;
 
-    public CustomTown(UUID uuid, String tag, String name, UUID owner, UUID state, Location centre, Collection<UUID> citizens) {
+    public CustomTown(UUID uuid, String tag, String name, UUID owner, UUID state, Location centre) {
+        if (tag.length() != 4) {
+            throw new IllegalArgumentException("Tag must be greater then 4 characters");
+        }
         this.uuid = uuid;
         this.tag = tag;
         this.name = name;
         this.owner = owner;
         this.state = state;
         this.centre = centre;
-        this.citizens.addAll(citizens);
     }
 
     public UUID getId() {
@@ -47,11 +45,6 @@ public class CustomTown implements Town {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Set<UUID> getCitizenIds() {
-        return this.citizens;
     }
 
     @Override

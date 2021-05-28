@@ -1,5 +1,6 @@
 package org.eurostates.area.state;
 
+import org.eurostates.area.ESUser;
 import org.eurostates.area.Ownable;
 import org.eurostates.area.Rank;
 import org.eurostates.area.town.Town;
@@ -11,26 +12,25 @@ public class CustomState implements State, Ownable {
     private final Set<Town> towns = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
     private final Set<Rank> ranks = new HashSet<>();
+    private final Set<ESUser> users = new HashSet<>();
     private final UUID id;
     private String tag;
     private String name;
     private char chatColour;
     private UUID owner;
 
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner){
-        this(id, tag, name, chatColour, owner, Collections.emptySet(), Collections.emptySet());
+    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner) {
+        this(id, tag, name, chatColour, owner, Collections.emptySet());
     }
 
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner, Collection<Town> towns, Collection<String> permissions) {
+    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner, Collection<String> permissions) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
         }
-
         this.tag = tag;
         this.name = name;
         this.chatColour = chatColour;
         this.owner = owner;
-        this.towns.addAll(towns);
         this.permissions.addAll(permissions);
         this.id = id;
     }
@@ -77,6 +77,11 @@ public class CustomState implements State, Ownable {
     @Override
     public Set<Rank> getRanks() {
         return this.ranks;
+    }
+
+    @Override
+    public Set<ESUser> getEuroStatesCitizens() {
+        return this.users;
     }
 
     @Override
