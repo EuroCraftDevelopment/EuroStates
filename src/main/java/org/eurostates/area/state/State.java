@@ -1,10 +1,10 @@
 package org.eurostates.area.state;
 
 import org.eurostates.area.Area;
+import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public interface State extends Area {
@@ -14,10 +14,10 @@ public interface State extends Area {
     Set<String> getPermissions();
 
     @Override
-    default Set<UUID> getCitizenIds() {
+    default Set<ESUser> getEuroStatesCitizens() {
         return getTowns()
                 .parallelStream()
-                .flatMap(t -> t.getCitizenIds().parallelStream())
+                .flatMap(t -> t.getEuroStatesCitizens().parallelStream())
                 .collect(Collectors.toSet());
     }
 }

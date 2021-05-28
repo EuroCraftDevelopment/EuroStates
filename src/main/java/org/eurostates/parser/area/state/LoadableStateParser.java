@@ -1,15 +1,17 @@
-package org.eurostates.parser.area;
+package org.eurostates.parser.area.state;
 
 import org.eurostates.area.Rank;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
+import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class StateParser implements StringMapParser<CustomState> {
+public class LoadableStateParser implements StringMapParser<CustomState> {
 
     public static final String TAG_NODE = "meta.tag";
     public static final String NAME_NODE = "meta.name";
@@ -24,12 +26,11 @@ public class StateParser implements StringMapParser<CustomState> {
     @Override
     public Map<String, Object> to(CustomState from) {
         Map<String, Object> map = new HashMap<>();
-        map.put(ID_NODE, from.getId().toString());
+        map.put(ID_NODE, Parsers.UUID.to(from.getId()));
         map.put(TAG_NODE, from.getTag());
         map.put(NAME_NODE, from.getName());
-        map.put(OWNER_NODE, from.getOwnerId().toString());
+        map.put(OWNER_NODE, Parsers.UUID.to(from.getOwnerId()));
         map.put(COLOUR_NODE, from.getLegacyChatColourCharacter() + "");
-
         map.put(PERMISSIONS_NODE, from.getPermissions());
         map.put(TOWNS_NODE, from
                 .getTowns()
@@ -46,17 +47,19 @@ public class StateParser implements StringMapParser<CustomState> {
     }
 
     //should make this throwable safe
-
     @Override
-    public CustomState from(Map<String, Object> from) throws NullPointerException {
-        UUID id = UUID.fromString(get(from, ID_NODE));
+    public CustomState from(Map<String, Object> from) throws IOException {
+        UUID id = Parsers.UUID.from(get(from, ID_NODE));
         String tag = get(from, TAG_NODE);
         String name = get(from, NAME_NODE);
-        UUID owner = get(from, OWNER_NODE);
+        UUID owner = Parsers.UUID.from(get(from, OWNER_NODE));
         char colour = this.<String>get(from, COLOUR_NODE).charAt(0);
-
-        CustomState state = new CustomState(id, tag, name, colour, owner);
-
+        CustomState state;
+        try {
+            state = new CustomState(id, tag, name, colour, owner);
+        } catch (Throwable e) {
+            throw new IOException(e);
+        }
         List<String> permissions = get(from, PERMISSIONS_NODE);
         Set<UUID> towns = this.<List<String>>get(from, TOWNS_NODE).parallelStream().map(UUID::fromString).collect(Collectors.toSet());
         Set<Rank> ranks = this.<List<String>>get(from, RANKS_NODE).parallelStream().map(str -> {
