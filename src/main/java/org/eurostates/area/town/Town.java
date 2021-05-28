@@ -2,7 +2,7 @@ package org.eurostates.area.town;
 
 import org.bukkit.Location;
 import org.eurostates.area.Area;
-import org.eurostates.area.Ownable;
+import org.eurostates.ownable.Ownable;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 

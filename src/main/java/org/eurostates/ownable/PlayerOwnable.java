@@ -1,13 +1,9 @@
-package org.eurostates.area;
+package org.eurostates.ownable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.UUID;
-
-public interface Ownable {
-
-    UUID getOwnerId();
+public interface PlayerOwnable extends Ownable {
 
     default OfflinePlayer getOwner() {
         OfflinePlayer player = Bukkit.getOfflinePlayer(this.getOwnerId());

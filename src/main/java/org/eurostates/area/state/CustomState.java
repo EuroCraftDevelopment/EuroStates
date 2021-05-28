@@ -1,7 +1,7 @@
 package org.eurostates.area.state;
 
 import org.eurostates.area.ESUser;
-import org.eurostates.area.Ownable;
+import org.eurostates.ownable.Ownable;
 import org.eurostates.area.Rank;
 import org.eurostates.area.town.Town;
 
