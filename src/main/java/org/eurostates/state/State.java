@@ -120,13 +120,9 @@ public class State {
         return new File(plugin.getDataFolder()+File.separator+"data"+File.separator+"state"+File.separator+tag+".yml");
     }
 
+    // Save Data to File
     public void saveToFile(String tag) throws IOException {
         File file = getFile(tag);
-        saveToFile(file);
-    }
-
-    // Save Data to File
-    public void saveToFile(File file) throws IOException {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(TAG_NODE, this.tag);
         config.set(NAME_NODE, this.name);

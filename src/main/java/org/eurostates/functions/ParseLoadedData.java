@@ -62,7 +62,4 @@ public class ParseLoadedData {
         return location;
     }
 
-    //public static Set<Permission> getPermissionSet(YamlConfiguration config, String node) throws IOException{
-    //    Set<Permission> = config.getStringList(node)
-    //}
 }
