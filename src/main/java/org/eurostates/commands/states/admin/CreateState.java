@@ -1,13 +1,15 @@
 package org.eurostates.commands.states.admin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.eurostates.commands.CommandInterface;
 import org.eurostates.player.ESPlayer;
 import org.eurostates.state.State;
-import org.eurostates.area.town.LegacyTown;
+import org.eurostates.town.Town;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,9 +34,9 @@ public class CreateState implements CommandInterface {
 
         String state_tag = state_name.substring(0,3).toUpperCase();
     
-        LegacyTown town;
+        Town town;
         try {
-            town = LegacyTown.getFromFile(town_tag);
+            town = Town.getFromFile(town_tag);
         } catch(IOException e){sender.sendMessage(ChatColor.BLUE+"[EuroStates] "+
                 ChatColor.RED+"No town with the tag "+town_tag+" exists."); return false;}
 

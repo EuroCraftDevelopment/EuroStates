@@ -189,13 +189,9 @@ public class State {
         return this.permissions.remove(permission);
     }
 
+    // Save Data to File
     public void saveToFile(String tag) throws IOException {
         File file = getFile(tag);
-        saveToFile(file);
-    }
-
-    // Save Data to File
-    public void saveToFile(File file) throws IOException {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(TAG_NODE, this.tag);
         config.set(NAME_NODE, this.name);
