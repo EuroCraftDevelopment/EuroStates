@@ -2,6 +2,7 @@ package org.eurostates.functions;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.permissions.Permission;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -60,4 +61,8 @@ public class ParseLoadedData {
 
         return location;
     }
+
+    //public static Set<Permission> getPermissionSet(YamlConfiguration config, String node) throws IOException{
+    //    Set<Permission> = config.getStringList(node)
+    //}
 }
