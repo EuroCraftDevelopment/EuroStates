@@ -13,7 +13,7 @@ public interface ArgumentCommand {
 
     Optional<String> getPermission();
 
-    boolean run(CommandContext context, String arg);
+    boolean run(CommandContext context, String[] arg);
 
     default boolean canRun(CommandSender sender) {
         Optional<String> opPermission = this.getPermission();

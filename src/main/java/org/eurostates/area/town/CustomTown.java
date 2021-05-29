@@ -1,6 +1,6 @@
 package org.eurostates.area.town;
 
-import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 import java.util.UUID;
 
@@ -11,9 +11,9 @@ public class CustomTown implements Town {
     private String name;
     private UUID owner;
     private UUID state;
-    private Location centre;
+    private Block centre;
 
-    public CustomTown(UUID uuid, String tag, String name, UUID owner, UUID state, Location centre) {
+    public CustomTown(UUID uuid, String tag, String name, UUID owner, UUID state, Block centre) {
         if (tag.length() != 4) {
             throw new IllegalArgumentException("Tag must be greater then 4 characters");
         }
@@ -57,11 +57,11 @@ public class CustomTown implements Town {
     }
 
     @Override
-    public Location getCentre() {
+    public Block getCentre() {
         return this.centre;
     }
 
-    public void setCentre(Location centre) {
+    public void setCentre(Block centre) {
         this.centre = centre;
     }
 
