@@ -1,5 +1,5 @@
 name: EuroStates
-version: Alpha_2.7
+version: Alpha_2.9
 main: org.eurostates.EuroStates
 api-version: 1.15
 prefix: EuroStates

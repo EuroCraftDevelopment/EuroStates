@@ -5,15 +5,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.eurostates.area.town.LegacyTown;
+import org.eurostates.player.ESPlayer;
+import org.eurostates.town.Town;
 
 import java.io.IOException;
 
 public class SendTownInfo {
     public static void sendTownInfo(String town_tag, Player player) throws IOException {
-        LegacyTown town = new LegacyTown(town_tag);
+        Town town = new Town(town_tag);
 
-        try{town = LegacyTown.getFromFile(town_tag);} catch (IOException e) {
+        try{town = Town.getFromFile(town_tag);} catch (IOException e) {
             player.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+"This is not a valid town!");
             return;
         }
