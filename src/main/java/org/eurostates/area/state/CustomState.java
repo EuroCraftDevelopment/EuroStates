@@ -1,17 +1,22 @@
 package org.eurostates.area.state;
 
+import org.bukkit.OfflinePlayer;
+import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
-import org.eurostates.ownable.Ownable;
-import org.eurostates.area.Rank;
 import org.eurostates.area.town.Town;
+import org.eurostates.ownable.Ownable;
+import org.eurostates.parser.Parsers;
+import org.eurostates.parser.Savable;
+import org.eurostates.parser.area.state.GetterStateParser;
+import org.eurostates.parser.area.state.LoadableStateParser;
 
+import java.io.File;
 import java.util.*;
 
-public class CustomState implements State, Ownable {
+public class CustomState implements State, Ownable, Savable<CustomState, Map<String, Object>, String> {
 
     private final Set<Town> towns = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
-    private final Set<Rank> ranks = new HashSet<>();
     private final Set<ESUser> users = new HashSet<>();
     private final UUID id;
     private String tag;
@@ -47,8 +52,13 @@ public class CustomState implements State, Ownable {
         this.chatColour = chatColour;
     }
 
+    @Deprecated
     public void setOwner(UUID owner) {
         this.owner = owner;
+    }
+
+    public void setOwner(OfflinePlayer owner) {
+        this.owner = owner.getUniqueId();
     }
 
     @Override
@@ -73,12 +83,6 @@ public class CustomState implements State, Ownable {
     public char getLegacyChatColourCharacter() {
         return this.chatColour;
     }
-
-    @Override
-    public Set<Rank> getRanks() {
-        return this.ranks;
-    }
-
     @Override
     public Set<ESUser> getEuroStatesCitizens() {
         return this.users;
@@ -92,5 +96,25 @@ public class CustomState implements State, Ownable {
     @Override
     public Set<String> getPermissions() {
         return this.permissions;
+    }
+
+    @Override
+    public File getFile() {
+        return new File(EuroStates.getPlugin().getDataFolder(), "data/state/" + this.getId().toString() + ".yml");
+    }
+
+    @Override
+    public LoadableStateParser getSerializableParser() {
+        return Parsers.LOADABLE_STATE;
+    }
+
+    @Override
+    public GetterStateParser getIdParser() {
+        return Parsers.GETTER_STATE;
+    }
+
+    @Override
+    public String getRootNode() {
+        return "State";
     }
 }

@@ -4,43 +4,42 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.State;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
+import org.eurostates.ownable.PlayerOwnable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class ESUser {
+public class ESUser implements PlayerOwnable {
 
     private final UUID uuid;
-    private UUID rankUUID;
+    private String rank;
 
-    public ESUser(UUID uuid, UUID rankUUID) {
+    public ESUser(UUID uuid) {
+        this(uuid, null);
+    }
+
+    public ESUser(UUID uuid, String rank) {
         this.uuid = uuid;
-        this.rankUUID = rankUUID;
+        this.rank = rank;
     }
 
-    public Optional<UUID> getRankId() {
-        return Optional.ofNullable(this.rankUUID);
-    }
-
-    public Optional<Rank> getRank() {
-        State state = getState();
-        return state.getRanks()
-                .parallelStream()
-                .filter(rank -> rank.getId().equals(this.rankUUID))
-                .findAny();
-
-    }
-
-    public void setRank(Rank rank) {
-        State state = getState();
-        if (!(state instanceof CustomState)) {
-            throw new IllegalStateException("Player must be part of a town before setting a rank");
+    public String getRank() {
+        if (this.rank != null) {
+            return this.rank;
         }
-
-        if (!rank.getState().equals(state)) {
-            throw new IllegalStateException("Rank is not part of the players state");
+        State state = getState();
+        if (state instanceof CustomState && ((CustomState) state).getOwnerId().equals(this.uuid)) {
+            return Ranks.KING;
         }
-        this.rankUUID = rank.getId();
+        if (state instanceof CustomState) {
+            return Ranks.CITIZEN;
+        }
+        return Ranks.NOMAD;
+
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     public Optional<Town> getTown() {
@@ -58,5 +57,10 @@ public class ESUser {
             return opTown.get().getState();
         }
         return States.NOMAD_STATE;
+    }
+
+    @Override
+    public UUID getOwnerId() {
+        return this.uuid;
     }
 }

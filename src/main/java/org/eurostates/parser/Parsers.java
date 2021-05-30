@@ -2,7 +2,11 @@ package org.eurostates.parser;
 
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.eurostates.parser.area.town.GetterTownParser;
+import org.eurostates.parser.area.town.LoadableTownParser;
 import org.eurostates.parser.area.user.GetterUserParser;
+import org.eurostates.parser.area.user.LoadableUserParser;
+import org.eurostates.parser.util.BlockLocationParser;
 import org.eurostates.parser.util.LocationParser;
 import org.eurostates.parser.util.UUIDParser;
 import org.eurostates.parser.util.WorldParser;
@@ -21,11 +25,15 @@ public final class Parsers {
     public static final UUIDParser UUID = new UUIDParser();
     public static final WorldParser WORLD = new WorldParser();
     public static final LocationParser LOCATION = new LocationParser();
+    public static final BlockLocationParser BLOCK_LOCATION = new BlockLocationParser();
 
     public static final GetterStateParser GETTER_STATE = new GetterStateParser();
     public static final GetterUserParser GETTER_USER = new GetterUserParser();
+    public static final GetterTownParser GETTER_TOWN = new GetterTownParser();
 
     public static final LoadableStateParser LOADABLE_STATE = new LoadableStateParser();
+    public static final LoadableTownParser LOADABLE_TOWN = new LoadableTownParser();
+    public static final LoadableUserParser LOADABLE_USER = new LoadableUserParser();
 
     private Parsers() {
         throw new IllegalArgumentException("Whats the benefit to calling this");
