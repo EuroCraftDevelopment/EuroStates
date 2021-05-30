@@ -2,8 +2,6 @@ package org.eurostates.functions;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.permissions.Permission;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,10 +9,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ParseLoadedData {
+
     public static String getString(YamlConfiguration config, String node) throws IOException {
         String string = config.getString(node);
-        if(string==null){throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: "+node);}
+        if (string == null) {
+            throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: " + node);
+        }
         return string;
     }
 
@@ -22,20 +24,24 @@ public class ParseLoadedData {
         UUID p_UUID;
         try {
             String uuid_string = config.getString(node);
-            if (uuid_string== null) { throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: "+node); }
+            if (uuid_string == null) {
+                throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: " + node);
+            }
             p_UUID = UUID.fromString(uuid_string);
 
-        } catch (Throwable e) { throw new IOException("[ES_ERR]: Parse for UUID .yml value load failed:"+node, e); }
+        } catch (Throwable e) {
+            throw new IOException("[ES_ERR]: Parse for UUID .yml value load failed:" + node, e);
+        }
 
         return p_UUID;
     }
 
-    public static List<String> getStringList(YamlConfiguration config, String node) throws IOException{
+    public static List<String> getStringList(YamlConfiguration config, String node) throws IOException {
         List<String> stringList = config.getStringList(node);
         return stringList;
     }
 
-    public static Set<UUID> getUUIDSet(YamlConfiguration config, String node) throws IOException{
+    public static Set<UUID> getUUIDSet(YamlConfiguration config, String node) throws IOException {
         Set<UUID> uuidSet = config
                 .getStringList(node)
                 .parallelStream()
@@ -55,9 +61,11 @@ public class ParseLoadedData {
         return uuidSet;
     }
 
-    public static Location getLocation(YamlConfiguration config, String node) throws IOException{
+    public static Location getLocation(YamlConfiguration config, String node) throws IOException {
         Location location = config.getLocation(node);
-        if(location==null){throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: "+node);}
+        if (location == null) {
+            throw new IOException("[ES_ERR]: Parse for .yml value load failed: Missing Node: " + node);
+        }
 
         return location;
     }
