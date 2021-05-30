@@ -1,6 +1,7 @@
 package org.eurostates.parser.area.town;
 
 import org.bukkit.block.Block;
+import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
@@ -37,7 +38,7 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
         String tag = notNull((String) from.get(TAG_NODE), "No tag node found");
         String name = notNull((String) from.get(NAME_NODE), "No name node found");
         UUID owner = Parsers.UUID.from(notNull((String) from.get(OWNER_NODE), "No Owner found"));
-        UUID state = Parsers.UUID.from(notNull((String) from.get(STATE_NODE), "No State Id found"));
+        CustomState state = Parsers.GETTER_STATE.from(notNull((String) from.get(STATE_NODE), "No State Id found"));
         Block centre = Parsers.BLOCK_LOCATION.from(notNull((Map<String, Object>) from.get(CENTRE_NODE), "No centre found"));
         return new CustomTown(id, tag, name, owner, state, centre);
     }

@@ -16,7 +16,7 @@ public class CommandContext {
     private final CommandSender sender;
     private final Set<ArgumentCommand> potentialCommands = new HashSet<>();
 
-    public CommandContext(CommandSender source, Set<ArgumentCommand> commands, String... command) {
+    public CommandContext(CommandSender source, Collection<ArgumentCommand> commands, String... command) {
         this.command = command;
         this.potentialCommands.addAll(commands);
         this.sender = source;

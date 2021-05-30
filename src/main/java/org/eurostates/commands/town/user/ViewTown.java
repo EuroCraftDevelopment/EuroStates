@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ViewTown implements CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, ArrayList<String> args) throws IOException {
-        SendTownInfo.sendTownInfo(args.get(0), (Player) sender);
+        SendTownInfo.sendLegacyTownInfo(args.get(0), (Player) sender);
         return false;
     }
 }
