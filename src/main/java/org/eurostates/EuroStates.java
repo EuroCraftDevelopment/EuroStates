@@ -3,6 +3,8 @@ package org.eurostates;
 
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,9 +13,11 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
-import org.eurostates.commands.CommandHandler;
 import org.eurostates.events.EventHandler;
+import org.eurostates.mosecommands.ArgumentCommands;
+import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.parser.Parsers;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +38,19 @@ public final class EuroStates extends JavaPlugin {
         }
 
         plugin = this; // For further plugin obj access
-        CommandHandler.commandLauncher();
+        //CommandHandler.commandLauncher();
+
+        PluginCommand townBukkitCommand = this.getCommand("Town");
+        if (townBukkitCommand == null) {
+            System.err.println("Disabling EuroState: Could not find town command");
+            this.setEnabled(false);
+            return;
+        }
+        TabExecutor townCommand = new BukkitCommand(ArgumentCommands.TOWN_VIEW);
+        townBukkitCommand.setExecutor(townCommand);
+        townBukkitCommand.setTabCompleter(townCommand);
+
+
         EventHandler.registerEvents();
     }
 
@@ -50,7 +66,7 @@ public final class EuroStates extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
-    public Optional<CustomTown> getTown(UUID uuid) {
+    public Optional<CustomTown> getTown(@NotNull UUID uuid) {
         return this.getTowns()
                 .parallelStream()
                 .filter(town -> town instanceof CustomTown)
@@ -67,7 +83,7 @@ public final class EuroStates extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
-    public Optional<ESUser> getUser(UUID uuid) {
+    public Optional<ESUser> getUser(@NotNull UUID uuid) {
         return this
                 .getUsers()
                 .parallelStream()
