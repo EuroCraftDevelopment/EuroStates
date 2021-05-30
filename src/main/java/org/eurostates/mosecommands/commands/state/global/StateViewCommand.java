@@ -1,4 +1,4 @@
-package org.eurostates.mosecommands.commands.state;
+package org.eurostates.mosecommands.commands.state.global;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
