@@ -2,7 +2,6 @@ package org.eurostates.area.state;
 
 import org.bukkit.ChatColor;
 import org.eurostates.area.ESUser;
-import org.eurostates.area.Rank;
 import org.eurostates.area.town.Town;
 
 import java.util.Collections;
@@ -30,7 +29,7 @@ public class NomadState implements State {
     }
 
     @Override
-    public Set<Rank> getRanks() {
+    public Set<String> getRanks() {
         return Collections.emptySet();
     }
 
