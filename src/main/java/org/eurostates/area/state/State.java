@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
-import org.eurostates.area.Rank;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
 
@@ -20,9 +19,12 @@ public interface State extends Area {
 
     Set<String> getPermissions();
 
-    Set<Rank> getRanks();
-
     Set<ESUser> getEuroStatesCitizens();
+
+    default Set<String> getRanks() {
+        return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());
+    }
+
 
     default Set<UUID> getCitizenIds() {
         return Parsers.collectOrFilter(this.getEuroStatesCitizens().parallelStream(), citizen -> {

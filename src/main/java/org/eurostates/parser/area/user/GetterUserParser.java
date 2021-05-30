@@ -1,5 +1,6 @@
 package org.eurostates.parser.area.user;
 
+import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringParser;
@@ -8,12 +9,13 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class GetterUserParser implements StringParser<ESUser> {
+    
     public UUID toId(ESUser from) throws IOException {
-        return null;
+        return from.getOwnerId();
     }
 
-    public ESUser fromId(UUID from) throws IOException {
-        return null;
+    public ESUser fromId(UUID from) {
+        return EuroStates.getPlugin().getUser(from).orElse(new ESUser(from));
     }
 
     @Override
