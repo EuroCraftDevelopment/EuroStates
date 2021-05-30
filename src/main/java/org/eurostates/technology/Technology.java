@@ -15,10 +15,12 @@ import java.util.Set;
 public class Technology {
 
     private String id;
+    private String description;
     private Set<String> requirements = new HashSet<>();
     private Set<String> permissions = new HashSet<>();
 
     public static final String ID_NODE = "id";
+    public static final String DESC_NODE = "description";
     public static final String REQ_NODE = "requirements";
     public static final String PERM_NODE = "permissions";
 
@@ -34,6 +36,9 @@ public class Technology {
 
     public String getID(){ return this.id; }
     public void setID(String id){ this.id = id; }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String description) { this.description = description; }
 
     public void setPermissions(Set<String> permissions) { this.permissions = permissions; }
     public Set<String> getPermissions() { return permissions; }
@@ -64,6 +69,7 @@ public class Technology {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         config.set(ID_NODE, this.id);
+        config.set(DESC_NODE, this.description);
         config.set(REQ_NODE, this.requirements);
         config.set(PERM_NODE, this.permissions);
 
