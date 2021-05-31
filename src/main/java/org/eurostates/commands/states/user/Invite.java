@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public class Invite implements CommandInterface {
     public static HashMap<String, Long> invitedPlayers = new HashMap<String, Long>();
 
@@ -21,7 +22,7 @@ public class Invite implements CommandInterface {
                     +ChatColor.RED+ "Correct Usage: /states invite accept or /states invite state [user]"); return false;}
 
         if(args.get(0).equalsIgnoreCase("accept")){
-            // TODO do this
+
         }
 
         else if(args.get(0).equalsIgnoreCase("state")){
