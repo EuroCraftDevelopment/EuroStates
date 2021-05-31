@@ -1,4 +1,4 @@
-package org.eurostates.mosecommands.commands.town;
+package org.eurostates.mosecommands.commands.town.global;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;

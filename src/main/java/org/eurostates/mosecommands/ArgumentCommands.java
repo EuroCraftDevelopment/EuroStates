@@ -1,6 +1,6 @@
 package org.eurostates.mosecommands;
 
-import org.eurostates.mosecommands.commands.town.TownViewCommand;
+import org.eurostates.mosecommands.commands.town.global.TownViewCommand;
 
 public interface ArgumentCommands {
 
