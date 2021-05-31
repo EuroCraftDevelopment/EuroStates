@@ -1,7 +1,6 @@
 package org.eurostates.parser.area.town;
 
 import org.eurostates.area.town.CustomTown;
-import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringParser;
 
