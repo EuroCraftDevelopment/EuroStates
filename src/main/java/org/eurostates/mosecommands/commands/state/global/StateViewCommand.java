@@ -6,10 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.state.State;
 import org.eurostates.area.town.Town;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
@@ -19,15 +17,15 @@ import org.eurostates.util.Utils;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class StateViewCommand implements ArgumentCommand {
-    public static final String STATE_ARGUMENT = "state";
+
+    public static final CustomStateArgument STATE_ARGUMENT = new CustomStateArgument("state");
 
     @Override
     public CommandArgument<?>[] getArguments() {
-        return new CommandArgument[]{new CustomStateArgument(STATE_ARGUMENT)};
+        return new CommandArgument[]{STATE_ARGUMENT};
     }
 
     @Override
@@ -53,7 +51,7 @@ public class StateViewCommand implements ArgumentCommand {
         String users_str = users
                 .parallelStream()
                 .map(esUser -> {
-                    return esUser.getRank()+" "+ Utils.canCast(
+                    return esUser.getRank() + " " + Utils.canCast(
                             Bukkit.getOfflinePlayer(esUser.getOwnerId()),
                             Player.class,
                             Player::getDisplayName,

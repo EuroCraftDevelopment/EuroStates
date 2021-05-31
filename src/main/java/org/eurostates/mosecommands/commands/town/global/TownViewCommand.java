@@ -17,11 +17,11 @@ import java.util.Optional;
 
 public class TownViewCommand implements ArgumentCommand {
 
-    public static final String TOWN_ARGUMENT = "town";
+    public static final TownArgument TOWN_ARGUMENT = new TownArgument("town");
 
     @Override
     public CommandArgument<?>[] getArguments() {
-        return new CommandArgument[]{new TownArgument(TOWN_ARGUMENT)};
+        return new CommandArgument[]{TOWN_ARGUMENT};
     }
 
     @Override

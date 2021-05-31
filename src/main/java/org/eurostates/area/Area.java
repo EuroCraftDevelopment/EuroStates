@@ -1,9 +1,8 @@
 package org.eurostates.area;
 
 import org.bukkit.ChatColor;
-import org.eurostates.ownable.PlayerOwnable;
 
-public interface Area extends PlayerOwnable {
+public interface Area {
 
     String getTag();
 

@@ -4,7 +4,6 @@ package org.eurostates;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,9 +12,9 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
-import org.eurostates.events.EventHandler;
-import org.eurostates.mosecommands.ArgumentCommands;
+import org.eurostates.events.Listeners;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
+import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,18 +39,29 @@ public final class EuroStates extends JavaPlugin {
         plugin = this; // For further plugin obj access
         //CommandHandler.commandLauncher();
 
-        PluginCommand townBukkitCommand = this.getCommand("Town");
-        if (townBukkitCommand == null) {
-            System.err.println("Disabling EuroState: Could not find town command");
+        initStates();
+
+        try {
+            registerCommand("town", BukkitCommands.TOWN_COMMAND);
+            registerCommand("states", BukkitCommands.STATE_COMMAND);
+        } catch (IOException e) {
             this.setEnabled(false);
+            e.printStackTrace();
             return;
         }
-        TabExecutor townCommand = new BukkitCommand(ArgumentCommands.TOWN_VIEW);
-        townBukkitCommand.setExecutor(townCommand);
-        townBukkitCommand.setTabCompleter(townCommand);
 
+        //EventHandler.registerEvents();
+        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 
-        EventHandler.registerEvents();
+    }
+
+    private void registerCommand(String commandLabel, BukkitCommand cmd) throws IOException {
+        PluginCommand bukkitCommand = this.getCommand(commandLabel);
+        if (bukkitCommand == null) {
+            throw new IOException("EuroState: Could not find " + commandLabel + " command");
+        }
+        bukkitCommand.setExecutor(cmd);
+        bukkitCommand.setTabCompleter(cmd);
     }
 
     public static EuroStates getPlugin() {

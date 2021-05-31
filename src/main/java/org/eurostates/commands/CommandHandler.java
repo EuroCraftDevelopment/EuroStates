@@ -13,8 +13,9 @@ import org.eurostates.commands.town.user.ViewTown;
 
 import java.util.Objects;
 
+@Deprecated
 public class CommandHandler {
-    public static void commandLauncher(){
+    public static void commandLauncher() {
         Plugin plugin = EuroStates.getPlugin();
 
         // States command reg
