@@ -16,6 +16,11 @@ public class CollectedRemainingArgument<T, R> implements CommandArgument<R> {
     private Collector<T, ?, R> collectors;
     private RemainingArgument<T> argument;
 
+    @Deprecated
+    public CollectedRemainingArgument(Collector<T, ?, R> collector, String id) {
+        throw new RuntimeException("Collected Remaining Arguments requires arguments");
+    }
+
     public CollectedRemainingArgument(Collector<T, ?, R> collector, String id, CommandArgument<T>... arguments) {
         this(collector, new RemainingArgument<>(id, arguments));
     }
