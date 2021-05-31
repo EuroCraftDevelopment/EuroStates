@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class GetterUserParser implements StringParser<ESUser> {
-    
+
     public UUID toId(ESUser from) throws IOException {
         return from.getOwnerId();
     }

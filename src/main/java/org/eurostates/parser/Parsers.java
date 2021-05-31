@@ -1,5 +1,6 @@
 package org.eurostates.parser;
 
+import org.eurostates.lamda.throwable.single.ThrowableFunction;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
 import org.eurostates.parser.area.town.GetterTownParser;
@@ -98,12 +99,4 @@ public final class Parsers {
     public static <T, R> List<R> collectToOrThrow(Parser<T, R> parser, Iterable<T> iterable) throws IOException {
         return collectOrThrow(toOrThrow(parser), iterable);
     }
-
-    public interface ThrowableFunction<O, M, T extends Throwable> {
-
-        M apply(O obj) throws T;
-
-    }
-
-
 }

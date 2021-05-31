@@ -1,5 +1,7 @@
 package org.eurostates.util;
 
+import org.eurostates.lamda.throwable.single.ThrowableConsumer;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -12,6 +14,17 @@ public interface Utils {
         BETTER,
         EQUAL,
         WORSE
+    }
+
+    static <F, E extends Throwable> F throwOr(Class<E> clazz, ThrowableConsumer<F, E> consumer, F fail) {
+        try {
+            return consumer.run();
+        } catch (Throwable e) {
+            if (clazz.isInstance(e)) {
+                return fail;
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     static <F, T, E extends T> F canCast(T object, Class<E> clazz, Function<E, F> function, Function<T, F> elseFunction) {

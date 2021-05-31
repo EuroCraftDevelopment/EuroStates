@@ -1,7 +1,6 @@
 package org.eurostates.parser;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.eurostates.parser.Serializable;
 
 import java.io.IOException;
 
