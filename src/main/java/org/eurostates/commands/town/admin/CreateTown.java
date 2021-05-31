@@ -12,6 +12,7 @@ import org.eurostates.commands.CommandInterface;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Deprecated
 public class CreateTown implements CommandInterface {
 
     @Override

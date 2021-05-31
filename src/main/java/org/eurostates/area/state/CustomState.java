@@ -4,7 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
-import org.eurostates.ownable.Ownable;
+import org.eurostates.ownable.PlayerOwnable;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
@@ -13,7 +13,7 @@ import org.eurostates.parser.area.state.LoadableStateParser;
 import java.io.File;
 import java.util.*;
 
-public class CustomState implements State, Ownable, Savable<CustomState, Map<String, Object>, String> {
+public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
     private final Set<Town> towns = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
@@ -83,6 +83,7 @@ public class CustomState implements State, Ownable, Savable<CustomState, Map<Str
     public char getLegacyChatColourCharacter() {
         return this.chatColour;
     }
+
     @Override
     public Set<ESUser> getEuroStatesCitizens() {
         return this.users;

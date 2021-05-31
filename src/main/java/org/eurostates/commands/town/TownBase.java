@@ -13,6 +13,7 @@ import org.eurostates.functions.sendinfo.SendTownInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Deprecated
 public class TownBase implements CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, ArrayList<String> args) throws IOException {

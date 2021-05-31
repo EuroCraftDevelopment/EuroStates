@@ -4,29 +4,39 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.eurostates.mosecommands.ArgumentCommand;
+import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BukkitCommand implements TabExecutor {
 
-    private Collection<ArgumentCommand> commands;
+    private final Collection<ArgumentCommand> commands;
 
     public BukkitCommand(ArgumentCommand... commands) {
         this.commands = Arrays.asList(commands);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         CommandContext context = new CommandContext(sender, this.commands, args);
         Optional<ArgumentCommand> opCommand = context.getCompleteCommand();
         if (!opCommand.isPresent()) {
             context.getErrors().forEach(e -> sender.sendMessage(e.getError()));
-            return false;
+            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).forEach(a -> {
+                String usage = Stream
+                        .of(a.getArguments())
+                        .map(CommandArgument::getUsage)
+                        .collect(Collectors.joining(" "));
+                sender.sendMessage(label + " " + usage);
+            });
+            return true;
         }
         ArgumentCommand cmd = opCommand.get();
         if (!cmd.canRun(sender)) {
@@ -36,7 +46,7 @@ public class BukkitCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         CommandContext context = new CommandContext(sender, this.commands, args);
         return context
                 .getPotentialCommands()

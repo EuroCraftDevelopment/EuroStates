@@ -67,6 +67,10 @@ public class CommandContext {
         return ret;
     }
 
+    public <T> T getArgument(ArgumentCommand command, CommandArgument<T> id) {
+        return this.getArgument(command, id.getId());
+    }
+
     public <T> T getArgument(ArgumentCommand command, String id) {
         CommandArgument<?>[] arguments = command.getArguments();
         if (!Stream.of(arguments).anyMatch(a -> a.getId().equals(id))) {

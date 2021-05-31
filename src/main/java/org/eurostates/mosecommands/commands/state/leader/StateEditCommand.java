@@ -6,9 +6,7 @@ import org.bukkit.entity.Player;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.state.NomadState;
 import org.eurostates.area.state.State;
-import org.eurostates.area.state.States;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.area.StateAttribArgument;
@@ -22,20 +20,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class StateEdit implements ArgumentCommand {
-    public static final String EDIT_ARGUMENT = "edit";
-    public static final String ATTRIB_ARGUMENT = "attribute";
-    public static final String NAME_ARGUMENT = "name";
-    public static final String REM_ARGUMENT = "remaining";
+public class StateEditCommand implements ArgumentCommand {
+
+    public static final ExactArgument EDIT_ARGUMENT = new ExactArgument("edit");
+    public static final StateAttribArgument ATTRIB_ARGUMENT = new StateAttribArgument("attribute");
+    public static final StringArgument NAME_ARGUMENT = new StringArgument("name");
+    public static final RemainingArgument<String> REM_ARGUMENT = new RemainingArgument<>("remaining", new StringArgument("temp"));
 
 
     @Override
     public CommandArgument<?>[] getArguments() {
         return new CommandArgument[]{
-                new ExactArgument(EDIT_ARGUMENT),
-                new StateAttribArgument(ATTRIB_ARGUMENT),
-                new StringArgument(NAME_ARGUMENT),
-                new RemainingArgument<>(REM_ARGUMENT, new StringArgument("temp"))};
+                EDIT_ARGUMENT,
+                ATTRIB_ARGUMENT,
+                NAME_ARGUMENT,
+                REM_ARGUMENT
+        };
     }
 
     @Override
@@ -61,7 +61,7 @@ public class StateEdit implements ArgumentCommand {
         State state = user.get().getState();
 
         // check if player is Nomad
-        if (!(state instanceof CustomState)){
+        if (!(state instanceof CustomState)) {
             context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RED + "You're not part of a state.");
             return true;
         }
@@ -69,7 +69,7 @@ public class StateEdit implements ArgumentCommand {
         CustomState customState = (CustomState) state;
 
         // check if player is leader of nation
-        if (customState.getOwnerId() != user.get().getOwnerId()){
+        if (customState.getOwnerId() != user.get().getOwnerId()) {
             context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RED + "You're not the leader of this state.");
             return true;
         }
@@ -80,32 +80,29 @@ public class StateEdit implements ArgumentCommand {
 
         // Actual editing part lol
 
-        if(attrib.equalsIgnoreCase("name")){
-            if(newAttrib.length()>21 || newAttrib.length()<3){
-    context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
-            ChatColor.RED + "State name cannot be shorter than 3 or longer than 21."); }
+        if (attrib.equalsIgnoreCase("name")) {
+            if (newAttrib.length() > 21 || newAttrib.length() < 3) {
+                context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
+                        ChatColor.RED + "State name cannot be shorter than 3 or longer than 21.");
+            }
 
             customState.setName(newAttrib);
-        }
-
-        else if(attrib.equalsIgnoreCase("tag")){
-            if(newAttrib.length()!=3){
-    context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
-            ChatColor.RED + "State name cannot be shorter than 3 or longer than 21."); }
+        } else if (attrib.equalsIgnoreCase("tag")) {
+            if (newAttrib.length() != 3) {
+                context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
+                        ChatColor.RED + "State name cannot be shorter than 3 or longer than 21.");
+            }
 
             customState.setTag(newAttrib);
-        }
-
-        else if(attrib.equalsIgnoreCase("color")){
-            if(newAttrib.length()!=1){
+        } else if (attrib.equalsIgnoreCase("color")) {
+            if (newAttrib.length() != 1) {
                 context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
-                ChatColor.RED + "State color must be a single letter."); }
+                        ChatColor.RED + "State color must be a single letter.");
+            }
 
             char color = newAttrib.charAt(0);
             customState.setChatColour(color);
-        }
-
-        else if(attrib.equalsIgnoreCase("userprefix")){
+        } else if (attrib.equalsIgnoreCase("userprefix")) {
             UUID userID = Bukkit.getOfflinePlayer(newAttrib).getUniqueId();
 
 
