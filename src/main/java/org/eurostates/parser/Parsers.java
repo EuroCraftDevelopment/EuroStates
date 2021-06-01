@@ -11,6 +11,8 @@ import org.eurostates.parser.util.BlockLocationParser;
 import org.eurostates.parser.util.LocationParser;
 import org.eurostates.parser.util.UUIDParser;
 import org.eurostates.parser.util.WorldParser;
+import org.eurostates.parser.wrapper.DoubleWrapperParser;
+import org.eurostates.parser.wrapper.StringWrapperParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -36,6 +38,9 @@ public final class Parsers {
     public static final LoadableStateParser LOADABLE_STATE = new LoadableStateParser();
     public static final LoadableTownParser LOADABLE_TOWN = new LoadableTownParser();
     public static final LoadableUserParser LOADABLE_USER = new LoadableUserParser();
+
+    public static final StringWrapperParser STRING_WRAPPER = new StringWrapperParser();
+    public static final DoubleWrapperParser DOUBLE_WRAPPER = new DoubleWrapperParser();
 
     private Parsers() {
         throw new IllegalArgumentException("Whats the benefit to calling this");

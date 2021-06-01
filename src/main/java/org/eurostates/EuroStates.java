@@ -12,10 +12,12 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
+import org.eurostates.config.Config;
 import org.eurostates.events.Listeners;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
+import org.eurostates.relationship.Relationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -27,6 +29,12 @@ public final class EuroStates extends JavaPlugin {
 
     static EuroStates plugin;
     static LuckPerms api;
+
+    private Set<Relationship> relationships = new HashSet<>();
+
+    public Config getConfiguration() {
+        return new Config(new File(this.getDataFolder(), "config.yml"));
+    }
 
     @Override
     public void onEnable() {

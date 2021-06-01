@@ -66,7 +66,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return this.tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(@NotNull String tag) {
         this.tag = tag;
     }
 
