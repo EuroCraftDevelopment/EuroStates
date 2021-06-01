@@ -1,5 +1,6 @@
 package org.eurostates.area.state;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
@@ -9,26 +10,29 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.eurostates.relationship.Relationship;
+import org.eurostates.technology.Technology;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
-    private final Set<Town> towns = new HashSet<>();
-    private final Set<String> permissions = new HashSet<>();
-    private final Set<ESUser> users = new HashSet<>();
-    private final UUID id;
-    private String tag;
-    private String name;
+    private final @NotNull Set<Town> towns = new HashSet<>();
+    private final @NotNull Set<ESUser> users = new HashSet<>();
+    private final @NotNull Set<Technology> technologies = new HashSet<>();
+    private final @NotNull UUID id;
+    private @NotNull String tag;
+    private @NotNull String name;
     private char chatColour;
-    private UUID owner;
+    private @NotNull UUID owner;
 
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner) {
-        this(id, tag, name, chatColour, owner, Collections.emptySet());
-    }
-
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner, Collection<String> permissions) {
+    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull UUID owner) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
         }
@@ -36,15 +40,14 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         this.name = name;
         this.chatColour = chatColour;
         this.owner = owner;
-        this.permissions.addAll(permissions);
         this.id = id;
     }
 
-    public UUID getId() {
+    public @NotNull UUID getId() {
         return this.id;
     }
 
-    public UUID getOwnerId() {
+    public @NotNull UUID getOwnerId() {
         return this.owner;
     }
 
@@ -53,29 +56,29 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Deprecated
-    public void setOwner(UUID owner) {
+    public void setOwner(@NotNull UUID owner) {
         this.owner = owner;
     }
 
-    public void setOwner(OfflinePlayer owner) {
+    public void setOwner(@NotNull OfflinePlayer owner) {
         this.owner = owner.getUniqueId();
     }
 
     @Override
-    public String getTag() {
+    public @NotNull String getTag() {
         return this.tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(@NotNull String tag) {
         this.tag = tag;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
@@ -85,37 +88,48 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Override
-    public Set<ESUser> getEuroStatesCitizens() {
+    public @NotNull Set<ESUser> getEuroStatesCitizens() {
         return this.users;
     }
 
+    public void register(ESUser user) {
+        this.users.add(user);
+    }
+
     @Override
-    public Set<Town> getTowns() {
+    public @NotNull Set<Town> getTowns() {
         return this.towns;
     }
 
     @Override
-    public Set<String> getPermissions() {
-        return this.permissions;
+    public @NotNull Set<Technology> getTechnology() {
+        return this.technologies;
     }
 
     @Override
-    public File getFile() {
+    public @NotNull File getFile() {
         return new File(EuroStates.getPlugin().getDataFolder(), "data/state/" + this.getId().toString() + ".yml");
     }
 
     @Override
-    public LoadableStateParser getSerializableParser() {
+    public @NotNull LoadableStateParser getSerializableParser() {
         return Parsers.LOADABLE_STATE;
     }
 
     @Override
-    public GetterStateParser getIdParser() {
+    public @NotNull GetterStateParser getIdParser() {
         return Parsers.GETTER_STATE;
     }
 
     @Override
-    public String getRootNode() {
+    public @NotNull String getRootNode() {
         return "State";
+    }
+
+    public void delete(){
+        File file = this.getFile();
+        boolean deleted = file.delete();
+        if(!deleted) Bukkit.getLogger().warning("Could not delete state file: "+file.toString());
+        States.CUSTOM_STATES.remove(this);
     }
 }

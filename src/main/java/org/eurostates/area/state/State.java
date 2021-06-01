@@ -3,10 +3,14 @@ package org.eurostates.area.state;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.eurostates.EuroStates;
 import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
+import org.eurostates.relationship.Relationship;
+import org.eurostates.technology.Technology;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Set;
@@ -15,18 +19,27 @@ import java.util.stream.Collectors;
 
 public interface State extends Area {
 
-    Set<Town> getTowns();
+    @NotNull Set<Town> getTowns();
 
-    Set<String> getPermissions();
+    @NotNull Set<Technology> getTechnology();
 
-    Set<ESUser> getEuroStatesCitizens();
+    @NotNull Set<ESUser> getEuroStatesCitizens();
 
-    default Set<String> getRanks() {
+    default @NotNull Set<String> getRanks() {
         return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());
     }
 
+    @Override
+    default Set<Relationship> getRelationships() {
+        return EuroStates.getPlugin().getRelationships().parallelStream().filter(r -> r.getStates().contains(this)).collect(Collectors.toSet());
+    }
 
-    default Set<UUID> getCitizenIds() {
+    @Deprecated
+    default @NotNull Set<String> getPermissions() {
+        return this.getTechnology().parallelStream().flatMap(tech -> tech.getPermissions().parallelStream()).collect(Collectors.toSet());
+    }
+
+    default @NotNull Set<UUID> getCitizenIds() {
         return Parsers.collectOrFilter(this.getEuroStatesCitizens().parallelStream(), citizen -> {
             try {
                 return Parsers.GETTER_USER.toId(citizen);
@@ -36,7 +49,7 @@ public interface State extends Area {
         }, Collectors.toSet());
     }
 
-    default Set<OfflinePlayer> getCitizens() {
+    default @NotNull Set<OfflinePlayer> getCitizens() {
         return this
                 .getCitizenIds()
                 .stream()
@@ -44,7 +57,7 @@ public interface State extends Area {
                 .collect(Collectors.toSet());
     }
 
-    default Set<Player> getOnlineCitizens() {
+    default @NotNull Set<Player> getOnlineCitizens() {
         return this.getCitizenIds()
                 .stream()
                 .filter(uuid -> Bukkit.getPlayer(uuid) != null)

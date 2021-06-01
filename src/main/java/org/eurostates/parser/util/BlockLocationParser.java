@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class BlockLocationParser implements StringMapParser<Block> {
     public static final String WORLD = "World";
 
     @Override
-    public Map<String, Object> to(Block from) throws IOException {
+    public @NotNull Map<String, Object> to(@NotNull Block from) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put(X, from.getX());
         map.put(Y, from.getY());
@@ -27,7 +28,7 @@ public class BlockLocationParser implements StringMapParser<Block> {
     }
 
     @Override
-    public Block from(Map<String, Object> from) throws IOException {
+    public @NotNull Block from(@NotNull Map<String, Object> from) throws IOException {
         int x = (int) notNull(from.get(X), "No X value");
         int y = (int) notNull(from.get(Y), "No Y value");
         int z = (int) notNull(from.get(Z), "No Z value");

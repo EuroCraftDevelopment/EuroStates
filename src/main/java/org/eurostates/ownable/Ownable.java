@@ -1,8 +1,10 @@
 package org.eurostates.ownable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 public interface Ownable {
 
-    UUID getOwnerId();
+    @NotNull UUID getOwnerId();
 }

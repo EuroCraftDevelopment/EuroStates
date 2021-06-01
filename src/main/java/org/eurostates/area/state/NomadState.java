@@ -3,6 +3,8 @@ package org.eurostates.area.state;
 import org.bukkit.ChatColor;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
+import org.eurostates.technology.Technology;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -14,12 +16,12 @@ public class NomadState implements State {
     }
 
     @Override
-    public String getTag() {
+    public @NotNull String getTag() {
         return "NOMAD";
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "NOMAD";
     }
 
@@ -29,22 +31,22 @@ public class NomadState implements State {
     }
 
     @Override
-    public Set<String> getRanks() {
+    public @NotNull Set<String> getRanks() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<ESUser> getEuroStatesCitizens() {
+    public @NotNull Set<ESUser> getEuroStatesCitizens() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<Town> getTowns() {
+    public @NotNull Set<Town> getTowns() {
         return Collections.emptySet();
     }
 
     @Override
-    public Set<String> getPermissions() {
+    public @NotNull Set<Technology> getTechnology() {
         return Collections.emptySet();
     }
 }

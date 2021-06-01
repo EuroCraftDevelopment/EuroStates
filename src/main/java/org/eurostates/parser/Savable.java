@@ -1,25 +1,26 @@
 package org.eurostates.parser;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 
 public interface Savable<T, F, E> {
 
-    File getFile();
+    @NotNull File getFile();
 
-    Serializable<T, F> getSerializableParser();
+    @NotNull Serializable<T, F> getSerializableParser();
 
-    Serializable<T, E> getIdParser();
+    @NotNull Serializable<T, E> getIdParser();
 
-    String getRootNode();
+    @NotNull String getRootNode();
 
     default void save() throws IOException {
         save(getFile());
     }
 
-    default void save(File file) throws IOException {
+    default void save(@NotNull File file) throws IOException {
         try {
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
             this.getSerializableParser().serialize(configuration, this.getRootNode(), (T) this);

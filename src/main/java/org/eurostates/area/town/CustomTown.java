@@ -5,22 +5,32 @@ import org.bukkit.block.Block;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
-import org.eurostates.parser.Serializable;
+import org.eurostates.parser.area.town.GetterTownParser;
+import org.eurostates.parser.area.town.LoadableTownParser;
+import org.eurostates.relationship.Relationship;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class CustomTown implements Town, Savable<CustomTown, Map<String, Object>, String> {
 
-    private final UUID uuid;
-    private String tag;
-    private String name;
-    private UUID owner;
-    private CustomState state;
-    private Block centre;
+    private final @NotNull UUID uuid;
+    private @NotNull String tag;
+    private @NotNull String name;
+    private @NotNull UUID owner;
+    private @NotNull CustomState state;
+    private @NotNull Block centre;
 
-    public CustomTown(UUID uuid, String tag, String name, UUID owner, CustomState state, Block centre) {
+    public CustomTown(
+            @NotNull UUID uuid,
+            @NotNull String tag,
+            @NotNull String name,
+            @NotNull UUID owner,
+            @NotNull CustomState state,
+            @NotNull Block centre) {
         if (tag.length() != 4) {
             throw new IllegalArgumentException("Tag must be greater then 4 characters");
         }
@@ -32,82 +42,82 @@ public class CustomTown implements Town, Savable<CustomTown, Map<String, Object>
         this.centre = centre;
     }
 
-    public UUID getId() {
+    public @NotNull UUID getId() {
         return this.uuid;
     }
 
     @Override
-    public String getTag() {
+    public @NotNull String getTag() {
         return this.tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(@NotNull String tag) {
         this.tag = tag;
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
     @Override
-    public UUID getOwnerId() {
+    public @NotNull UUID getOwnerId() {
         return this.owner;
     }
 
     @Deprecated
-    public void setOwnerId(UUID owner) {
+    public void setOwnerId(@NotNull UUID owner) {
         this.owner = owner;
     }
 
-    public void setOwner(OfflinePlayer player) {
+    public void setOwner(@NotNull OfflinePlayer player) {
         this.owner = player.getUniqueId();
     }
 
     @Override
-    public Block getCentre() {
+    public @NotNull Block getCentre() {
         return this.centre;
     }
 
-    public void setCentre(Block centre) {
+    public void setCentre(@NotNull Block centre) {
         this.centre = centre;
     }
 
     @Override
-    public UUID getStateId() {
+    public @NotNull UUID getStateId() {
         return this.state.getId();
     }
 
     @Override
-    public CustomState getState() {
+    public @NotNull CustomState getState() {
         return this.state;
     }
 
-    public void setState(CustomState state) {
+    public void setState(@NotNull CustomState state) {
         this.state = state;
     }
 
     @Override
-    public File getFile() {
+    public @NotNull File getFile() {
         return new File("data/towns/" + this.getId().toString() + ".yml");
     }
 
     @Override
-    public Serializable<CustomTown, Map<String, Object>> getSerializableParser() {
-        return null;
+    public @NotNull LoadableTownParser getSerializableParser() {
+        return Parsers.LOADABLE_TOWN;
     }
 
     @Override
-    public Serializable<CustomTown, String> getIdParser() {
+    public @NotNull GetterTownParser getIdParser() {
         return Parsers.GETTER_TOWN;
     }
 
     @Override
-    public String getRootNode() {
+    public @NotNull String getRootNode() {
         return "Town";
     }
 }

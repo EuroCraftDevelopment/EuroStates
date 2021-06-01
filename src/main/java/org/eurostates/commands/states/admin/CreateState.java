@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+@Deprecated
 public class CreateState implements CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, ArrayList<String> args) throws IOException {
