@@ -91,6 +91,10 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return this.users;
     }
 
+    public void register(ESUser user) {
+        this.users.add(user);
+    }
+
     @Override
     public @NotNull Set<Town> getTowns() {
         return this.towns;
