@@ -6,14 +6,15 @@ import org.eurostates.mosecommands.context.CommandContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StateAttribArgument implements CommandArgument<String> {
 
     private final @NotNull String id;
+
+    List<String> attribs = new ArrayList<>(Arrays.asList(
+            "name", "tag", "color", "userprefix"
+    ));
 
     public StateAttribArgument(@NotNull String id) {
         this.id = id;
@@ -27,6 +28,7 @@ public class StateAttribArgument implements CommandArgument<String> {
     @Override
     public @NotNull Map.Entry<String, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<String> argument) throws IOException {
         String text = context.getCommand()[argument.getFirstArgument()];
+        if(!attribs.contains(text)) throw new IOException("No such attribute exists for a state.");
         return new AbstractMap.SimpleImmutableEntry<>(text, argument.getFirstArgument() + 1);
     }
 
@@ -34,18 +36,10 @@ public class StateAttribArgument implements CommandArgument<String> {
     public @NotNull List<String> suggest(@NotNull CommandContext commandContext, @NotNull CommandArgumentContext<String> argument) {
         String peek = commandContext.getCommand()[argument.getFirstArgument()];
         List<String> list = new ArrayList<>();
-        if ("relations".startsWith(peek.toLowerCase())) {
-            list.add("relations");
-        }
-        if ("name".startsWith(peek.toLowerCase())) {
-            list.add("name");
-        }
-        if ("tag".startsWith(peek.toLowerCase())) {
-            list.add("tag");
-        }
-        if ("color".startsWith(peek.toLowerCase())) {
-            list.add("color");
-        }
+
+        attribs.forEach(attrib->{
+            if(attrib.startsWith(peek.toLowerCase())) list.add(attrib);
+        });
 
         return list;
     }
