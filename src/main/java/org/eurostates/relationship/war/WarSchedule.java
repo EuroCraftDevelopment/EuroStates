@@ -51,10 +51,13 @@ public class WarSchedule implements Runnable {
                     .filter(OfflinePlayer::isOnline)
                     .map(OfflinePlayer::getPlayer)
                     .filter(Objects::nonNull)
-                    .map(p -> p.getLocation().distanceSquared(block.getLocation()))
-                    .map(p -> p > configDistanceTown)
-                    .filter(p -> !p)
-                    .map(p -> configCloseTown)
+                    .map(p -> {
+                        double dis = p.getLocation().distanceSquared(block.getLocation());
+                        if(dis > configDistanceTown){
+                            return configCloseTown;
+                        }
+                        return 0;
+                    })
                     .reduce(0, Integer::sum);
 
             war.setScore(war.getScore() + nearTownScore);

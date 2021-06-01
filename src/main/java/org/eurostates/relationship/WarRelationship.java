@@ -19,6 +19,11 @@ public class WarRelationship implements Relationship {
     private final @NotNull LocalDateTime time;
     private final Set<WarSide> warSides = new HashSet<>();
 
+    @Deprecated
+    public WarRelationship(@NotNull LocalDateTime time) {
+        throw new RuntimeException("Requires WarSide");
+    }
+
     public WarRelationship(@NotNull LocalDateTime time, WarSide... states) {
         this(time, Arrays.asList(states));
     }
@@ -37,7 +42,7 @@ public class WarRelationship implements Relationship {
   how to get points:
   a- [Done] Kill someone, 50 points (adjustable)
   b- [Done] Stay in the area, this will give you 10 points each 10 minutes for every person.
-3- Once a state has all their towns seized, they are disbanded, with all their members going back to nomads.
+  c- [Done] Once a state has all their towns seized, they are disbanded, with all their members going back to nomads.
      */
 
     public @NotNull LocalDateTime getTimeStarted() {
