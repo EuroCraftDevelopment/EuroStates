@@ -4,8 +4,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.parser.Serializable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
 public class DoubleWrapperParser implements Serializable<Double, Double> {
     @Override
     public @NotNull Double to(@NotNull Double from) {
@@ -18,7 +16,7 @@ public class DoubleWrapperParser implements Serializable<Double, Double> {
     }
 
     @Override
-    public void serialize(@NotNull YamlConfiguration yaml, @NotNull String node, @NotNull Double value) throws IOException {
+    public void serialize(@NotNull YamlConfiguration yaml, @NotNull String node, @NotNull Double value) {
         yaml.set(node, value);
     }
 
