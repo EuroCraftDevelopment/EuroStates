@@ -83,7 +83,7 @@ public class WarSchedule implements Runnable {
             winning.getTown().getState().getTowns().add(town);
 
             if (state.getTowns().isEmpty()) {
-                
+                state.delete();
             }
         });
     }
