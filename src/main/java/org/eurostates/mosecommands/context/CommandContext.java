@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 public class CommandContext {
@@ -74,7 +75,7 @@ public class CommandContext {
 
     public <T> @NotNull T getArgument(@NotNull ArgumentCommand command, @NotNull String id) {
         CommandArgument<?>[] arguments = command.getArguments();
-        if (!Stream.of(arguments).anyMatch(a -> a.getId().equals(id))) {
+        if (Stream.of(arguments).noneMatch(a -> a.getId().equals(id))) {
             throw new IllegalArgumentException("Argument ID not found within command");
         }
         int commandArgument = 0;
@@ -129,7 +130,7 @@ public class CommandContext {
             }
 
         }
-        return Utils.getBest(map, (e1, e2) -> {
+        return Utils.getBest(map, (BiFunction<ErrorContext, ErrorContext, Utils.Compare>) (e1, e2) -> {
             int at1 = e1.getArgumentFailedAt();
             int at2 = e2.getArgumentFailedAt();
             if (at1 == at2) {

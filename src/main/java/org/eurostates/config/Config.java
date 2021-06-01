@@ -13,7 +13,10 @@ public class Config {
     private final File file;
 
     public static final SerializableConfigNode<Double, Double> WAR_SCORE_KILL = new SerializableConfigNode<>(Parsers.DOUBLE_WRAPPER, "War", "Score", "Kill");
-public static final SerializableConfigNode<Integer, Integer> WAR_TIME_OVERALL = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Time", "Override");
+    public static final SerializableConfigNode<Integer, Integer> WAR_SCORE_CLOSE_TOWN = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Score", "CloseTown");
+    public static final SerializableConfigNode<Integer, Integer> WAR_TIME_OVERALL = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Time", "Override");
+    public static final SerializableConfigNode<Integer, Integer> WAR_TIME_CLOSE_TOWN = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Time", "CloseTown");
+    public static final SerializableConfigNode<Integer, Integer> WAR_DISTANCE_CLOSE_TOWN = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Distance", "CloseTown");
 
     public Config(File file) {
         this.file = file;

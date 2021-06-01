@@ -3,6 +3,7 @@ package org.eurostates.util;
 import org.eurostates.lamda.throwable.single.ThrowableConsumer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -32,6 +33,19 @@ public interface Utils {
             return function.apply((E) object);
         }
         return elseFunction.apply(object);
+    }
+
+    static <T> Set<T> getBest(@NotNull Iterable<T> iterable, @NotNull Comparator<T> check) {
+        return getBest(iterable, (BiFunction<T, T, Compare>) (t, t2) -> {
+            int diff = check.compare(t, t2);
+            if (diff == 0) {
+                return Compare.EQUAL;
+            }
+            if (diff > 0) {
+                return Compare.BETTER;
+            }
+            return Compare.WORSE;
+        });
     }
 
     static <T> Set<T> getBest(@NotNull Iterable<T> iterable, @NotNull BiFunction<T, T, Compare> check) {
