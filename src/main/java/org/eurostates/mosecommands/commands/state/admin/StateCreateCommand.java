@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class StateCreateCommand implements ArgumentCommand {
+    public static final ExactArgument ADMIN_ARGUMENT = new ExactArgument("admin");
     public static final ExactArgument CREATE_ARGUMENT = new ExactArgument("create");
     public static final StringArgument STATENAME_ARGUMENT = new StringArgument("statename");
     public static final OfflinePlayerArgument LEADER_ARGUMENT = new OfflinePlayerArgument("leader");
@@ -29,6 +30,7 @@ public class StateCreateCommand implements ArgumentCommand {
     @Override
     public @NotNull CommandArgument<?>[] getArguments() {
         return new CommandArgument[]{
+                ADMIN_ARGUMENT,
                 CREATE_ARGUMENT,
                 STATENAME_ARGUMENT,
                 LEADER_ARGUMENT,

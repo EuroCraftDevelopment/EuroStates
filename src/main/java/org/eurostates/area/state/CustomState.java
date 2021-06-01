@@ -1,5 +1,6 @@
 package org.eurostates.area.state;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
@@ -123,5 +124,12 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     @Override
     public @NotNull String getRootNode() {
         return "State";
+    }
+
+    public void delete(){
+        File file = this.getFile();
+        boolean deleted = file.delete();
+        if(!deleted) Bukkit.getLogger().warning("Could not delete state file: "+file.toString());
+        States.CUSTOM_STATES.remove(this);
     }
 }
