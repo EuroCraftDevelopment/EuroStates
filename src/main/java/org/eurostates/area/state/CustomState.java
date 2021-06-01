@@ -9,6 +9,7 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.eurostates.relationship.Relationship;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
@@ -66,7 +68,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return this.tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(@NotNull String tag) {
         this.tag = tag;
     }
 

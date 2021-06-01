@@ -5,8 +5,10 @@ import org.eurostates.area.state.State;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
 import org.eurostates.ownable.PlayerOwnable;
+import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
-import org.eurostates.parser.Serializable;
+import org.eurostates.parser.area.user.GetterUserParser;
+import org.eurostates.parser.area.user.LoadableUserParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,27 +72,24 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
         return this.uuid;
     }
 
-    //TODO
     @Override
     public @NotNull File getFile() {
-        return null;
+        return new File("data/users/" + Parsers.UUID.to(this.uuid));
     }
 
-    //TODO
     @Override
-    public @NotNull Serializable<ESUser, Map<String, Object>> getSerializableParser() {
-        return null;
+    public @NotNull LoadableUserParser getSerializableParser() {
+        return Parsers.LOADABLE_USER;
     }
 
-    //TODO
     @Override
-    public @NotNull Serializable<ESUser, String> getIdParser() {
-        return null;
+    public @NotNull GetterUserParser getIdParser() {
+        return Parsers.GETTER_USER;
     }
 
     //TODO
     @Override
     public @NotNull String getRootNode() {
-        return null;
+        return "user";
     }
 }

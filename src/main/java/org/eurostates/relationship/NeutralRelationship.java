@@ -5,18 +5,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class AllyRelationship extends AbstractRelationship {
+public class NeutralRelationship extends AbstractRelationship {
 
-    public AllyRelationship(CustomState... states) {
+    public NeutralRelationship(CustomState... states) {
         super(states);
     }
 
-    public AllyRelationship(@NotNull Collection<CustomState> states) {
+    public NeutralRelationship(@NotNull Collection<CustomState> states) {
         super(states);
     }
 
     @Override
     public @NotNull RelationshipStatus getStatus() {
-        return RelationshipStatus.ALLY;
+        return RelationshipStatus.NEUTRAL;
     }
 }
