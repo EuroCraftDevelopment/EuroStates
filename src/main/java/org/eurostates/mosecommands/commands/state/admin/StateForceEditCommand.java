@@ -1,15 +1,13 @@
-package org.eurostates.mosecommands.commands.state.leader;
+package org.eurostates.mosecommands.commands.state.admin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.state.State;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
+import org.eurostates.mosecommands.arguments.area.CustomStateArgument;
 import org.eurostates.mosecommands.arguments.area.StateAttribArgument;
 import org.eurostates.mosecommands.arguments.operation.ExactArgument;
 import org.eurostates.mosecommands.arguments.operation.RemainingArgument;
@@ -21,67 +19,42 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public class StateEditCommand implements ArgumentCommand {
-
-    public static final ExactArgument EDIT_ARGUMENT = new ExactArgument("edit");
-    public static final StateAttribArgument ATTRIB_ARGUMENT = new StateAttribArgument("attribute");
-    public static final StringArgument NAME_ARGUMENT = new StringArgument("name");
+public class StateForceEditCommand implements ArgumentCommand {
+    public static final ExactArgument ADMIN_ARGUMENT = new ExactArgument("admin");
+    public static final ExactArgument FORCE_EDIT_ARGUMENT = new ExactArgument("forceedit");
+    public static final StateAttribArgument STATE_ATTRIB_ARGUMENT = new StateAttribArgument("stateattrib");
+    public static final CustomStateArgument STATE_ARGUMENT = new CustomStateArgument("state");
+    public static final StringArgument ATTRIB_ARGUMENT = new StringArgument("attrib");
     public static final RemainingArgument<String> REM_ARGUMENT = new RemainingArgument<>("remaining", new StringArgument("temp"));
+
 
     @Override
     public @NotNull CommandArgument<?>[] getArguments() {
         return new CommandArgument[]{
-                EDIT_ARGUMENT,
+                ADMIN_ARGUMENT,
+                FORCE_EDIT_ARGUMENT,
+                STATE_ATTRIB_ARGUMENT,
+                STATE_ARGUMENT,
                 ATTRIB_ARGUMENT,
-                NAME_ARGUMENT,
                 REM_ARGUMENT
         };
     }
 
     @Override
     public Optional<String> getPermission() {
-        return Optional.empty();
+        return Optional.of("eurostates.admin");
     }
 
     @Override
     public boolean run(@NotNull CommandContext context, @NotNull String[] arg) {
-        // get arguments
-        String attrib = context.getArgument(this, ATTRIB_ARGUMENT);
-        String newAttrib = context.getArgument(this, NAME_ARGUMENT);
+        String attrib = context.getArgument(this, STATE_ATTRIB_ARGUMENT);
+        CustomState customState = context.getArgument(this, STATE_ARGUMENT);
+        String newAttrib = context.getArgument(this, ATTRIB_ARGUMENT);
         List<String> remainingArguments = context.getArgument(this, REM_ARGUMENT);
-
-        // check if player is running command
-        if (!(context.getSource() instanceof Player)) {
-            context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RED + "Cannot be executed from console.");
-            return true;
-        }
-
-        Player player = (Player)context.getSource();
-        ESUser user = Parsers.GETTER_USER.fromId(player.getUniqueId());
-
-        State state = user.getState();
-
-        // check if player is Nomad
-        if (!(state instanceof CustomState)) {
-            player.sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RED + "You're not part of a state.");
-            return true;
-        }
-
-        CustomState customState = (CustomState) state;
-
-        // check if player is leader of nation
-        if (customState.getOwnerId() != player.getUniqueId()) {
-            context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RED + "You're not the leader of this state.");
-            return true;
-        }
-
 
         String stateName = customState.getName();
         String stateTag = customState.getTag();
-
-        // Actual editing part lol
 
         if (attrib.equalsIgnoreCase("name")) {
             if (newAttrib.length() > 21 || newAttrib.length() < 3) {
@@ -120,7 +93,7 @@ public class StateEditCommand implements ArgumentCommand {
 
             if(!(prefixUser.getState().getTag().equals(stateTag))){
                 context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
-                        ChatColor.RED + "That user is not a member of your state."); return true;
+                        ChatColor.RED + "That user is not a member of specified state."); return true;
             }
 
             String newPrefix = remainingArguments.get(0);
@@ -144,7 +117,6 @@ public class StateEditCommand implements ArgumentCommand {
 
         }
 
-
         // TODO Fix save
         try {
             customState.save();
@@ -153,9 +125,9 @@ public class StateEditCommand implements ArgumentCommand {
         }
 
         Bukkit.broadcastMessage(ChatColor.BLUE + "[EuroStates] " +
-                ChatColor.WHITE + stateName + " (" + stateTag + ") has changed their " +
-                attrib + " to " + newAttrib + "."
-                );
+                ChatColor.WHITE + stateName + " (" + stateTag + ")'s " +
+                attrib + " was forcibly changed to " + newAttrib + "."
+        );
 
         return true;
     }
