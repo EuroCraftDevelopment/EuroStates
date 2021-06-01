@@ -30,7 +30,7 @@ public class WarRelationship implements Relationship {
   a- Leader must be in some proximity of the town, calculated depending on distance to the "center". (distance adjustable globally or per-town, idk)
 2- Battle continues for 6 hours (probs adjustable), and then the side with most points at the end of the battle, gets the town. The town's mayor is automatically set to the invader's leader if the invaders win.
   how to get points:
-  a- Kill someone, 50 points (adjustable)
+  a- [Done] Kill someone, 50 points (adjustable)
   b- Stay in the area, this will give you 10 points each 10 minutes for every person.
 3- Once a state has all their towns seized, they are disbanded, with all their members going back to nomads.
      */

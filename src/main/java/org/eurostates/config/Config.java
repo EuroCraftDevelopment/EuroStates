@@ -13,6 +13,7 @@ public class Config {
     private final File file;
 
     public static final SerializableConfigNode<Double, Double> WAR_SCORE_KILL = new SerializableConfigNode<>(Parsers.DOUBLE_WRAPPER, "War", "Score", "Kill");
+public static final SerializableConfigNode<Integer, Integer> WAR_TIME_OVERALL = new SerializableConfigNode<>(Parsers.INTEGER_WRAPPER, "War", "Time", "Override");
 
     public Config(File file) {
         this.file = file;
