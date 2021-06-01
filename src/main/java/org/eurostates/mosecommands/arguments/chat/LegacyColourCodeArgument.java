@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -15,19 +16,19 @@ import java.util.stream.Stream;
 
 public class LegacyColourCodeArgument implements CommandArgument<ChatColor> {
 
-    private final String id;
+    private final @NotNull String id;
 
-    public LegacyColourCodeArgument(String id) {
+    public LegacyColourCodeArgument(@NotNull String id) {
         this.id = id;
     }
 
     @Override
-    public String getId() {
+    public @NotNull String getId() {
         return this.id;
     }
 
     @Override
-    public Map.Entry<ChatColor, Integer> parse(CommandContext context, CommandArgumentContext<ChatColor> argument) throws IOException {
+    public @NotNull Map.Entry<ChatColor, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<ChatColor> argument) throws IOException {
         String arg = context.getCommand()[argument.getFirstArgument()];
         if (arg.length() != 1) {
             throw new IOException("Not a valid legacy chat colour");
@@ -40,7 +41,7 @@ public class LegacyColourCodeArgument implements CommandArgument<ChatColor> {
     }
 
     @Override
-    public List<String> suggest(CommandContext commandContext, CommandArgumentContext<ChatColor> argument) {
+    public @NotNull List<String> suggest(@NotNull CommandContext commandContext, @NotNull CommandArgumentContext<ChatColor> argument) {
         return Stream.of(ChatColor.values()).map(colour -> colour.getChar() + "").collect(Collectors.toList());
     }
 }

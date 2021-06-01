@@ -8,6 +8,7 @@ import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;
 import org.eurostates.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,26 +16,26 @@ import java.util.stream.Collectors;
 
 public class TownArgument implements CommandArgument<Town> {
 
-    private final String id;
-    private final ThrowableBiConsumer<CommandSender, Town, IOException> finalCheck;
+    private final @NotNull String id;
+    private final @NotNull ThrowableBiConsumer<CommandSender, Town, IOException> finalCheck;
 
-    public TownArgument(String id) {
+    public TownArgument(@NotNull String id) {
         this(id, (sender, town) -> {
         });
     }
 
-    public TownArgument(String id, ThrowableBiConsumer<CommandSender, Town, IOException> function) {
+    public TownArgument(@NotNull String id, @NotNull ThrowableBiConsumer<CommandSender, Town, IOException> function) {
         this.id = id;
         this.finalCheck = function;
     }
 
     @Override
-    public String getId() {
+    public @NotNull String getId() {
         return this.id;
     }
 
     @Override
-    public Map.Entry<Town, Integer> parse(CommandContext context, CommandArgumentContext<Town> argument) throws IOException {
+    public @NotNull Map.Entry<Town, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<Town> argument) throws IOException {
         String arg = context.getCommand()[argument.getFirstArgument()];
         Town townResult = States
                 .CUSTOM_STATES
@@ -53,7 +54,7 @@ public class TownArgument implements CommandArgument<Town> {
     }
 
     @Override
-    public List<String> suggest(CommandContext commandContext, CommandArgumentContext<Town> argument) {
+    public @NotNull List<String> suggest(@NotNull CommandContext commandContext, @NotNull CommandArgumentContext<Town> argument) {
         List<String> list = new ArrayList<>();
         String peek = commandContext.getCommand()[argument.getFirstArgument()];
         States

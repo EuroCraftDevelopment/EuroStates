@@ -1,6 +1,7 @@
 package org.eurostates.util;
 
 import org.eurostates.lamda.throwable.single.ThrowableConsumer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,13 +11,12 @@ import java.util.function.Function;
 public interface Utils {
 
     enum Compare {
-
         BETTER,
         EQUAL,
         WORSE
     }
 
-    static <F, E extends Throwable> F throwOr(Class<E> clazz, ThrowableConsumer<F, E> consumer, F fail) {
+    static <F, E extends Throwable> @NotNull F throwOr(@NotNull Class<E> clazz, @NotNull ThrowableConsumer<F, E> consumer, @NotNull F fail) {
         try {
             return consumer.run();
         } catch (Throwable e) {
@@ -27,14 +27,14 @@ public interface Utils {
         }
     }
 
-    static <F, T, E extends T> F canCast(T object, Class<E> clazz, Function<E, F> function, Function<T, F> elseFunction) {
+    static <F, T, E extends T> @NotNull F canCast(@NotNull T object, @NotNull Class<E> clazz, @NotNull Function<E, F> function, @NotNull Function<T, F> elseFunction) {
         if (clazz.isInstance(object)) {
             return function.apply((E) object);
         }
         return elseFunction.apply(object);
     }
 
-    static <T> Set<T> getBest(Iterable<T> iterable, BiFunction<T, T, Compare> check) {
+    static <T> Set<T> getBest(@NotNull Iterable<T> iterable, @NotNull BiFunction<T, T, Compare> check) {
         Set<T> winning = null;
         T lastValueAdded = null;
         for (T value : iterable) {

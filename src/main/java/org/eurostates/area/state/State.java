@@ -7,6 +7,7 @@ import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Set;
@@ -15,18 +16,18 @@ import java.util.stream.Collectors;
 
 public interface State extends Area {
 
-    Set<Town> getTowns();
+    @NotNull Set<Town> getTowns();
 
-    Set<String> getPermissions();
+    @NotNull Set<String> getPermissions();
 
-    Set<ESUser> getEuroStatesCitizens();
+    @NotNull Set<ESUser> getEuroStatesCitizens();
 
-    default Set<String> getRanks() {
+    default @NotNull Set<String> getRanks() {
         return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());
     }
 
 
-    default Set<UUID> getCitizenIds() {
+    default @NotNull Set<UUID> getCitizenIds() {
         return Parsers.collectOrFilter(this.getEuroStatesCitizens().parallelStream(), citizen -> {
             try {
                 return Parsers.GETTER_USER.toId(citizen);
@@ -36,7 +37,7 @@ public interface State extends Area {
         }, Collectors.toSet());
     }
 
-    default Set<OfflinePlayer> getCitizens() {
+    default @NotNull Set<OfflinePlayer> getCitizens() {
         return this
                 .getCitizenIds()
                 .stream()
@@ -44,7 +45,7 @@ public interface State extends Area {
                 .collect(Collectors.toSet());
     }
 
-    default Set<Player> getOnlineCitizens() {
+    default @NotNull Set<Player> getOnlineCitizens() {
         return this.getCitizenIds()
                 .stream()
                 .filter(uuid -> Bukkit.getPlayer(uuid) != null)

@@ -55,7 +55,7 @@ public final class EuroStates extends JavaPlugin {
 
     }
 
-    private void registerCommand(String commandLabel, BukkitCommand cmd) throws IOException {
+    private void registerCommand(@NotNull String commandLabel, @NotNull BukkitCommand cmd) throws IOException {
         PluginCommand bukkitCommand = this.getCommand(commandLabel);
         if (bukkitCommand == null) {
             throw new IOException("EuroState: Could not find " + commandLabel + " command");
@@ -64,11 +64,11 @@ public final class EuroStates extends JavaPlugin {
         bukkitCommand.setTabCompleter(cmd);
     }
 
-    public static EuroStates getPlugin() {
+    public static @NotNull EuroStates getPlugin() {
         return plugin;
     }
 
-    public Set<Town> getTowns() {
+    public @NotNull Set<Town> getTowns() {
         return States
                 .CUSTOM_STATES
                 .parallelStream()
@@ -76,7 +76,7 @@ public final class EuroStates extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
-    public Optional<CustomTown> getTown(@NotNull UUID uuid) {
+    public @NotNull Optional<CustomTown> getTown(@NotNull UUID uuid) {
         return this.getTowns()
                 .parallelStream()
                 .filter(town -> town instanceof CustomTown)
@@ -85,7 +85,7 @@ public final class EuroStates extends JavaPlugin {
                 .findAny();
     }
 
-    public Set<ESUser> getUsers() {
+    public @NotNull Set<ESUser> getUsers() {
         return States
                 .CUSTOM_STATES
                 .parallelStream()
@@ -93,7 +93,7 @@ public final class EuroStates extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
-    public Optional<ESUser> getUser(@NotNull UUID uuid) {
+    public @NotNull Optional<ESUser> getUser(@NotNull UUID uuid) {
         return this
                 .getUsers()
                 .parallelStream()
@@ -113,7 +113,7 @@ public final class EuroStates extends JavaPlugin {
         });
     }
 
-    private static Set<CustomTown> loadTowns() {
+    private static @NotNull Set<CustomTown> loadTowns() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -134,7 +134,7 @@ public final class EuroStates extends JavaPlugin {
         return set;
     }
 
-    private static Set<CustomState> loadStates() {
+    private static @NotNull Set<CustomState> loadStates() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -156,7 +156,7 @@ public final class EuroStates extends JavaPlugin {
         return states;
     }
 
-    public static LuckPerms getLuckPermsApi() {
+    public static @NotNull LuckPerms getLuckPermsApi() {
         return api;
     }
 }

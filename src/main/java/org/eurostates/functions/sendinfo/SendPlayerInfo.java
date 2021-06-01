@@ -8,6 +8,7 @@ import org.eurostates.state.State;
 
 import java.io.IOException;
 
+@Deprecated
 public class SendPlayerInfo {
     public static void sendPlayerInfo(Player player) throws IOException {
 
