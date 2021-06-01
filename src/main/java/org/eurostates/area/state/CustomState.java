@@ -9,16 +9,20 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
     private final @NotNull Set<Town> towns = new HashSet<>();
-    private final @NotNull Set<String> permissions = new HashSet<>();
     private final @NotNull Set<ESUser> users = new HashSet<>();
+    private final @NotNull Set<Technology> technologies = new HashSet<>();
     private final @NotNull UUID id;
     private @NotNull String tag;
     private @NotNull String name;
@@ -26,10 +30,6 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     private @NotNull UUID owner;
 
     public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull UUID owner) {
-        this(id, tag, name, chatColour, owner, Collections.emptySet());
-    }
-
-    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull UUID owner, @NotNull Collection<String> permissions) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
         }
@@ -37,7 +37,6 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         this.name = name;
         this.chatColour = chatColour;
         this.owner = owner;
-        this.permissions.addAll(permissions);
         this.id = id;
     }
 
@@ -96,8 +95,8 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Override
-    public @NotNull Set<String> getPermissions() {
-        return this.permissions;
+    public @NotNull Set<Technology> getTechnology() {
+        return this.technologies;
     }
 
     @Override

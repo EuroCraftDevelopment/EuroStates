@@ -7,6 +7,7 @@ import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
+import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public interface State extends Area {
 
     @NotNull Set<Town> getTowns();
 
-    @NotNull Set<String> getPermissions();
+    @NotNull Set<Technology> getTechnology();
 
     @NotNull Set<ESUser> getEuroStatesCitizens();
 
@@ -26,6 +27,10 @@ public interface State extends Area {
         return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());
     }
 
+    @Deprecated
+    default @NotNull Set<String> getPermissions() {
+        return this.getTechnology().parallelStream().flatMap(tech -> tech.getPermissions().parallelStream()).collect(Collectors.toSet());
+    }
 
     default @NotNull Set<UUID> getCitizenIds() {
         return Parsers.collectOrFilter(this.getEuroStatesCitizens().parallelStream(), citizen -> {
