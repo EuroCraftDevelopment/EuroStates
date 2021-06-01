@@ -30,10 +30,14 @@ public final class EuroStates extends JavaPlugin {
     static EuroStates plugin;
     static LuckPerms api;
 
-    private Set<Relationship> relationships = new HashSet<>();
+    private final Set<Relationship> relationships = new HashSet<>();
 
     public Config getConfiguration() {
         return new Config(new File(this.getDataFolder(), "config.yml"));
+    }
+
+    public Set<Relationship> getRelationships() {
+        return this.relationships;
     }
 
     @Override

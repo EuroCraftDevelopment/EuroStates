@@ -7,10 +7,12 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.town.GetterTownParser;
 import org.eurostates.parser.area.town.LoadableTownParser;
+import org.eurostates.relationship.Relationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class CustomTown implements Town, Savable<CustomTown, Map<String, Object>, String> {
