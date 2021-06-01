@@ -2,6 +2,7 @@ package org.eurostates.parser;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 public interface StringMapParser<T> extends Serializable<T, Map<String, Object>> {
 
     @Override
-    default void serialize(YamlConfiguration yaml, String node, T value) throws IOException {
+    default void serialize(@NotNull YamlConfiguration yaml, @NotNull String node, @NotNull T value) throws IOException {
         Map<String, Object> map = this.to(value);
         map.forEach((key, mapValue) -> {
             yaml.set(node + "." + key, mapValue);
@@ -19,7 +20,7 @@ public interface StringMapParser<T> extends Serializable<T, Map<String, Object>>
     }
 
     @Override
-    default T deserialize(YamlConfiguration yaml, String node) throws IOException {
+    default T deserialize(@NotNull YamlConfiguration yaml, @NotNull String node) throws IOException {
         ConfigurationSection section = yaml.getConfigurationSection(node);
         if (section == null) {
             throw new NullPointerException("No value at " + node);

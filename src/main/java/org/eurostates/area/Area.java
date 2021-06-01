@@ -1,16 +1,21 @@
 package org.eurostates.area;
 
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 public interface Area {
 
-    String getTag();
+    @NotNull String getTag();
 
-    String getName();
+    @NotNull String getName();
 
-    char getLegacyChatColourCharacter();
+    @NotNull char getLegacyChatColourCharacter();
 
-    default ChatColor getLegacyChatColour() {
-        return ChatColor.getByChar(this.getLegacyChatColourCharacter());
+    default @NotNull ChatColor getLegacyChatColour() {
+        ChatColor colour = ChatColor.getByChar(this.getLegacyChatColourCharacter());
+        if (colour == null) {
+            throw new IllegalStateException("Attached legacy chat colour does not have a valid colour.");
+        }
+        return colour;
     }
 }

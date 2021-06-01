@@ -9,6 +9,7 @@ import org.eurostates.area.town.LegacyTown;
 
 import java.io.IOException;
 
+@Deprecated
 public class SendTownInfo {
     public static void sendLegacyTownInfo(String town_tag, Player player) throws IOException {
         LegacyTown town = new LegacyTown(town_tag);

@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,9 +17,8 @@ public class LocationParser implements StringMapParser<Location> {
     public static final String Z = "Z";
     public static final String WORLD = "World";
 
-
     @Override
-    public Map<String, Object> to(Location from) throws IOException {
+    public @NotNull Map<String, Object> to(@NotNull Location from) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put(X, from.getX());
         map.put(Y, from.getY());
@@ -28,7 +28,7 @@ public class LocationParser implements StringMapParser<Location> {
     }
 
     @Override
-    public Location from(Map<String, Object> from) throws IOException {
+    public @NotNull Location from(@NotNull Map<String, Object> from) throws IOException {
         double x = (double) notNull(from.get(X), "No X value");
         double y = (double) notNull(from.get(Y), "No Y value");
         double z = (double) notNull(from.get(Z), "No Z value");

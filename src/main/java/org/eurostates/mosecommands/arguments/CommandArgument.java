@@ -1,10 +1,12 @@
 package org.eurostates.mosecommands.arguments;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface CommandArgument<T> extends ParseCommandArgument<T>, SuggestCommandArgument<T> {
 
-    String getId();
+    @NotNull String getId();
 
-    default String getUsage() {
+    default @NotNull String getUsage() {
         return "<" + this.getId() + ">";
     }
 }

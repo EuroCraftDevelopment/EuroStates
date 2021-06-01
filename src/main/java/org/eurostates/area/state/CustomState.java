@@ -9,26 +9,27 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
 
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
-    private final Set<Town> towns = new HashSet<>();
-    private final Set<String> permissions = new HashSet<>();
-    private final Set<ESUser> users = new HashSet<>();
-    private final UUID id;
-    private String tag;
-    private String name;
+    private final @NotNull Set<Town> towns = new HashSet<>();
+    private final @NotNull Set<String> permissions = new HashSet<>();
+    private final @NotNull Set<ESUser> users = new HashSet<>();
+    private final @NotNull UUID id;
+    private @NotNull String tag;
+    private @NotNull String name;
     private char chatColour;
-    private UUID owner;
+    private @NotNull UUID owner;
 
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner) {
+    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull UUID owner) {
         this(id, tag, name, chatColour, owner, Collections.emptySet());
     }
 
-    public CustomState(UUID id, String tag, String name, char chatColour, UUID owner, Collection<String> permissions) {
+    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull UUID owner, @NotNull Collection<String> permissions) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
         }
@@ -40,11 +41,11 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         this.id = id;
     }
 
-    public UUID getId() {
+    public @NotNull UUID getId() {
         return this.id;
     }
 
-    public UUID getOwnerId() {
+    public @NotNull UUID getOwnerId() {
         return this.owner;
     }
 
@@ -53,16 +54,16 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Deprecated
-    public void setOwner(UUID owner) {
+    public void setOwner(@NotNull UUID owner) {
         this.owner = owner;
     }
 
-    public void setOwner(OfflinePlayer owner) {
+    public void setOwner(@NotNull OfflinePlayer owner) {
         this.owner = owner.getUniqueId();
     }
 
     @Override
-    public String getTag() {
+    public @NotNull String getTag() {
         return this.tag;
     }
 
@@ -71,11 +72,11 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
@@ -85,37 +86,37 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Override
-    public Set<ESUser> getEuroStatesCitizens() {
+    public @NotNull Set<ESUser> getEuroStatesCitizens() {
         return this.users;
     }
 
     @Override
-    public Set<Town> getTowns() {
+    public @NotNull Set<Town> getTowns() {
         return this.towns;
     }
 
     @Override
-    public Set<String> getPermissions() {
+    public @NotNull Set<String> getPermissions() {
         return this.permissions;
     }
 
     @Override
-    public File getFile() {
+    public @NotNull File getFile() {
         return new File(EuroStates.getPlugin().getDataFolder(), "data/state/" + this.getId().toString() + ".yml");
     }
 
     @Override
-    public LoadableStateParser getSerializableParser() {
+    public @NotNull LoadableStateParser getSerializableParser() {
         return Parsers.LOADABLE_STATE;
     }
 
     @Override
-    public GetterStateParser getIdParser() {
+    public @NotNull GetterStateParser getIdParser() {
         return Parsers.GETTER_STATE;
     }
 
     @Override
-    public String getRootNode() {
+    public @NotNull String getRootNode() {
         return "State";
     }
 }

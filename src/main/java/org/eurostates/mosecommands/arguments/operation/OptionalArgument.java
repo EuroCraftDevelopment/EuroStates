@@ -4,6 +4,7 @@ import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.ParseCommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.AbstractMap;
@@ -14,41 +15,41 @@ public class OptionalArgument<T> implements CommandArgument<T> {
 
     public static class WrappedParser<T> implements ParseCommandArgument<T> {
 
-        private final T value;
+        private final @NotNull T value;
 
-        public WrappedParser(T value) {
+        public WrappedParser(@NotNull T value) {
             this.value = value;
         }
 
         @Override
-        public Map.Entry<T, Integer> parse(CommandContext context, CommandArgumentContext<T> argument) {
+        public @NotNull Map.Entry<T, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) {
             return new AbstractMap.SimpleImmutableEntry<>(this.value, 0);
         }
     }
 
-    private final CommandArgument<T> arg;
-    private final ParseCommandArgument<T> value;
+    private final @NotNull CommandArgument<T> arg;
+    private final @NotNull ParseCommandArgument<T> value;
 
-    public OptionalArgument(CommandArgument<T> arg, T value) {
+    public OptionalArgument(@NotNull CommandArgument<T> arg, @NotNull T value) {
         this(arg, new WrappedParser<>(value));
     }
 
-    public OptionalArgument(CommandArgument<T> arg, ParseCommandArgument<T> value) {
+    public OptionalArgument(@NotNull CommandArgument<T> arg, @NotNull ParseCommandArgument<T> value) {
         this.arg = arg;
         this.value = value;
     }
 
-    public CommandArgument<T> getOriginalArgument() {
+    public @NotNull CommandArgument<T> getOriginalArgument() {
         return this.arg;
     }
 
     @Override
-    public String getId() {
+    public @NotNull String getId() {
         return this.arg.getId();
     }
 
     @Override
-    public Map.Entry<T, Integer> parse(CommandContext context, CommandArgumentContext<T> argument) throws IOException {
+    public @NotNull Map.Entry<T, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) throws IOException {
         if (context.getCommand().length == argument.getFirstArgument()) {
             return new AbstractMap.SimpleImmutableEntry<>(this.value.parse(context, argument).getKey(), argument.getFirstArgument());
         }
@@ -60,12 +61,12 @@ public class OptionalArgument<T> implements CommandArgument<T> {
     }
 
     @Override
-    public List<String> suggest(CommandContext commandContext, CommandArgumentContext<T> argument) {
+    public @NotNull List<String> suggest(@NotNull CommandContext commandContext, @NotNull CommandArgumentContext<T> argument) {
         return this.arg.suggest(commandContext, argument);
     }
 
     @Override
-    public String getUsage() {
+    public @NotNull String getUsage() {
         String original = this.getOriginalArgument().getUsage();
         return "[" + original.substring(1, original.length() - 1) + "]";
     }

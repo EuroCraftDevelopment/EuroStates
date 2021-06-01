@@ -5,6 +5,7 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
     public static final String CENTRE_NODE = "Centre";
 
     @Override
-    public Map<String, Object> to(CustomTown from) throws IOException {
+    public @NotNull Map<String, Object> to(@NotNull CustomTown from) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_NODE, Parsers.UUID.to(from.getId()));
         map.put(TAG_NODE, from.getTag());
@@ -33,7 +34,7 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
     }
 
     @Override
-    public CustomTown from(Map<String, Object> from) throws IOException {
+    public @NotNull CustomTown from(@NotNull Map<String, Object> from) throws IOException {
         UUID id = Parsers.UUID.from(notNull((String) from.get(UUID_NODE), "No Town Id found"));
         String tag = notNull((String) from.get(TAG_NODE), "No tag node found");
         String name = notNull((String) from.get(NAME_NODE), "No name node found");

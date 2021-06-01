@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class BukkitCommand implements TabExecutor {
 
-    private final Collection<ArgumentCommand> commands;
+    private final @NotNull Collection<ArgumentCommand> commands;
 
     public BukkitCommand(ArgumentCommand... commands) {
         this.commands = Arrays.asList(commands);

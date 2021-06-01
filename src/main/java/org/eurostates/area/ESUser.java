@@ -5,25 +5,27 @@ import org.eurostates.area.state.State;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
 import org.eurostates.ownable.PlayerOwnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class ESUser implements PlayerOwnable {
 
-    private final UUID uuid;
-    private String rank;
+    private final @NotNull UUID uuid;
+    private @Nullable String rank;
 
-    public ESUser(UUID uuid) {
+    public ESUser(@NotNull UUID uuid) {
         this(uuid, null);
     }
 
-    public ESUser(UUID uuid, String rank) {
+    public ESUser(@NotNull UUID uuid, @Nullable String rank) {
         this.uuid = uuid;
         this.rank = rank;
     }
 
-    public String getRank() {
+    public @NotNull String getRank() {
         if (this.rank != null) {
             return this.rank;
         }
@@ -38,7 +40,7 @@ public class ESUser implements PlayerOwnable {
 
     }
 
-    public void setRank(String rank) {
+    public void setRank(@NotNull String rank) {
         this.rank = rank;
     }
 
@@ -51,7 +53,7 @@ public class ESUser implements PlayerOwnable {
                 .findAny();
     }
 
-    public State getState() {
+    public @NotNull State getState() {
         Optional<Town> opTown = this.getTown();
         if (opTown.isPresent()) {
             return opTown.get().getState();
@@ -60,7 +62,7 @@ public class ESUser implements PlayerOwnable {
     }
 
     @Override
-    public UUID getOwnerId() {
+    public @NotNull UUID getOwnerId() {
         return this.uuid;
     }
 }

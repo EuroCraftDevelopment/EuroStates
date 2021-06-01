@@ -11,6 +11,7 @@ import org.eurostates.parser.util.BlockLocationParser;
 import org.eurostates.parser.util.LocationParser;
 import org.eurostates.parser.util.UUIDParser;
 import org.eurostates.parser.util.WorldParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public final class Parsers {
         return (parser::to);
     }
 
-    public static <T, R, C extends Collection<T>> C collectOrFilter(Stream<R> from, Function<R, T> map, Collector<T, ?, C> collector) {
+    public static <T, R, C extends Collection<T>> @NotNull C collectOrFilter(@NotNull Stream<R> from, @NotNull Function<R, T> map, @NotNull Collector<T, ?, C> collector) {
         //this is using a magic value of null, but its faster then parsing twice and the magic value doesn't escape the method
         return from
                 .map(map)
@@ -76,7 +77,7 @@ public final class Parsers {
                 .collect(collector);
     }
 
-    public static <T, R> List<T> collectOrThrow(ThrowableFunction<R, T, IOException> function, Iterable<R> iterable) throws IOException {
+    public static <T, R> List<T> collectOrThrow(@NotNull ThrowableFunction<R, T, IOException> function, @NotNull Iterable<R> iterable) throws IOException {
         List<T> retur = new ArrayList<>();
         for (R type : iterable) {
             retur.add(function.apply(type));
@@ -84,19 +85,19 @@ public final class Parsers {
         return retur;
     }
 
-    public static <T, R, C extends Collection<T>> C collectFromOrFilter(Stream<R> from, Parser<T, R> parser, Collector<T, ?, C> collector) {
+    public static <T, R, C extends Collection<T>> @NotNull C collectFromOrFilter(@NotNull Stream<R> from, @NotNull Parser<T, R> parser, @NotNull Collector<T, ?, C> collector) {
         return collectOrFilter(from, fromOrNull(parser), collector);
     }
 
-    public static <T, R, C extends Collection<R>> C collectToOrFilter(Stream<T> from, Parser<T, R> parser, Collector<R, ?, C> collector) {
+    public static <T, R, C extends Collection<R>> @NotNull C collectToOrFilter(@NotNull Stream<T> from, @NotNull Parser<T, R> parser, @NotNull Collector<R, ?, C> collector) {
         return collectOrFilter(from, toOrNull(parser), collector);
     }
 
-    public static <T, R> List<T> collectFromOrThrow(Parser<T, R> parser, Iterable<R> iterable) throws IOException {
+    public static <T, R> List<T> collectFromOrThrow(@NotNull Parser<T, R> parser, @NotNull Iterable<R> iterable) throws IOException {
         return collectOrThrow(fromOrThrow(parser), iterable);
     }
 
-    public static <T, R> List<R> collectToOrThrow(Parser<T, R> parser, Iterable<T> iterable) throws IOException {
+    public static <T, R> List<R> collectToOrThrow(@NotNull Parser<T, R> parser, @NotNull Iterable<T> iterable) throws IOException {
         return collectOrThrow(toOrThrow(parser), iterable);
     }
 }

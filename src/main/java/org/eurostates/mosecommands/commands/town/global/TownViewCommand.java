@@ -12,6 +12,7 @@ import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.area.TownArgument;
 import org.eurostates.mosecommands.context.CommandContext;
 import org.eurostates.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class TownViewCommand implements ArgumentCommand {
     public static final TownArgument TOWN_ARGUMENT = new TownArgument("town");
 
     @Override
-    public CommandArgument<?>[] getArguments() {
+    public @NotNull CommandArgument<?>[] getArguments() {
         return new CommandArgument[]{TOWN_ARGUMENT};
     }
 
@@ -30,7 +31,7 @@ public class TownViewCommand implements ArgumentCommand {
     }
 
     @Override
-    public boolean run(CommandContext context, String[] arg) {
+    public boolean run(@NotNull CommandContext context, @NotNull String[] arg) {
         Town town = context.getArgument(this, TOWN_ARGUMENT);
 
         String townName = town.getName();
