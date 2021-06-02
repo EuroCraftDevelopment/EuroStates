@@ -1,5 +1,6 @@
 package org.eurostates.area.state;
 
+import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -13,8 +14,10 @@ import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public interface State extends Area {
@@ -24,6 +27,10 @@ public interface State extends Area {
     @NotNull Set<Technology> getTechnology();
 
     @NotNull Set<ESUser> getEuroStatesCitizens();
+
+    @NotNull CompletableFuture<Group> getOrCreateGroup();
+
+    @NotNull Optional<Group> getGroup();
 
     default @NotNull Set<String> getRanks() {
         return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());

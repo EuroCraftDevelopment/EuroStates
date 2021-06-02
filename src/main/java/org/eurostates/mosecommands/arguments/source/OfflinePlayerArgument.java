@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +31,9 @@ public class OfflinePlayerArgument implements CommandArgument<OfflinePlayer> {
     @Override
     public Map.@NotNull Entry<OfflinePlayer, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<OfflinePlayer> argument) throws IOException {
         String arg = context.getCommand()[argument.getFirstArgument()];
+        if (arg.length() == 0) {
+            throw new IOException("Invalid user");
+        }
         OfflinePlayer player = Bukkit.getOfflinePlayer(arg);
         return new AbstractMap.SimpleImmutableEntry<>(player, argument.getFirstArgument() + 1);
     }
@@ -39,6 +43,7 @@ public class OfflinePlayerArgument implements CommandArgument<OfflinePlayer> {
         String peek = commandContext.getCommand()[argument.getFirstArgument()];
         return Stream.of(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName)
+                .filter(Objects::nonNull)
                 .filter(playerName -> playerName.toLowerCase().startsWith(peek.toLowerCase()))
                 .collect(Collectors.toList());
     }
