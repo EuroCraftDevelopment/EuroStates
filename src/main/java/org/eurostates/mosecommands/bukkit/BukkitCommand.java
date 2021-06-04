@@ -6,12 +6,10 @@ import org.bukkit.command.TabExecutor;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandContext;
+import org.eurostates.mosecommands.context.ErrorContext;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,8 +26,11 @@ public class BukkitCommand implements TabExecutor {
         CommandContext context = new CommandContext(sender, this.commands, args);
         Optional<ArgumentCommand> opCommand = context.getCompleteCommand();
         if (!opCommand.isPresent()) {
-            context.getErrors().forEach(e -> sender.sendMessage(e.getError()));
-            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).forEach(a -> {
+            Set<ErrorContext> errors = context.getErrors();
+            if (errors.size() >= 1) {
+                sender.sendMessage(errors.iterator().next().getError());
+            }
+            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).collect(Collectors.toList()).forEach(a -> {
                 String usage = Stream
                         .of(a.getArguments())
                         .map(CommandArgument::getUsage)

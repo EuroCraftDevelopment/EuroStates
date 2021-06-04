@@ -55,7 +55,8 @@ public class StateViewCommand implements ArgumentCommand {
                         Bukkit.getOfflinePlayer(esUser.getOwnerId()),
                         Player.class,
                         Player::getDisplayName,
-                        OfflinePlayer::getName)).collect(Collectors.joining(", "));
+                        OfflinePlayer::getName)
+                ).collect(Collectors.joining(", "));
 
         CommandSender source = context.getSource();
 

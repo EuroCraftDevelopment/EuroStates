@@ -1,6 +1,8 @@
 package org.eurostates.parser.area.town;
 
 import org.bukkit.block.Block;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.parser.Parsers;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 public class LoadableTownParser implements StringMapParser<CustomTown> {
 
@@ -49,5 +52,16 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
             throw new IOException(error);
         }
         return value;
+    }
+
+    @Override
+    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
+        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+        map.put(UUID_NODE, MemorySection::getString);
+        map.put(TAG_NODE, MemorySection::getString);
+        map.put(NAME_NODE, MemorySection::getString);
+        map.put(OWNER_NODE, MemorySection::getString);
+        map.put(STATE_NODE, MemorySection::getString);
+        return map;
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
+import org.eurostates.area.state.States;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.operation.ExactArgument;
@@ -54,6 +55,7 @@ public class StateCreateCommand implements ArgumentCommand {
         ESUser leaderUser = Parsers.GETTER_USER.fromId(leader.getUniqueId());
 
         CustomState newState = new CustomState(id, stateTag, stateName, 'r', leaderUser, stateName);
+        States.CUSTOM_STATES.add(newState);
 
         try {
             newState.save();
