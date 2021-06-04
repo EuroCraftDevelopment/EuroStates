@@ -2,6 +2,7 @@ package org.eurostates.parser.util;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 public class BlockLocationParser implements StringMapParser<Block> {
 
@@ -16,6 +18,16 @@ public class BlockLocationParser implements StringMapParser<Block> {
     public static final String Y = "Y";
     public static final String Z = "Z";
     public static final String WORLD = "World";
+
+    @Override
+    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
+        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+        map.put(X, YamlConfiguration::getInt);
+        map.put(Y, YamlConfiguration::getInt);
+        map.put(Z, YamlConfiguration::getInt);
+        map.put(WORLD, YamlConfiguration::getString);
+        return map;
+    }
 
     @Override
     public @NotNull Map<String, Object> to(@NotNull Block from) throws IOException {

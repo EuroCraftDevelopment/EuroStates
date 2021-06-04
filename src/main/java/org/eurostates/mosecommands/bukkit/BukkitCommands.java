@@ -10,8 +10,11 @@ public interface BukkitCommands {
     BukkitCommand STATE_COMMAND = new BukkitCommand(
             ArgumentCommands.STATE_CREATE,
             ArgumentCommands.STATE_DELETE,
-            ArgumentCommands.STATE_EDIT,
-            ArgumentCommands.STATE_FORCE_EDIT,
+            ArgumentCommands.STATE_EDIT_NAME,
+            ArgumentCommands.STATE_EDIT_LEGACY_COLOUR,
+            ArgumentCommands.STATE_EDIT_TAG,
+            ArgumentCommands.STATE_EDIT_PREFIX,
+            ArgumentCommands.STATE_VIEW,
             ArgumentCommands.STATE_FORCE_HANDOVER
     );
 }

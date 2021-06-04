@@ -32,6 +32,69 @@ public final class EuroStates extends JavaPlugin {
 
     private final Set<Relationship> relationships = new HashSet<>();
 
+    public static @NotNull EuroStates getPlugin() {
+        return plugin;
+    }
+
+    private static void initStates() {
+        Set<CustomState> states = loadStates();
+        Set<CustomTown> towns = loadTowns();
+        states.forEach(state -> {
+            Set<CustomTown> assignedTowns = towns
+                    .parallelStream()
+                    .filter(town -> town.getState().equals(state))
+                    .collect(Collectors.toSet());
+            state.getTowns().addAll(assignedTowns);
+        });
+    }
+
+    private static @NotNull Set<CustomTown> loadTowns() {
+        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/towns/");
+        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) {
+            return Collections.emptySet();
+        }
+        String rootNode = "State";
+
+        Set<CustomTown> set = new HashSet<>();
+        for (File file : files) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            try {
+                set.add(Parsers.LOADABLE_TOWN.deserialize(config, rootNode));
+            } catch (IOException e) {
+                System.err.println("Error: Couldn't load town file of " + file.getPath());
+                e.printStackTrace();
+            }
+        }
+        return set;
+    }
+
+    private static @NotNull Set<CustomState> loadStates() {
+        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
+        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) {
+            return Collections.emptySet();
+        }
+        String rootNode = "State";
+
+        Set<CustomState> states = new HashSet<>(files.length);
+        for (File file : files) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            try {
+                states.add(Parsers.LOADABLE_STATE.deserialize(config, rootNode));
+            } catch (Throwable e) {
+                System.err.println("Error: Couldn't load state file of " + file.getPath());
+                e.printStackTrace();
+            }
+        }
+        States.CUSTOM_STATES.addAll(states);
+        return states;
+    }
+
+    public static @NotNull LuckPerms getLuckPermsApi() {
+        return api;
+    }
+
     public Config getConfiguration() {
         return new Config(new File(this.getDataFolder(), "config.yml"));
     }
@@ -76,10 +139,6 @@ public final class EuroStates extends JavaPlugin {
         bukkitCommand.setTabCompleter(cmd);
     }
 
-    public static @NotNull EuroStates getPlugin() {
-        return plugin;
-    }
-
     public @NotNull Set<Town> getTowns() {
         return States
                 .CUSTOM_STATES
@@ -111,64 +170,5 @@ public final class EuroStates extends JavaPlugin {
                 .parallelStream()
                 .filter(user -> user.getOwnerId().equals(uuid))
                 .findAny();
-    }
-
-    private static void initStates() {
-        Set<CustomState> states = loadStates();
-        Set<CustomTown> towns = loadTowns();
-        states.forEach(state -> {
-            Set<CustomTown> assignedTowns = towns
-                    .parallelStream()
-                    .filter(town -> town.getState().equals(state))
-                    .collect(Collectors.toSet());
-            state.getTowns().addAll(assignedTowns);
-        });
-    }
-
-    private static @NotNull Set<CustomTown> loadTowns() {
-        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
-        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
-        if (files == null) {
-            return Collections.emptySet();
-        }
-        String rootNode = "State";
-
-        Set<CustomTown> set = new HashSet<>();
-        for (File file : files) {
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            try {
-                set.add(Parsers.LOADABLE_TOWN.deserialize(config, rootNode));
-            } catch (IOException e) {
-                System.err.println("Error: Couldn't load town file of " + file.getPath());
-                e.printStackTrace();
-            }
-        }
-        return set;
-    }
-
-    private static @NotNull Set<CustomState> loadStates() {
-        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
-        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
-        if (files == null) {
-            return Collections.emptySet();
-        }
-        String rootNode = "State";
-
-        Set<CustomState> states = new HashSet<>(files.length);
-        for (File file : files) {
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            try {
-                states.add(Parsers.LOADABLE_STATE.deserialize(config, rootNode));
-            } catch (IOException e) {
-                System.err.println("Error: Couldn't load state file of " + file.getPath());
-                e.printStackTrace();
-            }
-        }
-        States.CUSTOM_STATES.addAll(states);
-        return states;
-    }
-
-    public static @NotNull LuckPerms getLuckPermsApi() {
-        return api;
     }
 }
