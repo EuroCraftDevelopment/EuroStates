@@ -19,6 +19,7 @@ import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -27,14 +28,14 @@ import java.util.stream.Collectors;
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
     private final @NotNull Set<Town> towns = new HashSet<>();
-    private final @NotNull Set<ESUser> users = new HashSet<>();
+    private final @NotNull Set<UUID> users = new HashSet<>();
     private final @NotNull Set<Technology> technologies = new HashSet<>();
     private final @NotNull UUID id;
+    private final String permissionGroupName;
     private @NotNull String tag;
     private @NotNull String name;
     private char chatColour;
     private @NotNull UUID owner;
-    private final String permissionGroupName;
 
     @Deprecated
     public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, UUID uuid) {
@@ -136,16 +137,16 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     @Override
-    public @NotNull Set<ESUser> getEuroStatesCitizens() {
+    public @NotNull Set<UUID> getCitizenIds() {
         return this.users;
     }
 
     public Set<User> getLuckPermsCitizens() {
-        return this.users.stream().map(user -> EuroStates.getLuckPermsApi().getUserManager().getUser(user.getOwnerId())).collect(Collectors.toSet());
+        return this.users.stream().map(user -> EuroStates.getLuckPermsApi().getUserManager().getUser(user)).collect(Collectors.toSet());
     }
 
     public void register(ESUser user) {
-        this.users.add(user);
+        this.users.add(user.getOwnerId());
         CompletableFuture<Group> groupFuture = this.getOrCreateGroup();
         groupFuture.thenRun(() -> {
             Group group;
@@ -163,6 +164,19 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
             luckUser.setPrimaryGroup(group.getName());
             userManager.saveUser(luckUser);
         });
+    }
+
+    @Override
+    public void save(@NotNull File file) throws IOException {
+        this.getEuroStatesCitizens().forEach(u -> {
+            try {
+                u.save();
+            } catch (IOException e) {
+                System.err.println("Couldn't save player " + u.getOwner().getName());
+                e.printStackTrace();
+            }
+        });
+        Savable.super.save(file);
     }
 
     @Override

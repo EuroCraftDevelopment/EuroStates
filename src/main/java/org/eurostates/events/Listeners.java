@@ -17,6 +17,7 @@ public class Listeners implements Listener {
         UUID playerId = event.getPlayer().getUniqueId();
         ESUser user = EuroStates.getPlugin().getUser(playerId).orElseGet(() -> new ESUser(playerId));
         State state = user.getState();
+        System.out.println("Set format to " + state.getLegacyChatColour() + "[" + state.getTag() + "]" + ChatColor.RESET + " %s : %s");
         event.setFormat(state.getLegacyChatColour() + "[" + state.getTag() + "]" + ChatColor.RESET + " %s : %s");
 
         //these two do the same thing. Look how much smaller this is :)

@@ -1,5 +1,6 @@
 package org.eurostates.area;
 
+import org.eurostates.EuroStates;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.State;
 import org.eurostates.area.state.States;
@@ -45,12 +46,12 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
         return Ranks.NOMAD;
     }
 
-    public Optional<String> getAssignedRank(){
-        return Optional.ofNullable(this.rank);
-    }
-
     public void setRank(@Nullable String rank) {
         this.rank = rank;
+    }
+
+    public Optional<String> getAssignedRank() {
+        return Optional.ofNullable(this.rank);
     }
 
     public Optional<Town> getTown() {
@@ -77,7 +78,7 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
 
     @Override
     public @NotNull File getFile() {
-        return new File("data/users/" + Parsers.UUID.to(this.uuid));
+        return new File(EuroStates.getPlugin().getDataFolder(), "data/users/" + Parsers.UUID.to(this.uuid) + ".yml");
     }
 
     @Override
@@ -90,7 +91,6 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
         return Parsers.GETTER_USER;
     }
 
-    //TODO
     @Override
     public @NotNull String getRootNode() {
         return "user";
