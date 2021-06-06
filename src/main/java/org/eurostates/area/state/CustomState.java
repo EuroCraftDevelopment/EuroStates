@@ -32,21 +32,23 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     private final @NotNull UUID id;
     private @NotNull String tag;
     private @NotNull String name;
+    private @NotNull String currency;
     private char chatColour;
     private @NotNull UUID owner;
     private final String permissionGroupName;
 
     @Deprecated
-    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, UUID uuid) {
-        this(id, tag, name, chatColour, Parsers.GETTER_USER.fromId(uuid), name);
+    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, @NotNull String currency, char chatColour, UUID uuid) {
+        this(id, tag, name, currency, chatColour, Parsers.GETTER_USER.fromId(uuid), name);
     }
 
-    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, char chatColour, @NotNull ESUser owner, String permissionGroupName) {
+    public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, @NotNull String currency, char chatColour, @NotNull ESUser owner, String permissionGroupName) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
         }
         this.tag = tag;
         this.name = name;
+        this.currency = currency;
         this.chatColour = chatColour;
         this.id = id;
         this.permissionGroupName = permissionGroupName;
@@ -128,6 +130,14 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     public void setName(@NotNull String name) {
         this.name = name;
+    }
+
+    public @NotNull String getCurrency() {
+        return this.currency;
+    }
+
+    public void setCurrency(@NotNull String currency) {
+        this.currency = currency;
     }
 
     @Override

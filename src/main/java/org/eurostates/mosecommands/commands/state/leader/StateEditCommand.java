@@ -145,7 +145,7 @@ public class StateEditCommand implements ArgumentCommand {
         }
 
 
-        // TODO Fix save
+
         try {
             customState.save();
         } catch (IOException e) {

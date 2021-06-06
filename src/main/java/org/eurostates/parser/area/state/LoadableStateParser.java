@@ -21,6 +21,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
     public static final String OWNER_NODE = "meta.owner";
     public static final String COLOUR_NODE = "meta.colour";
     public static final String ID_NODE = "meta.id";
+    public static final String CURRENCY_NODE = "meta.currency";
 
     public static final String CITIZENS_NODE = "citizens";
     public static final String PERMISSIONS_NODE = "permissions";
@@ -34,6 +35,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(NAME_NODE, from.getName());
         map.put(OWNER_NODE, Parsers.UUID.to(from.getOwnerId()));
         map.put(COLOUR_NODE, from.getLegacyChatColourCharacter() + "");
+        map.put(CURRENCY_NODE, from.getCurrency());
         map.put(PERMISSIONS_NODE, from.getPermissions());
         map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.LOADABLE_USER, from.getEuroStatesCitizens()));
         map.put(TOWNS_NODE, from
@@ -50,11 +52,12 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         UUID id = Parsers.UUID.from(get(from, ID_NODE));
         String tag = get(from, TAG_NODE);
         String name = get(from, NAME_NODE);
+        String currency = get(from, CURRENCY_NODE);
         UUID owner = Parsers.UUID.from(get(from, OWNER_NODE));
         char colour = this.<String>get(from, COLOUR_NODE).charAt(0);
         CustomState state;
         try {
-            state = new CustomState(id, tag, name, colour, owner);
+            state = new CustomState(id, tag, name, currency, colour, owner);
         } catch (Throwable e) {
             throw new IOException(e);
         }
