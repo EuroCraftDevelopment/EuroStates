@@ -1,5 +1,6 @@
 package org.eurostates.parser.area.user;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.ESUser;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
@@ -9,12 +10,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 //TODO
 public class LoadableUserParser implements StringMapParser<ESUser> {
 
     private static final String UUID_NODE = "UUID";
     private static final String RANK_NODE = "Rank";
+
+    @Override
+    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
+        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+        map.put(UUID_NODE, YamlConfiguration::getString);
+        map.put(RANK_NODE, YamlConfiguration::getString);
+        return map;
+    }
 
     @Override
     public @NotNull Map<String, Object> to(@NotNull ESUser from) throws IOException {

@@ -1,23 +1,23 @@
 package org.eurostates.mosecommands.context;
 
-import org.eurostates.mosecommands.arguments.CommandArgument;
+import org.eurostates.mosecommands.arguments.ParseCommandArgument;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class CommandArgumentContext<T> {
 
-    private final @NotNull CommandArgument<T> argument;
+    private final @NotNull ParseCommandArgument<T> argument;
     private int firstArgument;
     private String[] command;
 
-    public CommandArgumentContext(@NotNull CommandArgument<T> argument, int firstArgument, String... command) {
+    public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, int firstArgument, String... command) {
         this.argument = argument;
         this.firstArgument = firstArgument;
         this.command = command;
     }
 
-    public @NotNull CommandArgument<T> getArgument() {
+    public @NotNull ParseCommandArgument<T> getArgument() {
         return this.argument;
     }
 
