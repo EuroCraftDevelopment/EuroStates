@@ -75,7 +75,8 @@ public class StateEditLegacyColourCommand implements ArgumentCommand {
         ChatColor newColour = context.getArgument(this, NEW_COLOUR_ARGUMENT);
         CustomState state = context.getArgument(this, STATE_ARGUMENT);
         state.setChatColour(newColour.getChar());
-        context.getSource().sendMessage("Changed state color to " + newColour + newColour.name().toLowerCase().replaceAll("_", " "));
+        context.getSource().sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
+                "Changed state color to " + newColour + newColour.name().toLowerCase().replaceAll("_", " "));
         try {
             state.save();
         } catch (IOException e) {

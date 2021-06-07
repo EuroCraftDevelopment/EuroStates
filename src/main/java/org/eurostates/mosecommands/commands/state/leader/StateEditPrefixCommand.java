@@ -95,7 +95,8 @@ public class StateEditPrefixCommand implements ArgumentCommand {
         ESUser user = opUser.get();
         String oldPre = user.getAssignedRank().map(v -> " from " + v).orElse("");
         user.setRank(newPrefix);
-        context.getSource().sendMessage("Changed prefix" + oldPre + " to " + newPrefix);
+        context.getSource().sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
+                "Changed prefix" + oldPre + " to " + newPrefix);
         try {
             state.save();
         } catch (IOException e) {
