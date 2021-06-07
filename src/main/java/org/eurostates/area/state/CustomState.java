@@ -29,6 +29,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+/**
+ * A custom state created by a user within the server. @see State for more info
+ */
 public class CustomState implements State, PlayerOwnable, Savable<CustomState, Map<String, Object>, String> {
 
     private final @NotNull Set<Town> towns = new HashSet<>();
@@ -42,11 +45,32 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     private char chatColour;
     private @NotNull UUID owner;
 
+    /**
+     *
+     * @param id id of the custom state, if new use {@link UUID#randomUUID()}
+     * @param tag Tag of the state, this can change. Requires to be 3 characters
+     * @param name Name of the state
+     * @param currency The currency name
+     * @param chatColour The colour of the players chat when a citizen of this state sends a message
+     * @param uuid The UUID of the owner
+     *
+     * @deprecated Old constructor, do not use
+     */
     @Deprecated
     public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, @NotNull String currency, char chatColour, UUID uuid) {
         this(id, tag, name, currency, chatColour, Parsers.GETTER_USER.fromId(uuid), name);
     }
 
+    /**
+     *
+     * @param id Id of the custom state, if new use {@link UUID#randomUUID()}
+     * @param tag Tag of the state, this can change. Requires to be 3 characters
+     * @param name Name of the state
+     * @param currency The currency name
+     * @param chatColour The colour of the players chat when a citizen of this state sends a message
+     * @param owner The owner of the state
+     * @param permissionGroupName The permission group name in LuckPerms
+     */
     public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, @NotNull String currency, char chatColour, @NotNull ESUser owner, String permissionGroupName) {
         if (tag.length() != 3) {
             throw new IllegalArgumentException("Tag must be 3 letters long");
@@ -61,10 +85,18 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         this.register(owner);
     }
 
+    /**
+     * Gets the Id of the state
+     * @return A UUID of the state
+     */
     public @NotNull UUID getId() {
         return this.id;
     }
 
+    /**
+     * Gets the LuckPerms group of the state
+     * @return A LuckPerms Group object of the state
+     */
     @Override
     public @NotNull Optional<Group> getGroup() {
         GroupManager api = EuroStates.getLuckPermsApi().getGroupManager();
@@ -75,16 +107,27 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return Optional.of(group);
     }
 
+    /**
+     * Gets or creates the LuckPerms group of the state
+     * @return A LuckPerms group object of the state
+     */
     @Override
     public @NotNull CompletableFuture<Group> getOrCreateGroup() {
         GroupManager api = EuroStates.getLuckPermsApi().getGroupManager();
         return api.createAndLoadGroup(this.getGroupName());
     }
 
+    /**
+     * Gets the LuckPerms group name of the state
+     * @return The name of the LuckPerms group
+     */
     public String getGroupName() {
         return permissionGroupName;
     }
 
+    /**
+     * Updates the LuckPerms group with the permissions from the technologies applied to this state
+     */
     public void updatePermissions() {
         CompletableFuture<Group> groupFuture = getOrCreateGroup();
         groupFuture.thenRun(() -> {
@@ -106,10 +149,18 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         });
     }
 
+    /**
+     * Gets the owners UUID
+     * @return The UUID of the owner
+     */
     public @NotNull UUID getOwnerId() {
         return this.owner;
     }
 
+    /**
+     * Sets the chat colour of the state via the legacy minecraft chat colour character. This will show when a player sends a message who belongs to this state.
+     * @param chatColour The legacy character colour
+     */
     public void setChatColour(char chatColour) {
         this.chatColour = chatColour;
     }
