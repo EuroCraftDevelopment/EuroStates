@@ -82,7 +82,8 @@ public class StateEditTagCommand implements ArgumentCommand {
         CustomState state = context.getArgument(this, STATE_ARGUMENT);
         String oldTag = state.getTag();
         state.setName(newTag);
-        context.getSource().sendMessage("Changed state tag of " + oldTag + " to " + newTag);
+        context.getSource().sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
+                "Changed state tag of " + oldTag + " to " + newTag);
         try {
             state.save();
         } catch (IOException e) {
