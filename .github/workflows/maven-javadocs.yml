@@ -29,6 +29,11 @@ jobs:
     - name: Build with Maven
       run: mvn javadoc:javadoc --file pom.xml
 
+    - name: Check GitHub Pages status
+      uses: crazy-max/ghaction-github-status@v2
+      with:
+        pages_threshold: major_outage
+
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2
       with:
