@@ -1,7 +1,6 @@
 package org.eurostates.parser.area.state;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.parser.Parsers;
@@ -30,7 +29,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
     public static final String TOWNS_NODE = "towns";
 
     @Override
-    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
+    public @NotNull Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
         Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
         map.put(TAG_NODE, YamlConfiguration::getString);
         map.put(NAME_NODE, YamlConfiguration::getString);
@@ -52,8 +51,8 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(OWNER_NODE, Parsers.UUID.to(from.getOwnerId()));
         map.put(COLOUR_NODE, from.getLegacyChatColourCharacter() + "");
         //map.put(TECHNOLOGY_NODE, from.getTechnology());
+        map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.UUID, from.getCitizenIds()));
         map.put(CURRENCY_NODE, from.getCurrency());
-        map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.LOADABLE_USER, from.getEuroStatesCitizens()));
         map.put(TOWNS_NODE, from
                 .getTowns()
                 .parallelStream()
@@ -78,8 +77,9 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
             throw new IOException(e);
         }
         //List<String> permissions = get(from, PERMISSIONS_NODE);
-        List<ESUser> users = Parsers.collectFromOrThrow(Parsers.LOADABLE_USER, get(from, CITIZENS_NODE));
-        state.getEuroStatesCitizens().addAll(users);
+        List<String> citizenIdsStr = get(from, CITIZENS_NODE);
+        List<UUID> users = Parsers.collectFromOrThrow(Parsers.UUID, citizenIdsStr);
+        state.getCitizenIds().addAll(users);
         return state;
     }
 

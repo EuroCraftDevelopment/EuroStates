@@ -31,12 +31,13 @@ public final class EuroStates extends JavaPlugin {
     static LuckPerms api;
 
     private final Set<Relationship> relationships = new HashSet<>();
+    private final Set<ESUser> users = new HashSet<>();
 
     public static @NotNull EuroStates getPlugin() {
         return plugin;
     }
 
-    private static void initStates() {
+    private void initStates() {
         Set<CustomState> states = loadStates();
         Set<CustomTown> towns = loadTowns();
         states.forEach(state -> {
@@ -48,7 +49,7 @@ public final class EuroStates extends JavaPlugin {
         });
     }
 
-    private static @NotNull Set<CustomTown> loadTowns() {
+    private @NotNull Set<CustomTown> loadTowns() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/towns/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -69,7 +70,29 @@ public final class EuroStates extends JavaPlugin {
         return set;
     }
 
-    private static @NotNull Set<CustomState> loadStates() {
+    private @NotNull Set<ESUser> loadUsers(){
+        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/users/");
+        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) {
+            return Collections.emptySet();
+        }
+        String rootNode = "user";
+
+        Set<ESUser> users = new HashSet<>(files.length);
+        for (File file : files) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            try {
+                users.add(Parsers.LOADABLE_USER.deserialize(config, rootNode));
+            } catch (Throwable e) {
+                System.err.println("Error: Couldn't load state file of " + file.getPath());
+                e.printStackTrace();
+            }
+        }
+this.users.addAll(users);
+        return users;
+    }
+
+    private @NotNull Set<CustomState> loadStates() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/state/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -157,11 +180,7 @@ public final class EuroStates extends JavaPlugin {
     }
 
     public @NotNull Set<ESUser> getUsers() {
-        return States
-                .CUSTOM_STATES
-                .parallelStream()
-                .flatMap(s -> s.getEuroStatesCitizens().parallelStream())
-                .collect(Collectors.toSet());
+        return this.users;
     }
 
     public @NotNull Optional<ESUser> getUser(@NotNull UUID uuid) {

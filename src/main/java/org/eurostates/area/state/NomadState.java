@@ -3,7 +3,6 @@ package org.eurostates.area.state;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.ChatColor;
 import org.eurostates.EuroStates;
-import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class NomadState implements State {
@@ -40,7 +40,7 @@ public class NomadState implements State {
     }
 
     @Override
-    public @NotNull Set<ESUser> getEuroStatesCitizens() {
+    public @NotNull Set<UUID> getCitizenIds() {
         return Collections.emptySet();
     }
 
