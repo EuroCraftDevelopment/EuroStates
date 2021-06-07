@@ -3,6 +3,7 @@ package org.eurostates.parser.util;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 public class LocationParser implements StringMapParser<Location> {
 
@@ -20,8 +20,8 @@ public class LocationParser implements StringMapParser<Location> {
     public static final String WORLD = "World";
 
     @Override
-    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
-        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+    public @NotNull Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> getParser() {
+        Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> map = new HashMap<>();
         map.put(X, YamlConfiguration::getDouble);
         map.put(Y, YamlConfiguration::getDouble);
         map.put(Z, YamlConfiguration::getDouble);

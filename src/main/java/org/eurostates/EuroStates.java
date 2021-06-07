@@ -14,13 +14,13 @@ import org.eurostates.area.state.States;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
+import org.eurostates.dynmap.DAPIProvider;
 import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.events.Listeners;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
 import org.eurostates.relationship.Relationship;
-import org.eurostates.dynmap.DAPIProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -52,6 +52,8 @@ public final class EuroStates extends JavaPlugin {
                     .collect(Collectors.toSet());
             state.getTowns().addAll(assignedTowns);
         });
+        Set<ESUser> users = loadUsers();
+        this.users.addAll(users);
     }
 
     private @NotNull Set<CustomTown> loadTowns() {
@@ -60,7 +62,7 @@ public final class EuroStates extends JavaPlugin {
         if (files == null) {
             return Collections.emptySet();
         }
-        String rootNode = "State";
+        String rootNode = "Town";
 
         Set<CustomTown> set = new HashSet<>();
         for (File file : files) {
@@ -75,7 +77,7 @@ public final class EuroStates extends JavaPlugin {
         return set;
     }
 
-    private @NotNull Set<ESUser> loadUsers(){
+    private @NotNull Set<ESUser> loadUsers() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/users/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -93,7 +95,7 @@ public final class EuroStates extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-this.users.addAll(users);
+        this.users.addAll(users);
         return users;
     }
 

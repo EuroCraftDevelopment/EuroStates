@@ -3,6 +3,7 @@ package org.eurostates.parser.area.state;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
+import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class LoadableStateParser implements StringMapParser<CustomState> {
@@ -29,8 +29,8 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
     public static final String TOWNS_NODE = "towns";
 
     @Override
-    public @NotNull Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
-        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+    public @NotNull Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> getParser() {
+        Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> map = new HashMap<>();
         map.put(TAG_NODE, YamlConfiguration::getString);
         map.put(NAME_NODE, YamlConfiguration::getString);
         map.put(OWNER_NODE, YamlConfiguration::getString);

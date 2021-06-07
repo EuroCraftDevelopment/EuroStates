@@ -2,6 +2,7 @@ package org.eurostates.parser.area.user;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.ESUser;
+import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 //TODO
 public class LoadableUserParser implements StringMapParser<ESUser> {
@@ -19,8 +19,8 @@ public class LoadableUserParser implements StringMapParser<ESUser> {
     private static final String RANK_NODE = "Rank";
 
     @Override
-    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
-        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+    public @NotNull Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> getParser() {
+        Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> map = new HashMap<>();
         map.put(UUID_NODE, YamlConfiguration::getString);
         map.put(RANK_NODE, YamlConfiguration::getString);
         return map;
@@ -37,7 +37,7 @@ public class LoadableUserParser implements StringMapParser<ESUser> {
     @Override
     public @NotNull ESUser from(@NotNull Map<String, Object> from) throws IOException {
         UUID uuid = Parsers.UUID.from(notNull((String) from.get(UUID_NODE)));
-        String rank = (String) from.get(UUID_NODE);
+        String rank = (String) from.get(RANK_NODE);
         return new ESUser(uuid, rank);
     }
 
