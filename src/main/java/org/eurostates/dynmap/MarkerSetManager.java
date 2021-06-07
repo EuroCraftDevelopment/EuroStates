@@ -3,6 +3,7 @@ package org.eurostates.dynmap;
 import org.bukkit.Bukkit;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
+import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.eurostates.EuroStates;
 import org.eurostates.area.state.States;
@@ -33,7 +34,7 @@ public class MarkerSetManager {
                         customTown.getCentre().getX(),
                         customTown.getCentre().getY(),
                         customTown.getCentre().getZ(),
-                        markerSet.findMarker(MARKER_NAME).getMarkerIcon(),
+                        dapi.getMarkerAPI().getMarkerIcon(MARKER_NAME),
                         false
                 );
             });
@@ -51,7 +52,7 @@ public class MarkerSetManager {
                 town.getCentre().getX(),
                 town.getCentre().getY(),
                 town.getCentre().getZ(),
-                markerSet.findMarker(MARKER_NAME).getMarkerIcon(),
+                dapi.getMarkerAPI().getMarkerIcon(MARKER_NAME),
                 false
         );
     }

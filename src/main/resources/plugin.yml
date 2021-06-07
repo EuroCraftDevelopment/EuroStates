@@ -1,14 +1,14 @@
 name: EuroStates
-version: Alpha_2.9
+version: Alpha_3.4.10
 main: org.eurostates.EuroStates
 api-version: 1.15
 prefix: EuroStates
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
-depend: [LuckPerms, Dynmap]
+depend: [LuckPerms, dynmap]
 loadbefore:
   - LuckPerms
-  - Dynmap
+  - dynmap
 commands:
   states:
     description: Main Command for States
