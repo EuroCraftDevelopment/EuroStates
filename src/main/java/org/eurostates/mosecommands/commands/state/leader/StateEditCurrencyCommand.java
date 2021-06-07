@@ -1,7 +1,7 @@
 package org.eurostates.mosecommands.commands.state.leader;
 
+
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
@@ -21,11 +21,11 @@ import java.util.AbstractMap;
 import java.util.Optional;
 import java.util.UUID;
 
-public class StateEditNameCommand implements ArgumentCommand {
+public class StateEditCurrencyCommand implements ArgumentCommand {
 
     public static final ExactArgument EDIT_ARGUMENT = new ExactArgument("edit");
     public static final ExactArgument NAME_ARGUMENT = new ExactArgument("name");
-    public static final StringArgument NEW_NAME_ARGUMENT = new StringArgument("new name");
+    public static final StringArgument NEW_CURRENCY_ARGUMENT = new StringArgument("new name");
     private static final PreArgument<CustomState> STATE_PRE_ARGUMENT = new PreArgument<>(new CustomStateArgument("state"), (context, argument) -> new AbstractMap.SimpleImmutableEntry<>(context.getSource().hasPermission("eurostates.admin"), 0));
     private static final ParseCommandArgument<CustomState> STATE_OPTIONAL_DEFAULT = (context, argument) -> {
         if (!(context.getSource() instanceof Player)) {
@@ -50,7 +50,7 @@ public class StateEditNameCommand implements ArgumentCommand {
                 EDIT_ARGUMENT,
                 STATE_ARGUMENT,
                 NAME_ARGUMENT,
-                NEW_NAME_ARGUMENT
+                NEW_CURRENCY_ARGUMENT
         };
     }
 
@@ -60,22 +60,11 @@ public class StateEditNameCommand implements ArgumentCommand {
     }
 
     @Override
-    public boolean canRun(@NotNull CommandSender sender) {
-        if (sender.hasPermission("eurostates.admin")) {
-            return true;
-        }
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-        return getOwningState(((Player) sender).getUniqueId()).isPresent();
-    }
-
-    @Override
     public boolean run(@NotNull CommandContext context, @NotNull String[] arg) {
-        String newName = context.getArgument(this, NEW_NAME_ARGUMENT);
+        String newName = context.getArgument(this, NEW_CURRENCY_ARGUMENT);
         if (newName.length() > 21 || newName.length() < 3) {
             context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
-                    ChatColor.RED + "State name cannot be shorter than 3 or longer than 21.");
+                    ChatColor.RED + "Currency name cannot be shorter than 3 or longer than 21.");
             return true;
         }
 
@@ -83,7 +72,7 @@ public class StateEditNameCommand implements ArgumentCommand {
         String oldName = state.getName();
         state.setName(newName);
         context.getSource().sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
-                "Changed state name of " + oldName + " to " + newName);
+                "Changed currency name of to " + newName);
         try {
             state.save();
         } catch (IOException e) {
@@ -92,4 +81,5 @@ public class StateEditNameCommand implements ArgumentCommand {
         }
         return true;
     }
+
 }
