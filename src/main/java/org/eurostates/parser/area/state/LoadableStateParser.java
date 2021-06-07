@@ -36,6 +36,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(OWNER_NODE, YamlConfiguration::getString);
         map.put(COLOUR_NODE, YamlConfiguration::getString);
         map.put(ID_NODE, YamlConfiguration::getString);
+        map.put(CURRENCY_NODE, YamlConfiguration::getString);
 
         map.put(CITIZENS_NODE, YamlConfiguration::getStringList);
         map.put(TOWNS_NODE, YamlConfiguration::getStringList);

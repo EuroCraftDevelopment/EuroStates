@@ -4,5 +4,6 @@ public enum RelationshipStatus {
 
     NEUTRAL,
     ALLY,
-    ENEMY
+    ENEMY,
+    WAR
 }

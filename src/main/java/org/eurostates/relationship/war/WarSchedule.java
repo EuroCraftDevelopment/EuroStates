@@ -10,8 +10,8 @@ import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
 import org.eurostates.ownable.PlayerOwnable;
-import org.eurostates.relationship.WarRelationship;
 import org.eurostates.util.Utils;
+import org.eurostates.util.array.ArrayIterable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -20,13 +20,20 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class WarSchedule implements Runnable {
 
-    private final WarRelationship relationship;
+    private final WarTown warTown;
 
-    public WarSchedule(WarRelationship relationship) {
-        this.relationship = relationship;
+    public WarSchedule(WarTown warTown) {
+        this.warTown = warTown;
+    }
+
+    public static @NotNull BukkitTask startSchedule(@NotNull WarTown relationship) {
+        int time = Utils.throwOr(IOException.class, () -> EuroStates.getPlugin().getConfiguration().parse(Config.WAR_TIME_CLOSE_TOWN), 6);
+        double ticks = TimeUnit.SECONDS.convert(time, TimeUnit.MINUTES) / 20.0;
+        return Bukkit.getScheduler().runTaskLater(EuroStates.getPlugin(), new WarSchedule(relationship), (int) ticks);
     }
 
     @Override
@@ -42,10 +49,10 @@ public class WarSchedule implements Runnable {
                 .getConfiguration()
                 .parse(Config.WAR_DISTANCE_CLOSE_TOWN), 16);
 
-        this.relationship.getWarSides().forEach(war -> {
+        Stream.of(this.warTown.getTowns()).forEach(war -> {
             Block block = war.getTown().getCentre();
             int nearTownScore = war
-                    .getDefendants()
+                    .getPlayers()
                     .stream()
                     .map(PlayerOwnable::getOwner)
                     .filter(OfflinePlayer::isOnline)
@@ -53,7 +60,7 @@ public class WarSchedule implements Runnable {
                     .filter(Objects::nonNull)
                     .map(p -> {
                         double dis = p.getLocation().distanceSquared(block.getLocation());
-                        if(dis > configDistanceTown){
+                        if (dis > configDistanceTown) {
                             return configCloseTown;
                         }
                         return 0;
@@ -63,16 +70,16 @@ public class WarSchedule implements Runnable {
             war.setScore(war.getScore() + nearTownScore);
         });
 
-        if (LocalDateTime.now().isBefore(this.relationship.getTimeEnding())) {
-            startSchedule(this.relationship);
+        if (LocalDateTime.now().isBefore(this.warTown.getEndTime())) {
+            startSchedule(this.warTown);
             return;
         }
-        Set<WarSide> compare = Utils.getBest(this.relationship.getWarSides(), (Comparator<WarSide>) (o1, o2) -> (int) (o2.getScore() - o1.getScore()));
+        Set<WarSide> compare = Utils.getBest(new ArrayIterable<>(this.warTown.getTowns()), (Comparator<WarSide>) (o1, o2) -> (int) (o2.getScore() - o1.getScore()));
         if (compare.size() != 1) {
             return;
         }
         WarSide winning = compare.iterator().next();
-        this.relationship.getWarSides().forEach(side -> {
+        Stream.of(this.warTown.getTowns()).forEach(side -> {
             if (side.equals(winning)) {
                 return;
             }
@@ -89,11 +96,5 @@ public class WarSchedule implements Runnable {
                 state.delete();
             }
         });
-    }
-
-    public static @NotNull BukkitTask startSchedule(@NotNull WarRelationship relationship) {
-        int time = Utils.throwOr(IOException.class, () -> EuroStates.getPlugin().getConfiguration().parse(Config.WAR_TIME_CLOSE_TOWN), 6);
-        double ticks = TimeUnit.SECONDS.convert(time, TimeUnit.MINUTES) / 20.0;
-        return Bukkit.getScheduler().runTaskLater(EuroStates.getPlugin(), new WarSchedule(relationship), (int) ticks);
     }
 }

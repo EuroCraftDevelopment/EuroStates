@@ -9,7 +9,10 @@ import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
+import org.eurostates.relationship.AbstractRelationship;
 import org.eurostates.relationship.Relationship;
+import org.eurostates.relationship.RelationshipStatus;
+import org.eurostates.relationship.war.WarRelationship;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 

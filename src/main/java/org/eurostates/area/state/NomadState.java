@@ -4,6 +4,7 @@ import net.luckperms.api.model.group.Group;
 import org.bukkit.ChatColor;
 import org.eurostates.EuroStates;
 import org.eurostates.area.town.Town;
+import org.eurostates.relationship.war.WarRelationship;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +33,11 @@ public class NomadState implements State {
     @Override
     public char getLegacyChatColourCharacter() {
         return ChatColor.WHITE.getChar();
+    }
+
+    @Override
+    public Optional<WarRelationship> getWarWith(Town town) {
+        return Optional.empty();
     }
 
     @Override
