@@ -6,6 +6,9 @@ prefix: EuroStates
 authors: [ColonelKai]
 description: EuroStates plugin for EuroCraft Server.
 depend: [LuckPerms, Dynmap]
+loadbefore:
+  - LuckPerms
+  - Dynmap
 commands:
   states:
     description: Main Command for States

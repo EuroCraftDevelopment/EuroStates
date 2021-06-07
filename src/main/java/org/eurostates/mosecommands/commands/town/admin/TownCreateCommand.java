@@ -9,6 +9,7 @@ import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
+import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.area.CustomStateArgument;
@@ -86,6 +87,7 @@ public class TownCreateCommand implements ArgumentCommand {
             e.printStackTrace();
         }
 
+        MarkerSetManager.addTownMarker(newTown);
 
         Bukkit.broadcastMessage(
                 ChatColor.BLUE + "[EuroStates] " + ChatColor.WHITE +

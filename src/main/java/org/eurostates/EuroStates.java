@@ -14,6 +14,7 @@ import org.eurostates.area.state.States;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
+import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.events.Listeners;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
@@ -148,6 +149,8 @@ this.users.addAll(users);
         initStates();
 
         dapi = DAPIProvider.registerDynmap(plugin);
+        MarkerSetManager.initMarkerSet();
+
 
         try {
             registerCommand("town", BukkitCommands.TOWN_COMMAND);

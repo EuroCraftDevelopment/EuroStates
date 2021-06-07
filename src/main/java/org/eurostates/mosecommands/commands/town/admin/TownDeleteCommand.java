@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
+import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.area.TownArgument;
@@ -52,6 +53,8 @@ public class TownDeleteCommand implements ArgumentCommand {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        MarkerSetManager.removeTownMarker((CustomTown) town);
 
         Bukkit.broadcastMessage(ChatColor.BLUE+"[EuroStates] "+
                 ChatColor.WHITE+"Town "+town.getName()+" was forcibly disbanded.");
