@@ -15,6 +15,10 @@ import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
+import org.eurostates.relationship.AbstractRelationship;
+import org.eurostates.relationship.Relationship;
+import org.eurostates.relationship.RelationshipStatus;
+import org.eurostates.relationship.war.WarRelationship;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,9 +95,13 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
                 e.printStackTrace();
                 return;
             }
-            CustomState.this.getTechnology().stream().flatMap(tec -> tec.getPermissions().parallelStream()).map(str -> Node.builder(str).build()).forEach(node -> {
-                group.data().add(node);
-            });
+            CustomState
+                    .this
+                    .getTechnology()
+                    .stream()
+                    .flatMap(tec -> tec.getPermissions().parallelStream())
+                    .map(str -> Node.builder(str).build())
+                    .forEach(node -> group.data().add(node));
             EuroStates.getLuckPermsApi().getGroupManager().saveGroup(group);
         });
     }
@@ -151,6 +159,25 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return this.users;
     }
 
+    public Relationship getRelationship(CustomState state) {
+        return getRelationships()
+                .parallelStream()
+                .filter(r -> r.getStates().contains(state))
+                .findAny().orElseGet(() -> new AbstractRelationship(RelationshipStatus.NEUTRAL, CustomState.this, state));
+    }
+
+    public Optional<WarRelationship> getWarWith(Town town) {
+        Relationship relationship = getRelationship(town.getState());
+        if (!(relationship instanceof WarRelationship)) {
+            return Optional.empty();
+        }
+        WarRelationship war = (WarRelationship) relationship;
+        if (war.getTowns().parallelStream().anyMatch(s -> s.getTargetTown().getTown().equals(town))) {
+            return Optional.empty();
+        }
+        return Optional.of(war);
+    }
+
     public Set<User> getLuckPermsCitizens() {
         return this.users.stream().map(user -> EuroStates.getLuckPermsApi().getUserManager().getUser(user)).collect(Collectors.toSet());
     }
@@ -201,7 +228,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     @Override
     public @NotNull File getFile() {
-        return new File(EuroStates.getPlugin().getDataFolder(), "data/state/" + this.getId().toString() + ".yml");
+        return new File(EuroStates.getPlugin().getDataFolder(), "data/state/" + this.getId() + ".yml");
     }
 
     @Override
@@ -222,7 +249,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     public void delete() {
         File file = this.getFile();
         boolean deleted = file.delete();
-        if (!deleted) Bukkit.getLogger().warning("Could not delete state file: " + file.toString());
+        if (!deleted) Bukkit.getLogger().warning("Could not delete state file: " + file);
         States.CUSTOM_STATES.remove(this);
     }
 }

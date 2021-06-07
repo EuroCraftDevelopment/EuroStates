@@ -6,13 +6,12 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 import org.eurostates.ownable.PlayerOwnable;
 import org.eurostates.relationship.Relationship;
-import org.eurostates.relationship.WarRelationship;
+import org.eurostates.relationship.war.WarRelationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public interface Town extends Area, PlayerOwnable {
 
@@ -22,21 +21,18 @@ public interface Town extends Area, PlayerOwnable {
 
     @Override
     default Set<Relationship> getRelationships() {
-        return this
-                .getRelationships(this.getState())
-                .parallelStream()
-                .filter(r -> r.getStates().parallelStream().anyMatch(s -> s.getTowns().contains(this)))
-                .collect(Collectors.toSet());
+        return this.getState().getRelationships();
     }
 
     default Optional<WarRelationship> getWarWith(Town town) {
-        return getWarsWith(town).parallelStream().findAny();
-    }
-
-    @Override
-    @Deprecated
-    default Set<WarRelationship> getWarsWith(Town town) {
-        return Area.super.getWarsWith(town);
+        Optional<WarRelationship> opWar = this.getState().getWarWith(town);
+        if (!opWar.isPresent()) {
+            return Optional.empty();
+        }
+        if (opWar.get().getTowns().parallelStream().anyMatch(wt -> wt.getCauseTown().getTown().equals(this))) {
+            return opWar;
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -50,6 +46,6 @@ public interface Town extends Area, PlayerOwnable {
                 .parallelStream()
                 .filter(state -> state.getId().equals(stateId))
                 .findAny()
-                .orElseThrow(() -> new IllegalStateException("Could not find town with the id of " + stateId.toString()));
+                .orElseThrow(() -> new IllegalStateException("Could not find town with the id of " + stateId));
     }
 }

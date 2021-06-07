@@ -54,7 +54,7 @@ public class StateCreateCommand implements ArgumentCommand {
         String stateTag = stateName.substring(0, 3).toUpperCase();
         ESUser leaderUser = Parsers.GETTER_USER.fromId(leader.getUniqueId());
 
-        CustomState newState = new CustomState(id, stateTag, stateName, 'r', leaderUser, stateName);
+        CustomState newState = new CustomState(id, stateTag, stateName, "£", 'r', leaderUser, stateName);
         States.CUSTOM_STATES.add(newState);
 
         try {
