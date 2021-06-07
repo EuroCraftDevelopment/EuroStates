@@ -13,7 +13,6 @@ import org.eurostates.relationship.Relationship;
 import org.eurostates.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +25,8 @@ public interface State extends Area {
 
     @NotNull Set<Technology> getTechnology();
 
-    @NotNull Set<ESUser> getEuroStatesCitizens();
+    @NotNull Set<UUID> getCitizenIds();
+
 
     @NotNull CompletableFuture<Group> getOrCreateGroup();
 
@@ -46,14 +46,8 @@ public interface State extends Area {
         return this.getTechnology().parallelStream().flatMap(tech -> tech.getPermissions().parallelStream()).collect(Collectors.toSet());
     }
 
-    default @NotNull Set<UUID> getCitizenIds() {
-        return Parsers.collectOrFilter(this.getEuroStatesCitizens().parallelStream(), citizen -> {
-            try {
-                return Parsers.GETTER_USER.toId(citizen);
-            } catch (IOException e) {
-                return null;
-            }
-        }, Collectors.toSet());
+    default @NotNull Set<ESUser> getEuroStatesCitizens() {
+        return Parsers.collectOrFilter(this.getCitizenIds().parallelStream(), Parsers.GETTER_USER::fromId, Collectors.toSet());
     }
 
     default @NotNull Set<OfflinePlayer> getCitizens() {
