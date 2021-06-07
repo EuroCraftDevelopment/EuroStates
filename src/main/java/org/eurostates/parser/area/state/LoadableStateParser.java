@@ -22,6 +22,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
     public static final String OWNER_NODE = "owner";
     public static final String COLOUR_NODE = "colour";
     public static final String ID_NODE = "id";
+    public static final String CURRENCY_NODE = "currency";
 
     public static final String CITIZENS_NODE = "citizens";
     public static final String TECHNOLOGY_NODE = "technology";
@@ -51,6 +52,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(COLOUR_NODE, from.getLegacyChatColourCharacter() + "");
         //map.put(TECHNOLOGY_NODE, from.getTechnology());
         map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.UUID, from.getCitizenIds()));
+        map.put(CURRENCY_NODE, from.getCurrency());
         map.put(TOWNS_NODE, from
                 .getTowns()
                 .parallelStream()
@@ -65,11 +67,12 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         UUID id = Parsers.UUID.from(get(from, ID_NODE));
         String tag = get(from, TAG_NODE);
         String name = get(from, NAME_NODE);
+        String currency = get(from, CURRENCY_NODE);
         UUID owner = Parsers.UUID.from(get(from, OWNER_NODE));
         char colour = this.<String>get(from, COLOUR_NODE).charAt(0);
         CustomState state;
         try {
-            state = new CustomState(id, tag, name, colour, owner);
+            state = new CustomState(id, tag, name, currency, colour, owner);
         } catch (Throwable e) {
             throw new IOException(e);
         }
