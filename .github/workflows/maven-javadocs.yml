@@ -27,8 +27,9 @@ jobs:
       run: mvn javadoc:javadoc --file pom.xml
 
     - name: Published to Github pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: crazy-max/ghaction-github-pages@v1
       with:
-        branch: gh-pages
-        folder: target/site/apidocs/
-        token: ${{secrets.GITHUB_TOKEN}}
+        target_branch: gh-pages
+        build_dir: target/site/apidocs/
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_REPO_TOKEN}}
