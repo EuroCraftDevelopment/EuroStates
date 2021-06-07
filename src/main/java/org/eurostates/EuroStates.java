@@ -52,6 +52,8 @@ public final class EuroStates extends JavaPlugin {
                     .collect(Collectors.toSet());
             state.getTowns().addAll(assignedTowns);
         });
+        Set<ESUser> users = loadUsers();
+        this.users.addAll(users);
     }
 
     private @NotNull Set<CustomTown> loadTowns() {

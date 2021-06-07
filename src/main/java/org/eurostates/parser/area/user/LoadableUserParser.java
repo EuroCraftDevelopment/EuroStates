@@ -37,7 +37,7 @@ public class LoadableUserParser implements StringMapParser<ESUser> {
     @Override
     public @NotNull ESUser from(@NotNull Map<String, Object> from) throws IOException {
         UUID uuid = Parsers.UUID.from(notNull((String) from.get(UUID_NODE)));
-        String rank = (String) from.get(UUID_NODE);
+        String rank = (String) from.get(RANK_NODE);
         return new ESUser(uuid, rank);
     }
 
