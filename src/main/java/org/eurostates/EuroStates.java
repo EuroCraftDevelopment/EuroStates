@@ -7,6 +7,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapCommonAPI;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
@@ -18,6 +19,7 @@ import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
 import org.eurostates.relationship.Relationship;
+import org.eurostates.dynmap.DAPIProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -29,6 +31,7 @@ public final class EuroStates extends JavaPlugin {
 
     static EuroStates plugin;
     static LuckPerms api;
+    static DynmapCommonAPI dapi;
 
     private final Set<Relationship> relationships = new HashSet<>();
     private final Set<ESUser> users = new HashSet<>();
@@ -38,6 +41,7 @@ public final class EuroStates extends JavaPlugin {
     }
 
     private void initStates() {
+        Bukkit.getLogger().info("States init.");
         Set<CustomState> states = loadStates();
         Set<CustomTown> towns = loadTowns();
         states.forEach(state -> {
@@ -114,6 +118,10 @@ this.users.addAll(users);
         return states;
     }
 
+    public static @NotNull DynmapCommonAPI getDynmapAPI() {
+        return dapi;
+    }
+
     public static @NotNull LuckPerms getLuckPermsApi() {
         return api;
     }
@@ -138,6 +146,8 @@ this.users.addAll(users);
         //CommandHandler.commandLauncher();
 
         initStates();
+
+        dapi = DAPIProvider.registerDynmap(plugin);
 
         try {
             registerCommand("town", BukkitCommands.TOWN_COMMAND);
