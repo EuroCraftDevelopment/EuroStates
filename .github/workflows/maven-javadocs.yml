@@ -31,3 +31,4 @@ jobs:
       with:
         branch: gh-pages
         folder: target/site/apidocs/
+        token: ${{secrets.GITHUB_TOKEN}}
