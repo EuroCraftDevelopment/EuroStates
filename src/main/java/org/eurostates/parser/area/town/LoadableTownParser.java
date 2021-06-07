@@ -5,6 +5,7 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.CustomTown;
+import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiFunction;
 
 public class LoadableTownParser implements StringMapParser<CustomTown> {
 
@@ -43,7 +43,7 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
         String name = notNull((String) from.get(NAME_NODE), "No name node found");
         UUID owner = Parsers.UUID.from(notNull((String) from.get(OWNER_NODE), "No Owner found"));
         CustomState state = Parsers.GETTER_STATE.from(notNull((String) from.get(STATE_NODE), "No State Id found"));
-        Block centre = Parsers.BLOCK_LOCATION.from(notNull((Map<String, Object>) from.get(CENTRE_NODE), "No centre found"));
+        Block centre = notNull((Block) from.get(CENTRE_NODE), "No centre found");
         return new CustomTown(id, tag, name, owner, state, centre);
     }
 
@@ -55,13 +55,14 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
     }
 
     @Override
-    public Map<String, BiFunction<YamlConfiguration, String, ?>> getParser() {
-        Map<String, BiFunction<YamlConfiguration, String, ?>> map = new HashMap<>();
+    public @NotNull Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> getParser() {
+        Map<String, ThrowableBiFunction<YamlConfiguration, String, ?, IOException>> map = new HashMap<>();
         map.put(UUID_NODE, MemorySection::getString);
         map.put(TAG_NODE, MemorySection::getString);
         map.put(NAME_NODE, MemorySection::getString);
         map.put(OWNER_NODE, MemorySection::getString);
         map.put(STATE_NODE, MemorySection::getString);
+        map.put(CENTRE_NODE, Parsers.BLOCK_LOCATION::deserialize);
         return map;
     }
 }
