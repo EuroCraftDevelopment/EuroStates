@@ -26,10 +26,10 @@ jobs:
     - name: Build with Maven
       run: mvn javadoc:javadoc --file pom.xml
 
-    - name: Published to Github pages
-      uses: crazy-max/ghaction-github-pages@v1
+    - name: Deploy to GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2
       with:
         target_branch: gh-pages
-        build_dir: target/site/apidocs/
+        build_dir: target/site/apidocs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_REPO_TOKEN }}
