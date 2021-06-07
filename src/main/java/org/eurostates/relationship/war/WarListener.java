@@ -4,11 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
+import org.eurostates.config.Config;
 import org.eurostates.parser.Parsers;
 import org.eurostates.relationship.WarRelationship;
+import org.eurostates.util.Utils;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class WarListener implements Listener {
@@ -46,7 +50,7 @@ public class WarListener implements Listener {
             return;
         }
         WarSide side = opWarSide.get();
-        //TODO get config
-
+        double killScoreAddition = Utils.throwOr(IOException.class, () -> EuroStates.getPlugin().getConfiguration().parse(Config.WAR_SCORE_KILL), 60.0);
+        side.setScore(side.getScore() + killScoreAddition);
     }
 }

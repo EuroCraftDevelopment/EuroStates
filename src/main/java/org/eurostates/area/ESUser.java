@@ -43,10 +43,13 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
             return Ranks.CITIZEN;
         }
         return Ranks.NOMAD;
-
     }
 
-    public void setRank(@NotNull String rank) {
+    public Optional<String> getAssignedRank(){
+        return Optional.ofNullable(this.rank);
+    }
+
+    public void setRank(@Nullable String rank) {
         this.rank = rank;
     }
 

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@Deprecated
 public class StateForceEditCommand implements ArgumentCommand {
     public static final ExactArgument ADMIN_ARGUMENT = new ExactArgument("admin");
     public static final ExactArgument FORCE_EDIT_ARGUMENT = new ExactArgument("forceedit");
@@ -117,7 +118,7 @@ public class StateForceEditCommand implements ArgumentCommand {
 
         }
 
-        // TODO Fix save
+
         try {
             customState.save();
         } catch (IOException e) {

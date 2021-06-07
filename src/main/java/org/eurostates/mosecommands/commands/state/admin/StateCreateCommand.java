@@ -5,11 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.state.State;
-import org.eurostates.area.town.Town;
+import org.eurostates.area.state.States;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
-import org.eurostates.mosecommands.arguments.area.TownArgument;
 import org.eurostates.mosecommands.arguments.operation.ExactArgument;
 import org.eurostates.mosecommands.arguments.simple.StringArgument;
 import org.eurostates.mosecommands.arguments.source.OfflinePlayerArgument;
@@ -47,17 +45,17 @@ public class StateCreateCommand implements ArgumentCommand {
         String stateName = context.getArgument(this, STATENAME_ARGUMENT);
         OfflinePlayer leader = context.getArgument(this, LEADER_ARGUMENT);
 
-        if(!(leader.hasPlayedBefore())) { // Check if leader joined server before
+        if (!(leader.hasPlayedBefore())) { // Check if leader joined server before
             context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " +
                     ChatColor.RED + "The player has not played on the server before.");
             return true;
         }
         UUID id = UUID.randomUUID();
         String stateTag = stateName.substring(0, 3).toUpperCase();
-        CustomState newState = new CustomState(id, stateTag, stateName, 'r', leader.getUniqueId());
-
         ESUser leaderUser = Parsers.GETTER_USER.fromId(leader.getUniqueId());
-        newState.register(leaderUser);
+
+        CustomState newState = new CustomState(id, stateTag, stateName, 'r', leaderUser, stateName);
+        States.CUSTOM_STATES.add(newState);
 
         try {
             newState.save();
@@ -67,8 +65,8 @@ public class StateCreateCommand implements ArgumentCommand {
 
 
         Bukkit.broadcastMessage(
-                ChatColor.BLUE+"[EuroStates] " + ChatColor.WHITE+
-                        stateName + " has been formed with the owner as " + leader.getName()+"!"
+                ChatColor.BLUE + "[EuroStates] " + ChatColor.WHITE +
+                        stateName + " has been formed with the owner as " + leader.getName() + "!"
         );
 
         return true;

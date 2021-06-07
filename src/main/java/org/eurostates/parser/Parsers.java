@@ -12,6 +12,7 @@ import org.eurostates.parser.util.LocationParser;
 import org.eurostates.parser.util.UUIDParser;
 import org.eurostates.parser.util.WorldParser;
 import org.eurostates.parser.wrapper.DoubleWrapperParser;
+import org.eurostates.parser.wrapper.IntegerWrapperParser;
 import org.eurostates.parser.wrapper.StringWrapperParser;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +42,7 @@ public final class Parsers {
 
     public static final StringWrapperParser STRING_WRAPPER = new StringWrapperParser();
     public static final DoubleWrapperParser DOUBLE_WRAPPER = new DoubleWrapperParser();
+    public static final IntegerWrapperParser INTEGER_WRAPPER = new IntegerWrapperParser();
 
     private Parsers() {
         throw new IllegalArgumentException("Whats the benefit to calling this");
