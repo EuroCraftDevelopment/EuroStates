@@ -1,6 +1,6 @@
 package org.eurostates.util;
 
-import org.eurostates.lamda.throwable.single.ThrowableConsumer;
+import org.eurostates.util.lamda.throwable.single.ThrowableConsumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;

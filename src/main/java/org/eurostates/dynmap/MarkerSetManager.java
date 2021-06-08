@@ -3,11 +3,9 @@ package org.eurostates.dynmap;
 import org.bukkit.Bukkit;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.Marker;
-import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.eurostates.EuroStates;
 import org.eurostates.area.state.States;
-import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 
 public class MarkerSetManager {
@@ -26,7 +24,7 @@ public class MarkerSetManager {
                 false);
         States.CUSTOM_STATES.forEach(state -> {
             state.getTowns().forEach(town -> {
-                CustomTown customTown = (CustomTown) town;
+                Town customTown = (Town) town;
                 markerSet.createMarker(
                         customTown.getId().toString(),
                         customTown.getName(),
@@ -41,7 +39,7 @@ public class MarkerSetManager {
         });
     }
 
-    public static void addTownMarker(CustomTown town) {
+    public static void addTownMarker(Town town) {
         DynmapCommonAPI dapi = EuroStates.getDynmapAPI();
         MarkerSet markerSet = dapi.getMarkerAPI().getMarkerSet(MSET_ID);
 
@@ -56,7 +54,7 @@ public class MarkerSetManager {
                 false
         );
     }
-    public static void removeTownMarker(CustomTown town) {
+    public static void removeTownMarker(Town town) {
         DynmapCommonAPI dapi = EuroStates.getDynmapAPI();
         MarkerSet markerSet = dapi.getMarkerAPI().getMarkerSet(MSET_ID);
 

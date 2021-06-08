@@ -7,7 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.mosecommands.ArgumentCommand;
@@ -71,7 +70,7 @@ public class TownCreateCommand implements ArgumentCommand {
 
         Player sourcePlayer = (Player) context.getSource();
         Block temporaryCenter = sourcePlayer.getLocation().getBlock();
-        CustomTown newTown = new CustomTown(id, townTag, townName, mayorUser.getOwnerId(), state, temporaryCenter);
+        Town newTown = new Town(id, townTag, townName, mayorUser.getOwnerId(), state, temporaryCenter);
 
         try {
             newTown.save();

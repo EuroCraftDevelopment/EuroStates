@@ -3,6 +3,7 @@ package org.eurostates.mosecommands.commands.state.leader;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
@@ -97,6 +98,8 @@ public class StateEditPrefixCommand implements ArgumentCommand {
         user.setRank(newPrefix);
         context.getSource().sendMessage(ChatColor.BLUE + "[EuroStates] " + ChatColor.RESET +
                 "Changed prefix" + oldPre + " to " + newPrefix);
+
+        EuroStates.getPlugin().register(user);
         try {
             user.save();
         } catch (IOException e) {

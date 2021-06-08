@@ -5,7 +5,7 @@ import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.State;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
-import org.eurostates.ownable.PlayerOwnable;
+import org.eurostates.area.ownable.PlayerOwnable;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.user.GetterUserParser;
@@ -94,5 +94,19 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
     @Override
     public @NotNull String getRootNode() {
         return "user";
+    }
+
+    @Override
+    public int hashCode() {
+        return this.uuid.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ESUser)) {
+            return false;
+        }
+        ESUser user = (ESUser) obj;
+        return user.getOwnerId().equals(this.uuid);
     }
 }

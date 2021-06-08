@@ -2,8 +2,8 @@ package org.eurostates.parser.area.state;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.town.CustomTown;
-import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
+import org.eurostates.area.town.Town;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -57,8 +57,8 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(TOWNS_NODE, from
                 .getTowns()
                 .parallelStream()
-                .filter(t -> t instanceof CustomTown)
-                .map(t -> ((CustomTown) t).getId().toString())
+                .filter(t -> t instanceof Town)
+                .map(t -> ((Town) t).getId().toString())
                 .collect(Collectors.toList()));
         return map;
     }

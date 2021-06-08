@@ -3,7 +3,6 @@ package org.eurostates.mosecommands.commands.town.admin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.dynmap.MarkerSetManager;
 import org.eurostates.mosecommands.ArgumentCommand;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class TownDeleteCommand implements ArgumentCommand {
+
     public static final ExactArgument ADMIN_ARGUMENT = new ExactArgument("admin");
     public static final ExactArgument DELETE_ARGUMENT = new ExactArgument("delete");
     public static final TownArgument TOWN_ARGUMENT = new TownArgument("town");
@@ -46,7 +46,7 @@ public class TownDeleteCommand implements ArgumentCommand {
         File file = town.getOwnerUser().getFile();
         boolean didDelete = file.delete();
 
-        if(!didDelete) Bukkit.getLogger().warning("Could not delete state file: " + file.toString());
+        if (!didDelete) Bukkit.getLogger().warning("Could not delete state file: " + file.toString());
 
         try {
             state.save();
@@ -54,10 +54,10 @@ public class TownDeleteCommand implements ArgumentCommand {
             e.printStackTrace();
         }
 
-        MarkerSetManager.removeTownMarker((CustomTown) town);
+        MarkerSetManager.removeTownMarker((Town) town);
 
-        Bukkit.broadcastMessage(ChatColor.BLUE+"[EuroStates] "+
-                ChatColor.WHITE+"Town "+town.getName()+" was forcibly disbanded.");
+        Bukkit.broadcastMessage(ChatColor.BLUE + "[EuroStates] " +
+                ChatColor.WHITE + "Town " + town.getName() + " was forcibly disbanded.");
 
         return true;
     }

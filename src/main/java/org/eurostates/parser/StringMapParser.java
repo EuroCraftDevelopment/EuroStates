@@ -3,7 +3,7 @@ package org.eurostates.parser;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

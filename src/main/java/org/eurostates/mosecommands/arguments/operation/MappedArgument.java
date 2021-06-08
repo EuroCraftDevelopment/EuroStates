@@ -1,6 +1,6 @@
 package org.eurostates.mosecommands.arguments.operation;
 
-import org.eurostates.lamda.throwable.single.ThrowableFunction;
+import org.eurostates.util.lamda.throwable.single.ThrowableFunction;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;

@@ -11,7 +11,6 @@ import org.dynmap.DynmapCommonAPI;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
-import org.eurostates.area.town.CustomTown;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
 import org.eurostates.dynmap.DAPIProvider;
@@ -20,7 +19,7 @@ import org.eurostates.events.Listeners;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
-import org.eurostates.relationship.Relationship;
+import org.eurostates.area.relationship.Relationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -44,9 +43,9 @@ public final class EuroStates extends JavaPlugin {
     private void initStates() {
         Bukkit.getLogger().info("States init.");
         Set<CustomState> states = loadStates();
-        Set<CustomTown> towns = loadTowns();
+        Set<Town> towns = loadTowns();
         states.forEach(state -> {
-            Set<CustomTown> assignedTowns = towns
+            Set<Town> assignedTowns = towns
                     .parallelStream()
                     .filter(town -> town.getState().equals(state))
                     .collect(Collectors.toSet());
@@ -56,7 +55,7 @@ public final class EuroStates extends JavaPlugin {
         this.users.addAll(users);
     }
 
-    private @NotNull Set<CustomTown> loadTowns() {
+    private @NotNull Set<Town> loadTowns() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/towns/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null) {
@@ -64,7 +63,7 @@ public final class EuroStates extends JavaPlugin {
         }
         String rootNode = "Town";
 
-        Set<CustomTown> set = new HashSet<>();
+        Set<Town> set = new HashSet<>();
         for (File file : files) {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             try {
@@ -185,11 +184,9 @@ public final class EuroStates extends JavaPlugin {
                 .collect(Collectors.toSet());
     }
 
-    public @NotNull Optional<CustomTown> getTown(@NotNull UUID uuid) {
+    public @NotNull Optional<Town> getTown(@NotNull UUID uuid) {
         return this.getTowns()
                 .parallelStream()
-                .filter(town -> town instanceof CustomTown)
-                .map(town -> (CustomTown) town)
                 .filter(town -> town.getId().equals(uuid))
                 .findAny();
     }
@@ -202,7 +199,18 @@ public final class EuroStates extends JavaPlugin {
         return this
                 .getUsers()
                 .parallelStream()
-                .filter(user -> user.getOwnerId().equals(uuid))
+                .filter(user -> {
+                    UUID userId = user.getOwnerId();
+                    return userId.equals(uuid);
+                })
                 .findAny();
+    }
+
+    public void register(ESUser user){
+        if(!user.getAssignedRank().isPresent()){
+            //NO NEED TO REGISTER
+            return;
+        }
+        this.users.add(user);
     }
 }
