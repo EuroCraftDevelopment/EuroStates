@@ -1,11 +1,13 @@
 package org.eurostates.area.relationship.war;
 
 import org.eurostates.EuroStates;
+import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
 import org.eurostates.util.Utils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class WarTown {
 
@@ -31,6 +33,16 @@ public class WarTown {
 
     public WarSide getCauseTown() {
         return causeTown;
+    }
+
+    public Optional<WarSide> getTown(Town town){
+        if(this.getCauseTown().getTown().equals(town)){
+            return Optional.of(this.getCauseTown());
+        }
+        if(this.getTargetTown().getTown().equals(town)){
+            return Optional.of(this.getTargetTown());
+        }
+        return Optional.empty();
     }
 
     public WarSide[] getTowns() {

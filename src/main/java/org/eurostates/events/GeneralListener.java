@@ -10,7 +10,7 @@ import org.eurostates.parser.Parsers;
 
 import java.util.UUID;
 
-public class Listeners implements Listener {
+public class GeneralListener implements Listener {
 
     @EventHandler
     public void onMessage(AsyncPlayerChatEvent event) {

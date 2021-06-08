@@ -16,7 +16,7 @@ public class MarkerSetManager {
 
     public static void initMarkerSet() {
         Bukkit.getLogger().info("Starting Dynmap MarkerSet init...");
-        DynmapCommonAPI dapi = EuroStates.getDynmapAPI();
+        DynmapCommonAPI dapi = EuroStates.getDynmapApi();
         MarkerSet markerSet = dapi.getMarkerAPI().createMarkerSet(
                 MSET_ID,
                 MSET_LABEL,
@@ -40,7 +40,7 @@ public class MarkerSetManager {
     }
 
     public static void addTownMarker(Town town) {
-        DynmapCommonAPI dapi = EuroStates.getDynmapAPI();
+        DynmapCommonAPI dapi = EuroStates.getDynmapApi();
         MarkerSet markerSet = dapi.getMarkerAPI().getMarkerSet(MSET_ID);
 
         markerSet.createMarker(
@@ -55,7 +55,7 @@ public class MarkerSetManager {
         );
     }
     public static void removeTownMarker(Town town) {
-        DynmapCommonAPI dapi = EuroStates.getDynmapAPI();
+        DynmapCommonAPI dapi = EuroStates.getDynmapApi();
         MarkerSet markerSet = dapi.getMarkerAPI().getMarkerSet(MSET_ID);
 
         Marker marker = markerSet.findMarker(town.getId().toString());

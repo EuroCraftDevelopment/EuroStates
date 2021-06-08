@@ -9,17 +9,18 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
 import org.eurostates.area.ESUser;
+import org.eurostates.area.relationship.Relationship;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
 import org.eurostates.dynmap.DAPIProvider;
 import org.eurostates.dynmap.MarkerSetManager;
-import org.eurostates.events.Listeners;
+import org.eurostates.events.GeneralListener;
+import org.eurostates.events.WarListener;
 import org.eurostates.mosecommands.bukkit.BukkitCommand;
 import org.eurostates.mosecommands.bukkit.BukkitCommands;
 import org.eurostates.parser.Parsers;
-import org.eurostates.area.relationship.Relationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -30,14 +31,22 @@ import java.util.stream.Collectors;
 public final class EuroStates extends JavaPlugin {
 
     static EuroStates plugin;
-    static LuckPerms api;
-    static DynmapCommonAPI dapi;
+    static LuckPerms luckPermsApi;
+    static DynmapCommonAPI dynmapApi;
 
     private final Set<Relationship> relationships = new HashSet<>();
     private final Set<ESUser> users = new HashSet<>();
 
     public static @NotNull EuroStates getPlugin() {
         return plugin;
+    }
+
+    public static @NotNull DynmapCommonAPI getDynmapApi() {
+        return dynmapApi;
+    }
+
+    public static @NotNull LuckPerms getLuckPermsApi() {
+        return luckPermsApi;
     }
 
     private void initStates() {
@@ -120,14 +129,6 @@ public final class EuroStates extends JavaPlugin {
         return states;
     }
 
-    public static @NotNull DynmapCommonAPI getDynmapAPI() {
-        return dapi;
-    }
-
-    public static @NotNull LuckPerms getLuckPermsApi() {
-        return api;
-    }
-
     public Config getConfiguration() {
         return new Config(new File(this.getDataFolder(), "config.yml"));
     }
@@ -141,7 +142,7 @@ public final class EuroStates extends JavaPlugin {
         // Plugin startup logic
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
-            api = provider.getProvider();
+            luckPermsApi = provider.getProvider();
         }
 
         plugin = this; // For further plugin obj access
@@ -149,7 +150,7 @@ public final class EuroStates extends JavaPlugin {
 
         initStates();
 
-        dapi = DAPIProvider.registerDynmap(plugin);
+        dynmapApi = DAPIProvider.registerDynmap(plugin);
         MarkerSetManager.initMarkerSet();
 
 
@@ -163,7 +164,8 @@ public final class EuroStates extends JavaPlugin {
         }
 
         //EventHandler.registerEvents();
-        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+        Bukkit.getPluginManager().registerEvents(new GeneralListener(), this);
+        Bukkit.getPluginManager().registerEvents(new WarListener(), this);
 
     }
 
@@ -206,8 +208,8 @@ public final class EuroStates extends JavaPlugin {
                 .findAny();
     }
 
-    public void register(ESUser user){
-        if(!user.getAssignedRank().isPresent()){
+    public void register(ESUser user) {
+        if (!user.getAssignedRank().isPresent()) {
             //NO NEED TO REGISTER
             return;
         }
