@@ -22,11 +22,6 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
     private final Set<Technology> requirements = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
 
-    public static final String ID_NODE = "id";
-    public static final String DESC_NODE = "description";
-    public static final String REQ_NODE = "requirements";
-    public static final String PERM_NODE = "permissions";
-
     public Technology(@NotNull UUID id, @NotNull String name) {
         this(id, name, null, Collections.emptySet());
     }
@@ -67,46 +62,13 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
         return this.permissions;
     }
 
-    @Deprecated //magic values! stop!
-    public void setRequirements(Collection<String> requirements) {
-        throw new RuntimeException("NO MAGIC VALUE");
-    }
-
     @Deprecated
     public Set<String> getRequirements() {
         return this.requirements.parallelStream().map(tec -> tec.name).collect(Collectors.toSet());
     }
 
-    @Deprecated
-    public static File getFile(String id) {
-        Plugin plugin = EuroStates.getPlugin();
-        return new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "technology" + File.separator + id + ".yml");
-    }
-
-    @Deprecated
-    public static Technology getFromFile(String id) throws IOException {
-        /*Technology technology = new Technology(id);
-        File file = getFile(id);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-        technology.setID(ParseLoadedData.getString(config, ID_NODE));
-        technology.setPermissions(new HashSet<>(ParseLoadedData.getStringList(config, PERM_NODE)));
-        technology.setRequirements(new HashSet<>(ParseLoadedData.getStringList(config, REQ_NODE)));
-        return technology;*/
-        throw new RuntimeException("Not implemented");
-    }
-
-    @Deprecated
-    public void saveToFile(String id) throws IOException {
-        File file = getFile(id);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-        config.set(ID_NODE, this.id);
-        config.set(DESC_NODE, this.description);
-        config.set(REQ_NODE, this.requirements);
-        config.set(PERM_NODE, this.permissions);
-
-        config.save(file);
+    public Set<Technology> getDependents(){
+        return this.requirements;
     }
 
     @Override
