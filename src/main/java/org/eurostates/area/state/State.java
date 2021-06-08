@@ -4,16 +4,11 @@ import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.eurostates.EuroStates;
 import org.eurostates.area.Area;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
 import org.eurostates.parser.Parsers;
-import org.eurostates.relationship.AbstractRelationship;
-import org.eurostates.relationship.Relationship;
-import org.eurostates.relationship.RelationshipStatus;
-import org.eurostates.relationship.war.WarRelationship;
-import org.eurostates.technology.Technology;
+import org.eurostates.area.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -37,11 +32,6 @@ public interface State extends Area {
 
     default @NotNull Set<String> getRanks() {
         return getEuroStatesCitizens().parallelStream().map(ESUser::getRank).collect(Collectors.toSet());
-    }
-
-    @Override
-    default Set<Relationship> getRelationships() {
-        return EuroStates.getPlugin().getRelationships().parallelStream().filter(r -> r.getStates().contains(this)).collect(Collectors.toSet());
     }
 
     @Deprecated

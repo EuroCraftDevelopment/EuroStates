@@ -1,6 +1,6 @@
 package org.eurostates.parser;
 
-import org.eurostates.lamda.throwable.single.ThrowableFunction;
+import org.eurostates.util.lamda.throwable.single.ThrowableFunction;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
 import org.eurostates.parser.area.town.GetterTownParser;

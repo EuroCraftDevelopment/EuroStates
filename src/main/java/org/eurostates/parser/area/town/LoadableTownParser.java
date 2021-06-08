@@ -4,8 +4,8 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
-import org.eurostates.area.town.CustomTown;
-import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
+import org.eurostates.area.town.Town;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class LoadableTownParser implements StringMapParser<CustomTown> {
+public class LoadableTownParser implements StringMapParser<Town> {
 
     public static final String UUID_NODE = "Id";
     public static final String TAG_NODE = "Tag";
@@ -25,7 +25,7 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
     public static final String CENTRE_NODE = "Centre";
 
     @Override
-    public @NotNull Map<String, Object> to(@NotNull CustomTown from) throws IOException {
+    public @NotNull Map<String, Object> to(@NotNull Town from) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_NODE, Parsers.UUID.to(from.getId()));
         map.put(TAG_NODE, from.getTag());
@@ -37,14 +37,14 @@ public class LoadableTownParser implements StringMapParser<CustomTown> {
     }
 
     @Override
-    public @NotNull CustomTown from(@NotNull Map<String, Object> from) throws IOException {
+    public @NotNull Town from(@NotNull Map<String, Object> from) throws IOException {
         UUID id = Parsers.UUID.from(notNull((String) from.get(UUID_NODE), "No Town Id found"));
         String tag = notNull((String) from.get(TAG_NODE), "No tag node found");
         String name = notNull((String) from.get(NAME_NODE), "No name node found");
         UUID owner = Parsers.UUID.from(notNull((String) from.get(OWNER_NODE), "No Owner found"));
         CustomState state = Parsers.GETTER_STATE.from(notNull((String) from.get(STATE_NODE), "No State Id found"));
         Block centre = notNull((Block) from.get(CENTRE_NODE), "No centre found");
-        return new CustomTown(id, tag, name, owner, state, centre);
+        return new Town(id, tag, name, owner, state, centre);
     }
 
     private <T> T notNull(T value, String error) throws IOException {

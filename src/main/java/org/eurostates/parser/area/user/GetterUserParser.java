@@ -11,12 +11,12 @@ import java.util.UUID;
 
 public class GetterUserParser implements StringParser<ESUser> {
 
-    public @NotNull UUID toId(@NotNull ESUser from) throws IOException {
+    public @NotNull UUID toId(@NotNull ESUser from) {
         return from.getOwnerId();
     }
 
     public @NotNull ESUser fromId(@NotNull UUID from) {
-        return EuroStates.getPlugin().getUser(from).orElse(new ESUser(from));
+        return EuroStates.getPlugin().getUser(from).orElseGet(() -> new ESUser(from));
     }
 
     @Override

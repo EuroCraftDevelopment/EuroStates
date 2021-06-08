@@ -10,16 +10,16 @@ import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.town.Town;
-import org.eurostates.ownable.PlayerOwnable;
+import org.eurostates.area.ownable.PlayerOwnable;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
-import org.eurostates.relationship.AbstractRelationship;
-import org.eurostates.relationship.Relationship;
-import org.eurostates.relationship.RelationshipStatus;
-import org.eurostates.relationship.war.WarRelationship;
-import org.eurostates.technology.Technology;
+import org.eurostates.area.relationship.AbstractRelationship;
+import org.eurostates.area.relationship.Relationship;
+import org.eurostates.area.relationship.RelationshipStatus;
+import org.eurostates.area.relationship.war.WarRelationship;
+import org.eurostates.area.technology.Technology;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -231,6 +231,11 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     public Set<User> getLuckPermsCitizens() {
         return this.users.stream().map(user -> EuroStates.getLuckPermsApi().getUserManager().getUser(user)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Relationship> getRelationships() {
+        return EuroStates.getPlugin().getRelationships().parallelStream().filter(r -> r.getStates().contains(CustomState.this)).collect(Collectors.toSet());
     }
 
     public void register(ESUser user) {

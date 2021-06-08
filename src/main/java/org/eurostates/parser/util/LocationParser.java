@@ -3,7 +3,7 @@ package org.eurostates.parser.util;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;

@@ -2,7 +2,7 @@ package org.eurostates.parser.area.user;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.ESUser;
-import org.eurostates.lamda.throwable.bi.ThrowableBiFunction;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.jetbrains.annotations.NotNull;

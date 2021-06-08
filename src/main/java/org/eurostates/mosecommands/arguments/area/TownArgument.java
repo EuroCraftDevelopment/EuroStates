@@ -3,7 +3,7 @@ package org.eurostates.mosecommands.arguments.area;
 import org.bukkit.command.CommandSender;
 import org.eurostates.area.state.States;
 import org.eurostates.area.town.Town;
-import org.eurostates.lamda.throwable.bi.ThrowableBiConsumer;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiConsumer;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;

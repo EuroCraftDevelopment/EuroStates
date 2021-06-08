@@ -15,6 +15,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @deprecated Use {@link org.eurostates.mosecommands.arguments.operation.CollectionArgument}
+ */
+@Deprecated
 public class OfflinePlayerArgument implements CommandArgument<OfflinePlayer> {
 
     private @NotNull String id;

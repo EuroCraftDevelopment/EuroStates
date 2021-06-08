@@ -30,7 +30,7 @@ public class BukkitCommand implements TabExecutor {
             if (errors.size() >= 1) {
                 sender.sendMessage(errors.iterator().next().getError());
             }
-            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).collect(Collectors.toList()).forEach(a -> {
+            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).forEach(a -> {
                 String usage = Stream
                         .of(a.getArguments())
                         .map(CommandArgument::getUsage)
@@ -52,6 +52,7 @@ public class BukkitCommand implements TabExecutor {
         return context
                 .getPotentialCommands()
                 .stream()
+                .filter(c -> c.canRun(sender))
                 .flatMap(c -> context.getSuggestions(c).parallelStream())
                 .collect(Collectors.toList());
     }
