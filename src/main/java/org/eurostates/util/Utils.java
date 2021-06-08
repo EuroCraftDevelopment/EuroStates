@@ -2,6 +2,7 @@ package org.eurostates.util;
 
 import org.eurostates.util.lamda.throwable.single.ThrowableConsumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -11,13 +12,7 @@ import java.util.function.Function;
 
 public interface Utils {
 
-    enum Compare {
-        BETTER,
-        EQUAL,
-        WORSE
-    }
-
-    static <F, E extends Throwable> @NotNull F throwOr(@NotNull Class<E> clazz, @NotNull ThrowableConsumer<F, E> consumer, @NotNull F fail) {
+    static <F, E extends Throwable> @Nullable F throwOr(@NotNull Class<E> clazz, @NotNull ThrowableConsumer<F, E> consumer, @Nullable F fail) {
         try {
             return consumer.run();
         } catch (Throwable e) {
@@ -72,5 +67,11 @@ public interface Utils {
             }
         }
         return winning;
+    }
+
+    enum Compare {
+        BETTER,
+        EQUAL,
+        WORSE
     }
 }
