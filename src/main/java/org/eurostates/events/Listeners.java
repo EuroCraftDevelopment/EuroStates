@@ -17,7 +17,7 @@ public class Listeners implements Listener {
         UUID playerId = event.getPlayer().getUniqueId();
         ESUser user = Parsers.GETTER_USER.fromId(playerId);
         State state = user.getState();
-        event.setFormat(state.getLegacyChatColour() + "[" + user.getRank() + "]" + ChatColor.RESET + " %s : %s");
+        event.setFormat(state.getLegacyChatColour() + "[" + state.getTag() + "]" + ChatColor.RESET + " %s : %s");
 
         //these two do the same thing. Look how much smaller this is :)
 
