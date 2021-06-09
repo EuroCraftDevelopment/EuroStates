@@ -1,5 +1,6 @@
 package org.eurostates.area;
 
+import org.bukkit.Bukkit;
 import org.eurostates.EuroStates;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.State;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object>, String> {
 
@@ -64,11 +66,11 @@ public class ESUser implements PlayerOwnable, Savable<ESUser, Map<String, Object
     }
 
     public @NotNull State getState() {
-        Optional<Town> opTown = this.getTown();
-        if (opTown.isPresent()) {
-            return opTown.get().getState();
-        }
-        return States.NOMAD_STATE;
+        return States.CUSTOM_STATES.parallelStream()
+                .filter(s->s.getCitizenIds().contains(this.uuid))
+                .findAny()
+                .map(s-> (State) s)
+                .orElse(States.NOMAD_STATE);
     }
 
     @Override

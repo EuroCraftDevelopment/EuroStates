@@ -1,5 +1,6 @@
 package org.eurostates.mosecommands.bukkit;
 
+import com.sun.jdi.connect.Connector;
 import org.eurostates.mosecommands.ArgumentCommands;
 
 public interface BukkitCommands {
@@ -18,6 +19,8 @@ public interface BukkitCommands {
             ArgumentCommands.STATE_EDIT_PREFIX,
             ArgumentCommands.STATE_EDIT_CURRENCY,
             ArgumentCommands.STATE_VIEW,
-            ArgumentCommands.STATE_FORCE_HANDOVER
+            ArgumentCommands.STATE_FORCE_HANDOVER,
+            ArgumentCommands.STATE_INVITE_COMMAND,
+            ArgumentCommands.STATE_INVITE_COMMAND
     );
 }
