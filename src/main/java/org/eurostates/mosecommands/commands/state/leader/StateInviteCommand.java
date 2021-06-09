@@ -57,7 +57,7 @@ public class StateInviteCommand implements ArgumentCommand {
 
         CustomState customInvitedState = (CustomState) invitedState;
 
-        if(customInvitedState.getOwnerId()!=inviter.getOwnerId()) {
+        if(!(customInvitedState.getOwnerId().toString().equals(inviterPlayer.getUniqueId().toString()))) {
             inviterPlayer.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RED+
                     "You are not the leader of state."); return true;
         }

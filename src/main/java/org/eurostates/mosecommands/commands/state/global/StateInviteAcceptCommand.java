@@ -52,7 +52,7 @@ public class StateInviteAcceptCommand implements ArgumentCommand {
                     "You do not have any pending invitations."); return true;
         }
 
-        state.getCitizens().add(player);
+        state.register(user);
 
         Bukkit.broadcastMessage(ChatColor.BLUE + "[EuroStates] "+ChatColor.RESET+
                 player.getDisplayName()+" has joined "+state.getName()+"!");
