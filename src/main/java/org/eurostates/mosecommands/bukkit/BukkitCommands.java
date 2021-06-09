@@ -1,6 +1,5 @@
 package org.eurostates.mosecommands.bukkit;
 
-import com.sun.jdi.connect.Connector;
 import org.eurostates.mosecommands.ArgumentCommands;
 
 public interface BukkitCommands {
