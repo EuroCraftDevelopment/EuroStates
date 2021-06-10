@@ -27,7 +27,7 @@ public class PreArgument<T> implements CommandArgument<T> {
 
     @Override
     public Map.@NotNull Entry<T, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) throws IOException {
-        if (this.success.parse(context, new CommandArgumentContext<>(this.success, argument.getFirstArgument(), context.getCommand())).getKey()) {
+        if (this.success.parse(context, new CommandArgumentContext<>(this.success, argument)).getKey()) {
             return this.wrapper.parse(context, argument);
         }
         throw new IOException("Unknown Error (Developer didn't specify");

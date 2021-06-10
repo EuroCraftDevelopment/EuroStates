@@ -36,10 +36,10 @@ public class BlockLocationArgument implements CommandArgument<Block> {
 
     @Override
     public @NotNull Map.Entry<Block, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<Block> argument) throws IOException {
-        Map.Entry<Integer, Integer> xResult = this.xArg.parse(context, new CommandArgumentContext<>(this.xArg, argument.getFirstArgument(), context.getCommand()));
-        Map.Entry<Integer, Integer> yResult = this.yArg.parse(context, new CommandArgumentContext<>(this.yArg, xResult.getValue(), context.getCommand()));
-        Map.Entry<Integer, Integer> zResult = this.zArg.parse(context, new CommandArgumentContext<>(this.zArg, yResult.getValue(), context.getCommand()));
-        Map.Entry<World, Integer> worldResult = this.worldArg.parse(context, new CommandArgumentContext<>(this.worldArg, zResult.getValue(), context.getCommand()));
+        Map.Entry<Integer, Integer> xResult = this.xArg.parse(context, new CommandArgumentContext<>(this.xArg, argument.getFirstArgument(), argument.isAsSuggestion(), context.getCommand()));
+        Map.Entry<Integer, Integer> yResult = this.yArg.parse(context, new CommandArgumentContext<>(this.yArg, xResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
+        Map.Entry<Integer, Integer> zResult = this.zArg.parse(context, new CommandArgumentContext<>(this.zArg, yResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
+        Map.Entry<World, Integer> worldResult = this.worldArg.parse(context, new CommandArgumentContext<>(this.worldArg, zResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
         Block block = worldResult.getKey().getBlockAt(xResult.getKey(), yResult.getKey(), zResult.getKey());
         return new AbstractMap.SimpleImmutableEntry<>(block, worldResult.getValue());
     }
@@ -59,6 +59,11 @@ public class BlockLocationArgument implements CommandArgument<Block> {
     }
 
     private <T> List<String> suggest(CommandArgument<T> argument, CommandContext commandContext, int A) {
-        return argument.suggest(commandContext, new CommandArgumentContext<>(argument, A, commandContext.getCommand()));
+        return argument.suggest(commandContext, new CommandArgumentContext<>(argument, A, true, commandContext.getCommand()));
+    }
+
+    @Override
+    public @NotNull String getUsage() {
+        return this.xArg.getUsage() + " " + this.yArg.getUsage() + " " + this.zArg.getUsage() + " " + this.worldArg.getUsage();
     }
 }

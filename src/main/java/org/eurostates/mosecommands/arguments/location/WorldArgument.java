@@ -34,13 +34,13 @@ public class WorldArgument implements CommandArgument<World> {
         String worldName = context.getCommand()[argument.getFirstArgument()];
         World world = Bukkit.getWorld(worldName);
         if (world != null) {
-            return new AbstractMap.SimpleImmutableEntry<>(world, argument.getFirstArgument());
+            return new AbstractMap.SimpleImmutableEntry<>(world, argument.getFirstArgument() + 1);
         }
-        if (context.getSource() instanceof Player) {
+        if (!argument.isAsSuggestion() && context.getSource() instanceof Player) {
             Player player = (Player) context.getSource();
             return new AbstractMap.SimpleImmutableEntry<>(player.getWorld(), argument.getFirstArgument());
         }
-        if (context.getSource() instanceof CommandBlock) {
+        if (!argument.isAsSuggestion() && context.getSource() instanceof CommandBlock) {
             CommandBlock block = (CommandBlock) context.getSource();
             return new AbstractMap.SimpleImmutableEntry<>(block.getWorld(), argument.getFirstArgument());
         }

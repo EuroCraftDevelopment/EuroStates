@@ -50,12 +50,15 @@ public class OptionalArgument<T> implements CommandArgument<T> {
 
     @Override
     public @NotNull Map.Entry<T, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) throws IOException {
-        if (context.getCommand().length == argument.getFirstArgument()) {
+        if (!argument.isAsSuggestion() && context.getCommand().length == argument.getFirstArgument()) {
             return new AbstractMap.SimpleImmutableEntry<>(this.value.parse(context, argument).getKey(), argument.getFirstArgument());
         }
         try {
             return this.arg.parse(context, argument);
         } catch (IOException e) {
+            if(argument.isAsSuggestion()){
+                throw e;
+            }
             return new AbstractMap.SimpleImmutableEntry<>(this.value.parse(context, argument).getKey(), argument.getFirstArgument());
         }
     }

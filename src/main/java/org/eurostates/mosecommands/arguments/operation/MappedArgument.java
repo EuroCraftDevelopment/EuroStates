@@ -28,14 +28,14 @@ public class MappedArgument<T, J> implements CommandArgument<T> {
 
     @Override
     public @NotNull Map.Entry<T, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) throws IOException {
-        CommandArgumentContext<J> argContext = new CommandArgumentContext<>(this.commandArgument, argument.getFirstArgument(), context.getCommand());
+        CommandArgumentContext<J> argContext = new CommandArgumentContext<>(this.commandArgument, argument);
         Map.Entry<J, Integer> entry = this.commandArgument.parse(context, argContext);
         return new AbstractMap.SimpleImmutableEntry<>(this.convert.apply(entry.getKey()), entry.getValue());
     }
 
     @Override
     public @NotNull List<String> suggest(@NotNull CommandContext context, @NotNull CommandArgumentContext<T> argument) {
-        CommandArgumentContext<J> argContext = new CommandArgumentContext<>(this.commandArgument, argument.getFirstArgument(), context.getCommand());
+        CommandArgumentContext<J> argContext = new CommandArgumentContext<>(this.commandArgument, argument.getFirstArgument(), true, context.getCommand());
         return this.commandArgument.suggest(context, argContext);
     }
 }
