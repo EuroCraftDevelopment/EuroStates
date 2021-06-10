@@ -14,11 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+/**
+ * @deprecated use {@link org.eurostates.mosecommands.arguments.operation.CollectionArgument#getAsOnlinePlayer(String)} instead
+ */
+@Deprecated
 public class PlayerArgument implements CommandArgument<Player> {
 
-    private @NotNull String id;
+    private final @NotNull String id;
 
     public PlayerArgument(@NotNull String id) {
         this.id = id;

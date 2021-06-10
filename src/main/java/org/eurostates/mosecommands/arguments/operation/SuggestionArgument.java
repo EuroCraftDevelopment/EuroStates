@@ -1,6 +1,7 @@
 package org.eurostates.mosecommands.arguments.operation;
 
 import org.eurostates.mosecommands.arguments.CommandArgument;
+import org.eurostates.mosecommands.arguments.SuggestCommandArgument;
 import org.eurostates.mosecommands.context.CommandArgumentContext;
 import org.eurostates.mosecommands.context.CommandContext;
 import org.jetbrains.annotations.NotNull;
@@ -13,10 +14,10 @@ import java.util.Map;
 public class SuggestionArgument<T> implements CommandArgument<T> {
 
     private final @NotNull CommandArgument<T> argument;
-    private final @NotNull SuggestionArgument<T> extraArguments;
+    private final @NotNull SuggestCommandArgument<T> extraArguments;
     private final boolean overrideOriginal;
 
-    public SuggestionArgument(@NotNull CommandArgument<T> argument, @NotNull SuggestionArgument<T> extraArguments, boolean overrideOriginal) {
+    public SuggestionArgument(@NotNull CommandArgument<T> argument, @NotNull SuggestCommandArgument<T> extraArguments, boolean overrideOriginal) {
         this.argument = argument;
         this.extraArguments = extraArguments;
         this.overrideOriginal = overrideOriginal;

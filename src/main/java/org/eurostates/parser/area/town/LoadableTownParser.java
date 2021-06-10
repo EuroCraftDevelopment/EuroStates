@@ -5,9 +5,9 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.town.Town;
-import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -30,8 +30,8 @@ public class LoadableTownParser implements StringMapParser<Town> {
         map.put(UUID_NODE, Parsers.UUID.to(from.getId()));
         map.put(TAG_NODE, from.getTag());
         map.put(NAME_NODE, from.getName());
-        map.put(OWNER_NODE, from.getOwnerId());
-        map.put(STATE_NODE, from.getStateId());
+        map.put(OWNER_NODE, Parsers.UUID.to(from.getOwnerId()));
+        map.put(STATE_NODE, Parsers.UUID.to(from.getStateId()));
         map.put(CENTRE_NODE, Parsers.BLOCK_LOCATION.to(from.getCentre()));
         return map;
     }
