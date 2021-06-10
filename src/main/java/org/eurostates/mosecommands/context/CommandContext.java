@@ -48,7 +48,7 @@ public class CommandContext {
                 throw new IllegalArgumentException("Not enough provided arguments for value of that argument");
             }
             try {
-                Map.Entry<?, Integer> entry = this.parse(arg, commandArgument);
+                Map.Entry<?, Integer> entry = this.parse(arg, commandArgument, true);
                 if (commandArgument == entry.getValue() && arg instanceof OptionalArgument) {
                     optionalArguments.add((OptionalArgument<?>) arg);
                 } else {
@@ -73,7 +73,11 @@ public class CommandContext {
         return this.getArgument(command, id.getId());
     }
 
-    public <T> @NotNull T getArgument(@NotNull ArgumentCommand command, @NotNull String id) {
+    public <T> @NotNull T getArgument(@NotNull ArgumentCommand command, String id){
+        return getArgument(command, id, false);
+    }
+
+    public <T> @NotNull T getArgument(@NotNull ArgumentCommand command, @NotNull String id, boolean asSuggestion) {
         CommandArgument<?>[] arguments = command.getArguments();
         if (Stream.of(arguments).noneMatch(a -> a.getId().equals(id))) {
             throw new IllegalArgumentException("Argument ID not found within command");
@@ -83,7 +87,7 @@ public class CommandContext {
             if (this.command.length == commandArgument && arg instanceof OptionalArgument) {
                 if (arg.getId().equals(id)) {
                     try {
-                        return (T) this.parse(arg, commandArgument).getKey();
+                        return (T) this.parse(arg, commandArgument, asSuggestion).getKey();
                     } catch (IOException ignored) {
                     }
                 }
@@ -93,7 +97,7 @@ public class CommandContext {
                 throw new IllegalArgumentException("Not enough provided arguments for value of that argument");
             }
             try {
-                Map.Entry<?, Integer> entry = this.parse(arg, commandArgument);
+                Map.Entry<?, Integer> entry = this.parse(arg, commandArgument, asSuggestion);
                 commandArgument = entry.getValue();
                 if (arg.getId().equals(id)) {
                     return (T) entry.getKey();
@@ -120,7 +124,7 @@ public class CommandContext {
                     break;
                 }
                 try {
-                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument);
+                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument, false);
                     commandArgument = entry.getValue();
                 } catch (IOException e) {
                     ErrorContext context = new ErrorContext(command, commandArgument, arg, e.getMessage());
@@ -143,7 +147,7 @@ public class CommandContext {
         });
     }
 
-    public Optional<ArgumentCommand> getCompleteCommand() {
+    public Optional<ArgumentCommand> getCompleteCommand(boolean asSuggestion) {
         return this.potentialCommands.stream().filter(command -> {
             CommandArgument<?>[] arguments = command.getArguments();
             int commandArgument = 0;
@@ -155,7 +159,7 @@ public class CommandContext {
                     return false;
                 }
                 try {
-                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument);
+                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument, asSuggestion);
                     commandArgument = entry.getValue();
                 } catch (IOException e) {
                     return false;
@@ -166,7 +170,7 @@ public class CommandContext {
 
     }
 
-    public Set<ArgumentCommand> getPotentialCommands() {
+    public Set<ArgumentCommand> getPotentialCommands(boolean asSuggestion) {
         Map<ArgumentCommand, Integer> map = new HashMap<>();
         this.potentialCommands.forEach(c -> {
             CommandArgument<?>[] arguments = c.getArguments();
@@ -181,7 +185,7 @@ public class CommandContext {
                     return;
                 }
                 try {
-                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument);
+                    Map.Entry<?, Integer> entry = this.parse(arg, commandArgument, asSuggestion);
                     if (commandArgument != entry.getValue()) {
                         commandArgument = entry.getValue();
                         completeArguments++;
@@ -208,8 +212,8 @@ public class CommandContext {
         return set;
     }
 
-    private <T> Map.Entry<T, Integer> parse(@NotNull CommandArgument<T> arg, int commandArgument) throws IOException {
-        CommandArgumentContext<T> argContext = new CommandArgumentContext<>(arg, commandArgument, this.command);
+    private <T> Map.Entry<T, Integer> parse(@NotNull CommandArgument<T> arg, int commandArgument, boolean asSuggestion) throws IOException {
+        CommandArgumentContext<T> argContext = new CommandArgumentContext<>(arg, commandArgument, asSuggestion, this.command);
         return arg.parse(this, argContext);
     }
 
@@ -217,6 +221,6 @@ public class CommandContext {
         if (this.command.length <= commandArgument) {
             return Collections.emptyList();
         }
-        return arg.suggest(this, new CommandArgumentContext<>(arg, commandArgument, this.command));
+        return arg.suggest(this, new CommandArgumentContext<>(arg, commandArgument, true, this.command));
     }
 }

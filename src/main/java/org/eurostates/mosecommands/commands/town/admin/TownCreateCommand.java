@@ -1,9 +1,6 @@
 package org.eurostates.mosecommands.commands.town.admin;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandSender;
@@ -42,13 +39,23 @@ public class TownCreateCommand implements ArgumentCommand {
     public static final CollectionArgument<OfflinePlayer> MAYOR_ARGUMENT = CollectionArgument.getAsOfflinePlayer("mayor");
     public static final OptionalArgument<Block> BLOCK_LOCATION_ARGUMENT = new OptionalArgument<>(new BlockLocationArgument(
             "centre",
-            createBlockArg(NumberArgument.asInt("temp"), Location::getBlockX),
-            createBlockArg(NumberArgument.asInt("temp"), Location::getBlockY),
-            createBlockArg(NumberArgument.asInt("temp"), Location::getBlockZ),
-            createBlockArg(new WorldArgument("temp"), Location::getWorld)
+            createBlockArg(NumberArgument.asInt("x"), Location::getBlockX),
+            createBlockArg(NumberArgument.asInt("y"), Location::getBlockY),
+            createBlockArg(NumberArgument.asInt("z"), Location::getBlockZ),
+            new OptionalArgument<World>(new WorldArgument("world"), (context, argument) -> {
+                if (context.getSource() instanceof Player) {
+                    World world = ((Player) context.getSource()).getLocation().getWorld();
+                    return new AbstractMap.SimpleImmutableEntry<>(world, argument.getFirstArgument());
+                }
+                if (context.getSource() instanceof CommandBlock) {
+                    World world = ((Player) context.getSource()).getLocation().getWorld();
+                    return new AbstractMap.SimpleImmutableEntry<>(world, argument.getFirstArgument());
+                }
+                throw new IOException("Cannot get your location, please provide one");
+            })
     ), new ParseCommandArgument<Block>() {
         @Override
-        public Map.@NotNull Entry<Block, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<Block> argument) throws IOException {
+        public @NotNull Map.Entry<Block, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<Block> argument) throws IOException {
             if (context.getSource() instanceof Player) {
                 Block block = ((Player) context.getSource()).getLocation().getBlock();
                 return new AbstractMap.SimpleImmutableEntry<>(block, argument.getFirstArgument());

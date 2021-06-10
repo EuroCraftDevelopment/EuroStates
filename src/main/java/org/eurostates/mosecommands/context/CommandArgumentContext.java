@@ -8,13 +8,27 @@ import java.util.Arrays;
 public class CommandArgumentContext<T> {
 
     private final @NotNull ParseCommandArgument<T> argument;
+    private final boolean asSuggestion;
     private int firstArgument;
     private String[] command;
 
     public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, int firstArgument, String... command) {
+        this(argument, firstArgument, false, command);
+    }
+
+    public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, CommandArgumentContext<?> context) {
+        this(argument, context.getFirstArgument(), context.isAsSuggestion(), context.command);
+    }
+
+    public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, int firstArgument, boolean asSuggestion, String... command) {
         this.argument = argument;
         this.firstArgument = firstArgument;
         this.command = command;
+        this.asSuggestion = asSuggestion;
+    }
+
+    public boolean isAsSuggestion() {
+        return this.asSuggestion;
     }
 
     public @NotNull ParseCommandArgument<T> getArgument() {

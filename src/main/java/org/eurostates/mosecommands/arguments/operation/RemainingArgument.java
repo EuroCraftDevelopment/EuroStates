@@ -31,11 +31,11 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
         this.argument = new ArrayList<>(argument);
     }
 
-    private @NotNull Map.Entry<T, Integer> parseAny(@NotNull CommandContext context, int B) throws IOException {
+    private @NotNull Map.Entry<T, Integer> parseAny(@NotNull CommandContext context, CommandArgumentContext<?> caContext) throws IOException {
         IOException e1 = null;
         for (int A = 0; A < this.argument.size(); A++) {
             try {
-                CommandArgumentContext<T> argumentContext = new CommandArgumentContext<>(this.argument.get(A), B, context.getCommand());
+                CommandArgumentContext<T> argumentContext = new CommandArgumentContext<>(this.argument.get(A), caContext);
                 return this.argument.get(A).parse(context, argumentContext);
             } catch (IOException e) {
                 if (A == 0) {
@@ -60,7 +60,7 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
         int A = argument.getFirstArgument();
         List<T> list = new ArrayList<>();
         while (A < context.getCommand().length) {
-            Map.Entry<T, Integer> entry = parseAny(context, A);
+            Map.Entry<T, Integer> entry = parseAny(context, argument);
             A = entry.getValue();
             list.add(entry.getKey());
         }
@@ -73,11 +73,11 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
         while (A < context.getCommand().length) {
             Map.Entry<T, Integer> entry;
             try {
-                entry = parseAny(context, A);
+                entry = parseAny(context, argument);
             } catch (IOException e) {
                 List<String> list = new ArrayList<>();
                 for (CommandArgument<T> arg : this.argument) {
-                    CommandArgumentContext<T> argumentContext = new CommandArgumentContext<>(arg, A, context.getCommand());
+                    CommandArgumentContext<T> argumentContext = new CommandArgumentContext<>(arg, A, true, context.getCommand());
                     list.addAll(arg.suggest(context, argumentContext));
                 }
                 return list;

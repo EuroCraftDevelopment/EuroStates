@@ -40,14 +40,14 @@ public class CollectedRemainingArgument<T, R> implements CommandArgument<R> {
 
     @Override
     public @NotNull Map.Entry<R, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<R> argument) throws IOException {
-        Map.Entry<List<T>, Integer> parsed = this.argument.parse(context, new CommandArgumentContext<>(this.argument, argument.getFirstArgument(), context.getCommand()));
+        Map.Entry<List<T>, Integer> parsed = this.argument.parse(context, new CommandArgumentContext<>(this.argument, argument));
         R collected = parsed.getKey().stream().collect(this.collectors);
         return new AbstractMap.SimpleImmutableEntry<>(collected, parsed.getValue());
     }
 
     @Override
     public @NotNull List<String> suggest(@NotNull CommandContext commandContext, @NotNull CommandArgumentContext<R> argument) {
-        return this.argument.suggest(commandContext, new CommandArgumentContext<>(this.argument, argument.getFirstArgument(), commandContext.getCommand()));
+        return this.argument.suggest(commandContext, new CommandArgumentContext<>(this.argument, argument.getFirstArgument(), true, commandContext.getCommand()));
     }
 
     public static @NotNull CollectedRemainingArgument<CharSequence, String> collectString(@NotNull String id, @NotNull CharSequence joining, CommandArgument<String>... arguments) {
