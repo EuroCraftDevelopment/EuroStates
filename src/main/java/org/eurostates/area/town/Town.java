@@ -2,15 +2,16 @@ package org.eurostates.area.town;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.eurostates.EuroStates;
 import org.eurostates.area.Area;
-import org.eurostates.area.state.CustomState;
 import org.eurostates.area.ownable.PlayerOwnable;
+import org.eurostates.area.relationship.Relationship;
+import org.eurostates.area.relationship.war.WarRelationship;
+import org.eurostates.area.state.CustomState;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.area.town.GetterTownParser;
 import org.eurostates.parser.area.town.LoadableTownParser;
-import org.eurostates.area.relationship.Relationship;
-import org.eurostates.area.relationship.war.WarRelationship;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -124,7 +125,7 @@ public class Town implements Area, PlayerOwnable, Savable<Town, Map<String, Obje
 
     @Override
     public @NotNull File getFile() {
-        return new File("data/towns/" + this.getId() + ".yml");
+        return new File(EuroStates.getPlugin().getDataFolder(), "data/towns/" + this.getId() + ".yml");
     }
 
     @Override
