@@ -1,5 +1,6 @@
 package org.eurostates.mosecommands.bukkit;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -43,7 +44,17 @@ public class BukkitCommand implements TabExecutor {
         if (!cmd.canRun(sender)) {
             return true;
         }
-        return cmd.run(context, args);
+        try {
+            return cmd.run(context, args);
+        } catch (IllegalArgumentException e) {
+            sender.sendMessage(ChatColor.RED + e.getMessage());
+            String usage = Stream
+                    .of(cmd.getArguments())
+                    .map(CommandArgument::getUsage)
+                    .collect(Collectors.joining(" "));
+            sender.sendMessage(label + " " + usage);
+            return true;
+        }
     }
 
     @Override
