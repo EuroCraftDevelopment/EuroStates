@@ -2,6 +2,7 @@ package org.eurostates.parser.area.state;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
+import org.eurostates.area.technology.Technology;
 import org.eurostates.area.town.Town;
 import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
@@ -51,7 +52,11 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(NAME_NODE, from.getName());
         map.put(OWNER_NODE, Parsers.UUID.to(from.getOwnerId()));
         map.put(COLOUR_NODE, from.getLegacyChatColourCharacter() + "");
-        //map.put(TECHNOLOGY_NODE, from.getTechnology());
+        map.put(TECHNOLOGY_NODE, from
+                .getTechnology()
+                .stream()
+                .map(Technology::getIdentifier)
+                .collect(Collectors.toList()));
         map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.UUID, from.getCitizenIds()));
         map.put(CURRENCY_NODE, from.getCurrency());
         map.put(TOWNS_NODE, from
@@ -77,7 +82,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         } catch (Throwable e) {
             throw new IOException(e);
         }
-        //List<String> permissions = get(from, PERMISSIONS_NODE);
+        List<Technology> permissions = get(from, TECHNOLOGY_NODE);
         List<String> citizenIdsStr = get(from, CITIZENS_NODE);
         List<UUID> users = Parsers.collectFromOrThrow(Parsers.UUID, citizenIdsStr);
         state.getCitizenIds().addAll(users);
