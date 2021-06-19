@@ -64,7 +64,8 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
         int A = argument.getFirstArgument();
         List<T> list = new ArrayList<>();
         while (A < context.getCommand().length) {
-            Map.Entry<T, Integer> entry = parseAny(context, argument);
+            CommandArgumentContext<List<T>> targetArgument = new CommandArgumentContext<>(this, A, argument);
+            Map.Entry<T, Integer> entry = parseAny(context, targetArgument);
             A = entry.getValue();
             list.add(entry.getKey());
         }

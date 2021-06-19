@@ -1,5 +1,6 @@
 package org.eurostates.mosecommands.context;
 
+import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.ParseCommandArgument;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +15,10 @@ public class CommandArgumentContext<T> {
 
     public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, int firstArgument, String... command) {
         this(argument, firstArgument, false, command);
+    }
+
+    public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, int firstArgument, CommandArgumentContext<?> context){
+        this(argument, firstArgument, context.isAsSuggestion(), context.command);
     }
 
     public CommandArgumentContext(@NotNull ParseCommandArgument<T> argument, CommandArgumentContext<?> context) {
