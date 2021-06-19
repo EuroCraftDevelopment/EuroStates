@@ -24,13 +24,13 @@ public class BukkitCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         CommandContext context = new CommandContext(sender, this.commands, args);
-        Optional<ArgumentCommand> opCommand = context.getCompleteCommand();
+        Optional<ArgumentCommand> opCommand = context.getCompleteCommand(false);
         if (!opCommand.isPresent()) {
             Set<ErrorContext> errors = context.getErrors();
             if (errors.size() >= 1) {
                 sender.sendMessage(errors.iterator().next().getError());
             }
-            context.getPotentialCommands().stream().filter(c -> c.canRun(sender)).forEach(a -> {
+            context.getPotentialCommands(false).stream().filter(c -> c.canRun(sender)).forEach(a -> {
                 String usage = Stream
                         .of(a.getArguments())
                         .map(CommandArgument::getUsage)
@@ -50,7 +50,7 @@ public class BukkitCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         CommandContext context = new CommandContext(sender, this.commands, args);
         return context
-                .getPotentialCommands()
+                .getPotentialCommands(true)
                 .stream()
                 .filter(c -> c.canRun(sender))
                 .flatMap(c -> context.getSuggestions(c).parallelStream())

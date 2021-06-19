@@ -36,10 +36,10 @@ public class LocationArgument implements CommandArgument<Location> {
 
     @Override
     public Map.@NotNull Entry<Location, Integer> parse(@NotNull CommandContext context, @NotNull CommandArgumentContext<Location> argument) throws IOException {
-        Map.Entry<Double, Integer> xResult = this.xArg.parse(context, new CommandArgumentContext<>(this.xArg, argument.getFirstArgument(), context.getCommand()));
-        Map.Entry<Double, Integer> yResult = this.yArg.parse(context, new CommandArgumentContext<>(this.yArg, xResult.getValue(), context.getCommand()));
-        Map.Entry<Double, Integer> zResult = this.zArg.parse(context, new CommandArgumentContext<>(this.zArg, yResult.getValue(), context.getCommand()));
-        Map.Entry<World, Integer> worldResult = this.worldArg.parse(context, new CommandArgumentContext<>(this.worldArg, zResult.getValue(), context.getCommand()));
+        Map.Entry<Double, Integer> xResult = this.xArg.parse(context, new CommandArgumentContext<>(this.xArg, argument));
+        Map.Entry<Double, Integer> yResult = this.yArg.parse(context, new CommandArgumentContext<>(this.yArg, xResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
+        Map.Entry<Double, Integer> zResult = this.zArg.parse(context, new CommandArgumentContext<>(this.zArg, yResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
+        Map.Entry<World, Integer> worldResult = this.worldArg.parse(context, new CommandArgumentContext<>(this.worldArg, zResult.getValue(), argument.isAsSuggestion(), context.getCommand()));
         Location location = new Location(worldResult.getKey(), xResult.getKey(), yResult.getKey(), zResult.getKey());
         return new AbstractMap.SimpleImmutableEntry<>(location, worldResult.getValue());
     }
@@ -52,13 +52,13 @@ public class LocationArgument implements CommandArgument<Location> {
             int argInt = arg + A;
             if (args.length == (argInt + 1)) {
                 CommandArgument<?> commandArg = new CommandArgument[]{this.xArg, this.yArg, this.zArg, this.worldArg}[A];
-                return suggest(commandArg, commandContext, argInt);
+                return suggest(commandArg, commandContext, argInt, argument.isAsSuggestion());
             }
         }
         return Collections.emptyList();
     }
 
-    private <T> List<String> suggest(CommandArgument<T> argument, CommandContext commandContext, int A) {
-        return argument.suggest(commandContext, new CommandArgumentContext<>(argument, A, commandContext.getCommand()));
+    private <T> List<String> suggest(CommandArgument<T> argument, CommandContext commandContext, int A, boolean isSuggestion) {
+        return argument.suggest(commandContext, new CommandArgumentContext<>(argument, A, isSuggestion, commandContext.getCommand()));
     }
 }
