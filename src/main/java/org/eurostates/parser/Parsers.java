@@ -1,5 +1,7 @@
 package org.eurostates.parser;
 
+import org.eurostates.parser.area.technology.GetterTechnologyParser;
+import org.eurostates.parser.area.technology.LoadableTechnologyParser;
 import org.eurostates.util.lamda.throwable.single.ThrowableFunction;
 import org.eurostates.parser.area.state.GetterStateParser;
 import org.eurostates.parser.area.state.LoadableStateParser;
@@ -35,10 +37,12 @@ public final class Parsers {
     public static final GetterStateParser GETTER_STATE = new GetterStateParser();
     public static final GetterUserParser GETTER_USER = new GetterUserParser();
     public static final GetterTownParser GETTER_TOWN = new GetterTownParser();
+    public static final GetterTechnologyParser GETTER_TECHNOLOGY = new GetterTechnologyParser();
 
     public static final LoadableStateParser LOADABLE_STATE = new LoadableStateParser();
     public static final LoadableTownParser LOADABLE_TOWN = new LoadableTownParser();
     public static final LoadableUserParser LOADABLE_USER = new LoadableUserParser();
+    public static final LoadableTechnologyParser LOADABLE_TECHNOLOGY = new LoadableTechnologyParser();
 
     public static final StringWrapperParser STRING_WRAPPER = new StringWrapperParser();
     public static final DoubleWrapperParser DOUBLE_WRAPPER = new DoubleWrapperParser();

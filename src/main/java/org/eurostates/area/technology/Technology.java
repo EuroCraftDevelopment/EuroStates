@@ -22,15 +22,17 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
     private final Set<Technology> requirements = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
 
-    public Technology(@NotNull UUID id, @NotNull String name) {
-        this(id, name, null, Collections.emptySet());
+    public Technology(@NotNull UUID id, @NotNull String name, @NotNull String description) {
+        this(id, name, description, Collections.emptySet(), Collections.emptySet());
     }
 
-    public Technology(@NotNull UUID id, @NotNull String name, @Nullable String description, @NotNull Collection<String> permissions) {
+    public Technology(@NotNull UUID id, @NotNull String name, @Nullable String description,
+                      @NotNull Collection<String> permissions, @NotNull Collection<Technology> technologies) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.permissions.addAll(permissions);
+        this.requirements.addAll(technologies);
     }
 
     public UUID getID() {
