@@ -8,7 +8,6 @@ import org.eurostates.mosecommands.arguments.operation.ExactArgument;
 import org.eurostates.mosecommands.arguments.operation.RemainingArgument;
 import org.eurostates.mosecommands.arguments.simple.StringArgument;
 import org.eurostates.mosecommands.context.CommandContext;
-import org.graalvm.compiler.lir.sparc.SPARCArithmetic;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
