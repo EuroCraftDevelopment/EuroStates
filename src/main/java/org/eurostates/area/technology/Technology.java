@@ -4,6 +4,9 @@ import org.eurostates.EuroStates;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
 import org.eurostates.parser.Serializable;
+import org.eurostates.parser.area.state.GetterStateParser;
+import org.eurostates.parser.area.technology.GetterTechnologyParser;
+import org.eurostates.parser.area.technology.LoadableTechnologyParser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,21 +78,18 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
         return new File(EuroStates.getPlugin().getDataFolder(), "data/technology/" + Parsers.UUID.to(this.id) + ".yml");
     }
 
-    //TODO
     @Override
-    public @NotNull Serializable<Technology, Map<String, Object>> getSerializableParser() {
-        return null;
+    public @NotNull LoadableTechnologyParser getSerializableParser() {
+        return Parsers.LOADABLE_TECHNOLOGY;
     }
 
-    //TODO
     @Override
-    public @NotNull Serializable<Technology, String> getIdParser() {
-        return null;
+    public @NotNull GetterTechnologyParser getIdParser() {
+        return Parsers.GETTER_TECHNOLOGY;
     }
 
-    //TODO
     @Override
     public @NotNull String getRootNode() {
-        return null;
+        return "technology";
     }
 }

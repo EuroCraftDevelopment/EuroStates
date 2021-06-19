@@ -22,7 +22,7 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
     @Override
     public @NotNull Map<String, Object> to(@NotNull Technology from) throws IOException {
         Map<String, Object> map = new HashMap<>();
-        map.put(ID_NODE, from.getID());
+        map.put(ID_NODE, Parsers.UUID.to(from.getID()));
         map.put(NAME_NODE, from.getIdentifier());
         map.put(DESCRIPTION_NODE, from.getName());
 

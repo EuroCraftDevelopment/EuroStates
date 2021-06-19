@@ -71,7 +71,7 @@ public class TechnologyAssignCommand implements ArgumentCommand {
 
         context.getSource().sendMessage("Added "+tech.getIdentifier()+" as a technology to "+state.getName());
         Bukkit.broadcastMessage(ChatColor.BLUE+"[EuroStates] "+
-                ChatColor.WHITE + state.getName() + "has researched "+tech.getName()+".");
+                ChatColor.WHITE + state.getName() + " has researched \""+tech.getName()+"\".");
 
         return true;
     }

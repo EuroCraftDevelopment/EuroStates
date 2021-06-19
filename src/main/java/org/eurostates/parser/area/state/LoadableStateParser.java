@@ -55,7 +55,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(TECHNOLOGY_NODE, from
                 .getTechnology()
                 .stream()
-                .map(t -> t.getIdentifier().toString())
+                .map(t -> t.getID().toString())
                 .collect(Collectors.toList()));
         map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.UUID, from.getCitizenIds()));
         map.put(CURRENCY_NODE, from.getCurrency());

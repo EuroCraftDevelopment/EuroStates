@@ -177,6 +177,7 @@ public final class EuroStates extends JavaPlugin {
         plugin = this; // For further plugin obj access
         //CommandHandler.commandLauncher();
 
+        initTechnologies();
         initStates();
 
         dynmapApi = DAPIProvider.registerDynmap(plugin);

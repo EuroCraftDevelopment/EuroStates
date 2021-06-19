@@ -24,6 +24,10 @@ public interface BukkitCommands {
     );
     BukkitCommand TECHNOLOGY_COMMAND = new BukkitCommand(
             ArgumentCommands.TECHNOLOGY_CREATE,
-            ArgumentCommands.TECHNOLOGY_REQUIREMENT_ADD
+            ArgumentCommands.TECHNOLOGY_REQUIREMENT_ADD,
+            ArgumentCommands.TECHNOLOGY_REQUIREMENT_REMOVE,
+            ArgumentCommands.TECHNOLOGY_PERMISSION_ADD,
+            ArgumentCommands.TECHNOLOGY_PERMISSION_REMOVE,
+            ArgumentCommands.TECHNOLOGY_ASSIGN
     );
 }
