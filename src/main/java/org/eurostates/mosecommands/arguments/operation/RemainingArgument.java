@@ -14,8 +14,12 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
     private final @NotNull List<CommandArgument<T>> argument;
 
     @Deprecated
-    public RemainingArgument(@NotNull String id) {
+    public RemainingArgument(@NotNull String ignore) {
         throw new RuntimeException("Remaining arguments require arguments");
+    }
+
+    public RemainingArgument(CommandArgument<T> argument) {
+        this(argument.getId(), argument);
     }
 
     @SafeVarargs
