@@ -55,7 +55,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         map.put(TECHNOLOGY_NODE, from
                 .getTechnology()
                 .stream()
-                .map(Technology::getIdentifier)
+                .map(t -> t.getIdentifier().toString())
                 .collect(Collectors.toList()));
         map.put(CITIZENS_NODE, Parsers.collectToOrThrow(Parsers.UUID, from.getCitizenIds()));
         map.put(CURRENCY_NODE, from.getCurrency());
@@ -82,10 +82,13 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
         } catch (Throwable e) {
             throw new IOException(e);
         }
-        List<Technology> permissions = get(from, TECHNOLOGY_NODE);
+        List<String> techIdsStr = get(from, TECHNOLOGY_NODE);
+        List<Technology> technologies = Parsers.collectFromOrThrow(Parsers.GETTER_TECHNOLOGY, techIdsStr);
+
         List<String> citizenIdsStr = get(from, CITIZENS_NODE);
         List<UUID> users = Parsers.collectFromOrThrow(Parsers.UUID, citizenIdsStr);
         state.getCitizenIds().addAll(users);
+        state.getTechnology().addAll(technologies);
         return state;
     }
 
