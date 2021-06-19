@@ -1,13 +1,11 @@
 package org.eurostates.parser.area.technology;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.eurostates.area.technology.Technologies;
 import org.eurostates.area.technology.Technology;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
 import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.jetbrains.annotations.NotNull;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.util.*;
@@ -25,8 +23,8 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
     public @NotNull Map<String, Object> to(@NotNull Technology from) throws IOException {
         Map<String, Object> map = new HashMap<>();
         map.put(ID_NODE, from.getID());
-        map.put(NAME_NODE, from.getName());
-        map.put(DESCRIPTION_NODE, from.getDescription());
+        map.put(NAME_NODE, from.getIdentifier());
+        map.put(DESCRIPTION_NODE, from.getName());
 
         map.put(REQUIREMENTS_NODE, from
             .getDependents()
