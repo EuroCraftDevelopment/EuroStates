@@ -14,8 +14,12 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
     private final @NotNull List<CommandArgument<T>> argument;
 
     @Deprecated
-    public RemainingArgument(@NotNull String id) {
+    public RemainingArgument(@NotNull String ignore) {
         throw new RuntimeException("Remaining arguments require arguments");
+    }
+
+    public RemainingArgument(CommandArgument<T> argument) {
+        this(argument.getId(), argument);
     }
 
     @SafeVarargs
@@ -60,7 +64,8 @@ public class RemainingArgument<T> implements CommandArgument<List<T>> {
         int A = argument.getFirstArgument();
         List<T> list = new ArrayList<>();
         while (A < context.getCommand().length) {
-            Map.Entry<T, Integer> entry = parseAny(context, argument);
+            CommandArgumentContext<List<T>> targetArgument = new CommandArgumentContext<>(this, A, argument);
+            Map.Entry<T, Integer> entry = parseAny(context, targetArgument);
             A = entry.getValue();
             list.add(entry.getKey());
         }
