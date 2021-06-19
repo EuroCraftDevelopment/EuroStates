@@ -185,7 +185,8 @@ public final class EuroStates extends JavaPlugin {
 
         try {
             registerCommand("town", BukkitCommands.TOWN_COMMAND);
-            registerCommand("states", BukkitCommands.STATE_COMMAND);
+            registerCommand("state", BukkitCommands.STATE_COMMAND);
+            registerCommand("technology", BukkitCommands.TECHNOLOGY_COMMAND)
         } catch (IOException e) {
             this.setEnabled(false);
             e.printStackTrace();

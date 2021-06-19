@@ -22,4 +22,7 @@ public interface BukkitCommands {
             ArgumentCommands.STATE_INVITE_COMMAND,
             ArgumentCommands.STATE_INVITE_ACCEPT_COMMAND
     );
+    BukkitCommand TECHNOLOGY_COMMAND = new BukkitCommand(
+            ArgumentCommands.TECHNOLOGY_CREATE
+    );
 }

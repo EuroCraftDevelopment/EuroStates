@@ -10,7 +10,7 @@ loadbefore:
   - LuckPerms
   - dynmap
 commands:
-  states:
+  state:
     description: Main Command for States
     aliases: [s]
     usage: |
@@ -23,6 +23,11 @@ commands:
     usage: |
       balls
 
+  technology:
+    description: Main Command for Technologies
+    aliases: [tech]
+    usage: |
+      cum god
 
 
 
