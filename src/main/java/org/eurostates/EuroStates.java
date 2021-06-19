@@ -12,6 +12,8 @@ import org.eurostates.area.ESUser;
 import org.eurostates.area.relationship.Relationship;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
+import org.eurostates.area.technology.Technologies;
+import org.eurostates.area.technology.Technology;
 import org.eurostates.area.town.Town;
 import org.eurostates.config.Config;
 import org.eurostates.dynmap.DAPIProvider;
@@ -64,6 +66,11 @@ public final class EuroStates extends JavaPlugin {
         this.users.addAll(users);
     }
 
+    private void initTechnologies() {
+        Bukkit.getLogger().info("Technologies init.");
+        Set<Technology> technologies = loadTechnologies();
+    }
+
     private @NotNull Set<Town> loadTowns() {
         File path = new File(EuroStates.getPlugin().getDataFolder(), "data/towns/");
         File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
@@ -105,6 +112,28 @@ public final class EuroStates extends JavaPlugin {
         }
         this.users.addAll(users);
         return users;
+    }
+
+    private @NotNull Set<Technology> loadTechnologies() {
+        File path = new File(EuroStates.getPlugin().getDataFolder(), "data/technology/");
+        File[] files = path.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (files == null) {
+            return Collections.emptySet();
+        }
+        String rootNode = "Technology";
+
+        Set<Technology> technologies = new HashSet<>(files.length);
+        for (File file : files) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            try {
+                technologies.add(Parsers.LOADABLE_TECHNOLOGY.deserialize(config, rootNode));
+            } catch (Throwable e) {
+                System.err.println("Error: Couldn't load technology file of " + file.getPath());
+                e.printStackTrace();
+            }
+        }
+        Technologies.TECHNOLOGIES.addAll(technologies);
+        return technologies;
     }
 
     private @NotNull Set<CustomState> loadStates() {
