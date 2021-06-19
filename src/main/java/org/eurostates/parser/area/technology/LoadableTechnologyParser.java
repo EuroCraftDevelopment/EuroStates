@@ -47,21 +47,9 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
 
         Set<String> permissions = get(from, PERMISSIONS_NODE);
 
-        List<String> stringRequirements = get(from, REQUIREMENTS_NODE);
-        Set<Technology> requirements = stringRequirements.stream()
-                .map(s -> {
-                    Technology tech = null;
-                    try {
-                        tech = Parsers.GETTER_TECHNOLOGY.from(s);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return tech;
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+        Set<String> stringRequirements = get(from, REQUIREMENTS_NODE);
+        Set<Technology> requirements = new HashSet<>(Parsers.collectFromOrThrow(Parsers.GETTER_TECHNOLOGY, stringRequirements));
 
-        Technology technology;
         return new Technology(id, name, description, permissions, requirements);
     }
 
