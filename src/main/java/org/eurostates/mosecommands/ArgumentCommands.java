@@ -8,6 +8,7 @@ import org.eurostates.mosecommands.commands.state.global.StateInviteAcceptComman
 import org.eurostates.mosecommands.commands.state.global.StateViewCommand;
 import org.eurostates.mosecommands.commands.state.leader.*;
 import org.eurostates.mosecommands.commands.technology.admin.TechnologyCreateCommand;
+import org.eurostates.mosecommands.commands.technology.admin.TechnologyRequirementAddCommand;
 import org.eurostates.mosecommands.commands.town.admin.TownCreateCommand;
 import org.eurostates.mosecommands.commands.town.admin.TownDeleteCommand;
 import org.eurostates.mosecommands.commands.town.global.TownViewCommand;
@@ -37,6 +38,7 @@ public interface ArgumentCommands {
     TownDeleteCommand TOWN_DELETE = new TownDeleteCommand();
 
     TechnologyCreateCommand TECHNOLOGY_CREATE = new TechnologyCreateCommand();
+    TechnologyRequirementAddCommand TECHNOLOGY_REQUIREMENT_ADD = new TechnologyRequirementAddCommand();
 
     //this needs to be registered. Still need to do that
     static ArgumentCommand[] getCommands() {
