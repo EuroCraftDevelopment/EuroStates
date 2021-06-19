@@ -8,9 +8,9 @@ import org.eurostates.mosecommands.arguments.operation.ExactArgument;
 import org.eurostates.mosecommands.arguments.operation.RemainingArgument;
 import org.eurostates.mosecommands.arguments.simple.StringArgument;
 import org.eurostates.mosecommands.context.CommandContext;
-import org.graalvm.compiler.lir.sparc.SPARCArithmetic;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +45,11 @@ public class TechnologyCreateCommand implements ArgumentCommand {
         Technology technology = new Technology(UUID.randomUUID(), name, description);
         Technologies.TECHNOLOGIES.add(technology);
         context.getSource().sendMessage("Created new technology with identifier " + name + " and name " + description);
+        try {
+            technology.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

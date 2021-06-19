@@ -1,7 +1,5 @@
 package org.eurostates.area.technology;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.eurostates.EuroStates;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.Savable;
@@ -10,27 +8,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Technology implements Savable<Technology, Map<String, Object>, String> {
 
     private final UUID id;
+    private String identifier;
     private String name;
-    private String description;
     private final Set<Technology> requirements = new HashSet<>();
     private final Set<String> permissions = new HashSet<>();
 
-    public Technology(@NotNull UUID id, @NotNull String name, @NotNull String description) {
-        this(id, name, description, Collections.emptySet(), Collections.emptySet());
+    public Technology(@NotNull UUID id, @NotNull String identifier, @NotNull String name) {
+        this(id, identifier, name, Collections.emptySet(), Collections.emptySet());
     }
 
-    public Technology(@NotNull UUID id, @NotNull String name, @Nullable String description,
+    public Technology(@NotNull UUID id, @NotNull String identifier, @Nullable String name,
                       @NotNull Collection<String> permissions, @NotNull Collection<Technology> technologies) {
         this.id = id;
+        this.identifier = identifier;
         this.name = name;
-        this.description = description;
         this.permissions.addAll(permissions);
         this.requirements.addAll(technologies);
     }
@@ -39,20 +36,20 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
         return this.id;
     }
 
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    public void setIdentifier(@NotNull String identifier) {
+        this.identifier = identifier;
+    }
+
     public String getName() {
         return this.name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(@Nullable String name) {
         this.name = name;
-    }
-
-    public Optional<String> getDescription() {
-        return Optional.ofNullable(this.description);
-    }
-
-    public void setDescription(@Nullable String description) {
-        this.description = description;
     }
 
     public void setPermissions(@NotNull Collection<String> permissions) {
@@ -66,7 +63,7 @@ public class Technology implements Savable<Technology, Map<String, Object>, Stri
 
     @Deprecated
     public Set<String> getRequirements() {
-        return this.requirements.parallelStream().map(tec -> tec.name).collect(Collectors.toSet());
+        return this.requirements.parallelStream().map(tec -> tec.identifier).collect(Collectors.toSet());
     }
 
     public Set<Technology> getDependents(){
