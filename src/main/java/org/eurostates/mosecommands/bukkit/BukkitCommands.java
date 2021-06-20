@@ -20,7 +20,8 @@ public interface BukkitCommands {
             ArgumentCommands.STATE_VIEW,
             ArgumentCommands.STATE_FORCE_HANDOVER,
             ArgumentCommands.STATE_INVITE_COMMAND,
-            ArgumentCommands.STATE_INVITE_ACCEPT_COMMAND
+            ArgumentCommands.STATE_INVITE_ACCEPT_COMMAND,
+            ArgumentCommands.STATE_LEAVE
     );
     BukkitCommand TECHNOLOGY_COMMAND = new BukkitCommand(
             ArgumentCommands.TECHNOLOGY_CREATE,
