@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -342,8 +343,17 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     public void delete() {
         File file = this.getFile();
-        boolean deleted = file.delete();
-        if (!deleted) Bukkit.getLogger().warning("Could not delete state file: " + file);
-        States.CUSTOM_STATES.remove(this);
+        try {
+            for (ESUser player : this.getEuroStatesCitizens()) {
+                this.unregister(player);
+            }
+            for (Town town : this.getTowns()) {
+                Files.delete(town.getFile().toPath());
+            }
+            Files.delete(file.toPath());
+            States.CUSTOM_STATES.remove(this);
+        }catch (IOException e){
+            throw new RuntimeException("Could not delete state", e);
+        }
     }
 }
