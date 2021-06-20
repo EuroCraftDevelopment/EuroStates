@@ -120,7 +120,7 @@ public final class EuroStates extends JavaPlugin {
         if (files == null) {
             return Collections.emptySet();
         }
-        String rootNode = "Technology";
+        String rootNode = "technology";
 
         Set<Technology> technologies = new HashSet<>(files.length);
         for (File file : files) {

@@ -45,7 +45,7 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
 
         Set<String> permissions = get(from, PERMISSIONS_NODE);
 
-        Set<String> stringRequirements = get(from, REQUIREMENTS_NODE);
+        Set<String> stringRequirements = new HashSet<>(get(from, REQUIREMENTS_NODE));
         Set<Technology> requirements = new HashSet<>(Parsers.collectFromOrThrow(Parsers.GETTER_TECHNOLOGY, stringRequirements));
 
         return new Technology(id, name, description, permissions, requirements);

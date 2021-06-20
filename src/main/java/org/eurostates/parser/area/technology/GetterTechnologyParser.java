@@ -23,7 +23,7 @@ public class GetterTechnologyParser implements StringParser<Technology> {
         return Technologies
                 .TECHNOLOGIES
                 .parallelStream()
-                .filter(state -> state.getID().equals(uuid))
+                .filter(technology -> technology.getID().equals(uuid))
                 .findAny()
                 .orElseThrow(() -> new IOException("Unknown Technology of " + uuid));
     }

@@ -28,6 +28,8 @@ public interface BukkitCommands {
             ArgumentCommands.TECHNOLOGY_REQUIREMENT_REMOVE,
             ArgumentCommands.TECHNOLOGY_PERMISSION_ADD,
             ArgumentCommands.TECHNOLOGY_PERMISSION_REMOVE,
-            ArgumentCommands.TECHNOLOGY_ASSIGN
+            ArgumentCommands.TECHNOLOGY_ASSIGN,
+            ArgumentCommands.TECHNOLOGY_LIST,
+            ArgumentCommands.TECHNOLOGY_VIEW
     );
 }
