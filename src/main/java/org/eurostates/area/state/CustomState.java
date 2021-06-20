@@ -265,11 +265,8 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
             InheritanceNode node = InheritanceNode.builder().group(group).value(true).build();
             NodeMap data = luckUser.data();
             DataMutateResult dataResult = data.add(node);
-            System.out.println("dataResult: " + dataResult.name());
             if (dataResult.wasSuccessful()) {
-                userManager.saveUser(luckUser).thenRunAsync(() -> {
-                    System.out.println("Saved the user");
-                });
+                userManager.saveUser(luckUser);
             }
         });
     }
