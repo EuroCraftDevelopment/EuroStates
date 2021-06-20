@@ -1,6 +1,7 @@
 package org.eurostates.parser.area.technology;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.eurostates.area.exceptions.TechRequirementNotLoaded;
 import org.eurostates.area.technology.Technology;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
@@ -32,7 +33,7 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
             .map(tech -> tech.getID().toString())
             .collect(Collectors.toList()));
 
-        map.put(PERMISSIONS_NODE, from.getPermissions());
+        map.put(PERMISSIONS_NODE, new ArrayList<String>(from.getPermissions()));
 
         return map;
     }
@@ -43,10 +44,16 @@ public class LoadableTechnologyParser implements StringMapParser<Technology> {
         String name = get(from, NAME_NODE);
         String description = get(from, DESCRIPTION_NODE);
 
-        Set<String> permissions = get(from, PERMISSIONS_NODE);
+        Set<String> permissions = new HashSet<>(get(from, PERMISSIONS_NODE));
 
         Set<String> stringRequirements = new HashSet<>(get(from, REQUIREMENTS_NODE));
-        Set<Technology> requirements = new HashSet<>(Parsers.collectFromOrThrow(Parsers.GETTER_TECHNOLOGY, stringRequirements));
+
+        Set<Technology> requirements;
+        try {
+            requirements = new HashSet<>(Parsers.collectFromOrThrow(Parsers.GETTER_TECHNOLOGY, stringRequirements));
+        } catch (IOException e) {
+            throw new TechRequirementNotLoaded();
+        }
 
         return new Technology(id, name, description, permissions, requirements);
     }

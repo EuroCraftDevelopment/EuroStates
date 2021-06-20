@@ -9,6 +9,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
 import org.eurostates.area.ESUser;
+import org.eurostates.area.exceptions.TechRequirementNotLoaded;
 import org.eurostates.area.relationship.Relationship;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.state.States;
@@ -64,6 +65,7 @@ public final class EuroStates extends JavaPlugin {
         });
         Set<ESUser> users = loadUsers();
         this.users.addAll(users);
+        states.forEach(CustomState::updatePermissions);
     }
 
     private void initTechnologies() {
@@ -122,18 +124,26 @@ public final class EuroStates extends JavaPlugin {
         }
         String rootNode = "technology";
 
-        Set<Technology> technologies = new HashSet<>(files.length);
-        for (File file : files) {
+        List<File> fileList = new ArrayList<>(Arrays.asList(files));
+
+        while(!fileList.isEmpty()) {
+            Optional<File> optionalFile = fileList.stream().findAny();
+
+            File file = optionalFile.get();
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
             try {
-                technologies.add(Parsers.LOADABLE_TECHNOLOGY.deserialize(config, rootNode));
+                Technologies.TECHNOLOGIES.add(Parsers.LOADABLE_TECHNOLOGY.deserialize(config, rootNode));
+                fileList.remove(file);
+            } catch (TechRequirementNotLoaded ignored) {
+
             } catch (Throwable e) {
                 System.err.println("Error: Couldn't load technology file of " + file.getPath());
                 e.printStackTrace();
+                fileList.remove(file);
             }
         }
-        Technologies.TECHNOLOGIES.addAll(technologies);
-        return technologies;
+        return Technologies.TECHNOLOGIES;
     }
 
     private @NotNull Set<CustomState> loadStates() {

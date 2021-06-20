@@ -250,12 +250,15 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
                 return;
             }
             UserManager userManager = EuroStates.getLuckPermsApi().getUserManager();
-            User luckUser = userManager.getUser(user.getOwnerId());
-            if (luckUser == null) {
-                return;
-            }
-            luckUser.setPrimaryGroup(group.getName());
-            userManager.saveUser(luckUser);
+            CompletableFuture<User> userFuture = userManager.loadUser(user.getOwnerId());
+
+            userFuture.thenAcceptAsync(luckUser -> {
+                if (luckUser == null) {
+                    return;
+                }
+                luckUser.setPrimaryGroup(group.getName());
+                userManager.saveUser(luckUser);
+            });
         });
     }
 

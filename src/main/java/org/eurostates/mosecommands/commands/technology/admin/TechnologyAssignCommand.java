@@ -51,7 +51,7 @@ public class TechnologyAssignCommand implements ArgumentCommand {
         // check if nation has required technologies
         Set<Technology> missingTechs = tech.getDependents()
                 .stream()
-                .filter(technology -> (state.getTechnology().contains(technology)))
+                .filter(technology -> (!state.getTechnology().contains(technology)))
                 .collect(Collectors.toSet());
 
 
