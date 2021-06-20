@@ -1,25 +1,28 @@
 package org.eurostates.area.state;
 
+import net.luckperms.api.model.data.DataMutateResult;
+import net.luckperms.api.model.data.NodeMap;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.group.GroupManager;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
+import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
-import org.eurostates.area.town.Town;
 import org.eurostates.area.ownable.PlayerOwnable;
-import org.eurostates.parser.Parsers;
-import org.eurostates.parser.Savable;
-import org.eurostates.parser.area.state.GetterStateParser;
-import org.eurostates.parser.area.state.LoadableStateParser;
 import org.eurostates.area.relationship.AbstractRelationship;
 import org.eurostates.area.relationship.Relationship;
 import org.eurostates.area.relationship.RelationshipStatus;
 import org.eurostates.area.relationship.war.WarRelationship;
 import org.eurostates.area.technology.Technology;
+import org.eurostates.area.town.Town;
+import org.eurostates.parser.Parsers;
+import org.eurostates.parser.Savable;
+import org.eurostates.parser.area.state.GetterStateParser;
+import org.eurostates.parser.area.state.LoadableStateParser;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -46,14 +49,12 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     private @NotNull UUID owner;
 
     /**
-     *
-     * @param id id of the custom state, if new use {@link UUID#randomUUID()}
-     * @param tag Tag of the state, this can change. Requires to be 3 characters
-     * @param name Name of the state
-     * @param currency The currency name
+     * @param id         id of the custom state, if new use {@link UUID#randomUUID()}
+     * @param tag        Tag of the state, this can change. Requires to be 3 characters
+     * @param name       Name of the state
+     * @param currency   The currency name
      * @param chatColour The colour of the players chat when a citizen of this state sends a message
-     * @param uuid The UUID of the owner
-     *
+     * @param uuid       The UUID of the owner
      * @deprecated Old constructor, do not use
      */
     @Deprecated
@@ -62,13 +63,12 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
     }
 
     /**
-     *
-     * @param id Id of the custom state, if new use {@link UUID#randomUUID()}
-     * @param tag Tag of the state, this can change. Requires to be 3 characters
-     * @param name Name of the state
-     * @param currency The currency name
-     * @param chatColour The colour of the players chat when a citizen of this state sends a message
-     * @param owner The owner of the state
+     * @param id                  Id of the custom state, if new use {@link UUID#randomUUID()}
+     * @param tag                 Tag of the state, this can change. Requires to be 3 characters
+     * @param name                Name of the state
+     * @param currency            The currency name
+     * @param chatColour          The colour of the players chat when a citizen of this state sends a message
+     * @param owner               The owner of the state
      * @param permissionGroupName The permission group name in LuckPerms
      */
     public CustomState(@NotNull UUID id, @NotNull String tag, @NotNull String name, @NotNull String currency, char chatColour, @NotNull ESUser owner, String permissionGroupName) {
@@ -87,6 +87,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Gets the Id of the state
+     *
      * @return A UUID of the state
      */
     public @NotNull UUID getId() {
@@ -95,6 +96,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Gets the LuckPerms group of the state
+     *
      * @return A LuckPerms Group object of the state
      */
     @Override
@@ -109,6 +111,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Gets or creates the LuckPerms group of the state
+     *
      * @return A LuckPerms group object of the state
      */
     @Override
@@ -119,6 +122,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Gets the LuckPerms group name of the state
+     *
      * @return The name of the LuckPerms group
      */
     public String getGroupName() {
@@ -151,6 +155,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Gets the owners UUID
+     *
      * @return The UUID of the owner
      */
     public @NotNull UUID getOwnerId() {
@@ -159,6 +164,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     /**
      * Sets the chat colour of the state via the legacy minecraft chat colour character. This will show when a player sends a message who belongs to this state.
+     *
      * @param chatColour The legacy character colour
      */
     public void setChatColour(char chatColour) {
@@ -240,25 +246,31 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
 
     public void register(ESUser user) {
         this.users.add(user.getOwnerId());
+        UserManager userManager = EuroStates.getLuckPermsApi().getUserManager();
         CompletableFuture<Group> groupFuture = this.getOrCreateGroup();
-        groupFuture.thenRun(() -> {
+        CompletableFuture<User> userFuture = userManager.loadUser(user.getOwnerId());
+        CompletableFuture<Void> future = CompletableFuture.allOf(groupFuture, userFuture);
+        future.thenRunAsync(() -> {
             Group group;
+            User luckUser;
+            System.out.println("Both futures complete");
             try {
                 group = groupFuture.get();
+                luckUser = userFuture.get();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                return;
+                System.out.println(e.getMessage());
+                throw new IllegalStateException("The impossible happened", e);
             }
-            UserManager userManager = EuroStates.getLuckPermsApi().getUserManager();
-            CompletableFuture<User> userFuture = userManager.loadUser(user.getOwnerId());
 
-            userFuture.thenAcceptAsync(luckUser -> {
-                if (luckUser == null) {
-                    return;
-                }
-                luckUser.setPrimaryGroup(group.getName());
-                userManager.saveUser(luckUser);
-            });
+            InheritanceNode node = InheritanceNode.builder().group(group).value(true).build();
+            NodeMap data = luckUser.data();
+            DataMutateResult dataResult = data.add(node);
+            System.out.println("dataResult: " + dataResult.name());
+            if (dataResult.wasSuccessful()) {
+                userManager.saveUser(luckUser).thenRunAsync(() -> {
+                    System.out.println("Saved the user");
+                });
+            }
         });
     }
 
