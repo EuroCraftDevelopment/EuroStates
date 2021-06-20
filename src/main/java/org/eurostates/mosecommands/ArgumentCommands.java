@@ -5,6 +5,7 @@ import org.eurostates.mosecommands.commands.state.admin.StateDeleteCommand;
 import org.eurostates.mosecommands.commands.state.admin.StateForceEditCommand;
 import org.eurostates.mosecommands.commands.state.admin.StateForceHandoverCommand;
 import org.eurostates.mosecommands.commands.state.global.StateInviteAcceptCommand;
+import org.eurostates.mosecommands.commands.state.global.StateLeaveCommand;
 import org.eurostates.mosecommands.commands.state.global.StateViewCommand;
 import org.eurostates.mosecommands.commands.state.leader.*;
 import org.eurostates.mosecommands.commands.technology.admin.*;
@@ -34,6 +35,7 @@ public interface ArgumentCommands {
     StateForceHandoverCommand STATE_FORCE_HANDOVER = new StateForceHandoverCommand();
     StateInviteCommand STATE_INVITE_COMMAND = new StateInviteCommand();
     StateInviteAcceptCommand STATE_INVITE_ACCEPT_COMMAND = new StateInviteAcceptCommand();
+    StateLeaveCommand STATE_LEAVE = new StateLeaveCommand();
 
     TownCreateCommand TOWN_CREATE = new TownCreateCommand();
     TownDeleteCommand TOWN_DELETE = new TownDeleteCommand();

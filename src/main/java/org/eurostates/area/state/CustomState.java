@@ -244,6 +244,32 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         return EuroStates.getPlugin().getRelationships().parallelStream().filter(r -> r.getStates().contains(CustomState.this)).collect(Collectors.toSet());
     }
 
+    public void unregister(ESUser user) {
+        this.users.remove(user.getOwnerId());
+        UserManager userManager = EuroStates.getLuckPermsApi().getUserManager();
+        CompletableFuture<Group> groupFuture = this.getOrCreateGroup();
+        CompletableFuture<User> userFuture = userManager.loadUser(user.getOwnerId());
+        CompletableFuture<Void> future = CompletableFuture.allOf(groupFuture, userFuture);
+        future.thenRunAsync(() -> {
+            Group group;
+            User luckUser;
+            try {
+                group = groupFuture.get();
+                luckUser = userFuture.get();
+            } catch (InterruptedException | ExecutionException e) {
+                System.out.println(e.getMessage());
+                throw new IllegalStateException("The impossible happened", e);
+            }
+
+            InheritanceNode node = InheritanceNode.builder().group(group).value(true).build();
+            NodeMap data = luckUser.data();
+            DataMutateResult dataResult = data.remove(node);
+            if (dataResult.wasSuccessful()) {
+                userManager.saveUser(luckUser);
+            }
+        });
+    }
+
     public void register(ESUser user) {
         this.users.add(user.getOwnerId());
         UserManager userManager = EuroStates.getLuckPermsApi().getUserManager();
