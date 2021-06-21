@@ -54,6 +54,8 @@ public final class EuroStates extends JavaPlugin {
 
     private void initStates() {
         Bukkit.getLogger().info("States init.");
+        Set<ESUser> users = loadUsers();
+        this.users.addAll(users);
         Set<CustomState> states = loadStates();
         Set<Town> towns = loadTowns();
         states.forEach(state -> {
@@ -63,8 +65,6 @@ public final class EuroStates extends JavaPlugin {
                     .collect(Collectors.toSet());
             state.getTowns().addAll(assignedTowns);
         });
-        Set<ESUser> users = loadUsers();
-        this.users.addAll(users);
         states.forEach(CustomState::updatePermissions);
     }
 
@@ -126,7 +126,7 @@ public final class EuroStates extends JavaPlugin {
 
         List<File> fileList = new ArrayList<>(Arrays.asList(files));
 
-        while(!fileList.isEmpty()) {
+        while (!fileList.isEmpty()) {
             Optional<File> optionalFile = fileList.stream().findAny();
 
             File file = optionalFile.get();

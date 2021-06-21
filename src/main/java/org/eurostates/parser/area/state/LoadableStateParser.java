@@ -4,9 +4,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.eurostates.area.state.CustomState;
 import org.eurostates.area.technology.Technology;
 import org.eurostates.area.town.Town;
-import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.eurostates.parser.Parsers;
 import org.eurostates.parser.StringMapParser;
+import org.eurostates.util.lamda.throwable.bi.ThrowableBiFunction;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class LoadableStateParser implements StringMapParser<CustomState> {
 
         List<String> citizenIdsStr = get(from, CITIZENS_NODE);
         List<UUID> users = Parsers.collectFromOrThrow(Parsers.UUID, citizenIdsStr);
-        state.getCitizenIds().addAll(users);
+        users.forEach(u -> state.register(Parsers.GETTER_USER.fromId(u)));
         state.getTechnology().addAll(technologies);
         return state;
     }
