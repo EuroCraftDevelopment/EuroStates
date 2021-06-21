@@ -8,7 +8,6 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.types.InheritanceNode;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.eurostates.EuroStates;
 import org.eurostates.area.ESUser;
@@ -280,7 +279,6 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
         future.thenRunAsync(() -> {
             Group group;
             User luckUser;
-            System.out.println("Both futures complete");
             try {
                 group = groupFuture.get();
                 luckUser = userFuture.get();
@@ -352,7 +350,7 @@ public class CustomState implements State, PlayerOwnable, Savable<CustomState, M
             }
             Files.delete(file.toPath());
             States.CUSTOM_STATES.remove(this);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Could not delete state", e);
         }
     }
