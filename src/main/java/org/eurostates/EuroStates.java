@@ -125,23 +125,25 @@ public final class EuroStates extends JavaPlugin {
         String rootNode = "technology";
 
         List<File> fileList = new ArrayList<>(Arrays.asList(files));
+        int target = 0;
 
         while (!fileList.isEmpty()) {
-            Optional<File> optionalFile = fileList.stream().findAny();
-
-            File file = optionalFile.get();
+            File file = fileList.get(target);
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
             try {
                 Technologies.TECHNOLOGIES.add(Parsers.LOADABLE_TECHNOLOGY.deserialize(config, rootNode));
                 fileList.remove(file);
             } catch (TechRequirementNotLoaded ignored) {
-
+                target++;
+                continue;
             } catch (Throwable e) {
                 System.err.println("Error: Couldn't load technology file of " + file.getPath());
                 e.printStackTrace();
                 fileList.remove(file);
             }
+            target = 0;
+
         }
         return Technologies.TECHNOLOGIES;
     }
