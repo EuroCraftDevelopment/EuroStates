@@ -43,7 +43,7 @@ public class TownDeleteCommand implements ArgumentCommand {
 
         state.getTowns().remove(town);
 
-        File file = town.getOwnerUser().getFile();
+        File file = town.getFile();
         boolean didDelete = file.delete();
 
         if (!didDelete) Bukkit.getLogger().warning("Could not delete state file: " + file.toString());

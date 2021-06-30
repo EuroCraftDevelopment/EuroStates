@@ -81,7 +81,7 @@ public class StateInviteCommand implements ArgumentCommand {
         invitedPlayer.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
                 inviterPlayer.getDisplayName() + " has invited you to "+customInvitedState.getName()+".");
         invitedPlayer.sendMessage(ChatColor.BLUE+"[EuroStates] "+ChatColor.RESET+
-                "Do /states accept to accept the invitation. The invitation will time out in 3 minutes.");
+                "Do /state accept to accept the invitation. The invitation will time out in 3 minutes.");
         return true;
     }
 }

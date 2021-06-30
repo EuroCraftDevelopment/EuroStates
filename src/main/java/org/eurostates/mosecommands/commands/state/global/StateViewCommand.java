@@ -8,11 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.eurostates.area.ESUser;
 import org.eurostates.area.state.CustomState;
+import org.eurostates.area.state.State;
 import org.eurostates.area.town.Town;
 import org.eurostates.mosecommands.ArgumentCommand;
 import org.eurostates.mosecommands.arguments.CommandArgument;
 import org.eurostates.mosecommands.arguments.area.CustomStateArgument;
 import org.eurostates.mosecommands.context.CommandContext;
+import org.eurostates.parser.Parsers;
 import org.eurostates.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +60,11 @@ public class StateViewCommand implements ArgumentCommand {
                         OfflinePlayer::getName)
                 ).collect(Collectors.joining(", "));
 
+        ESUser user = null;
+        if(context.getSource() instanceof Player) {
+            user = Parsers.GETTER_USER.fromId(((Player) context.getSource()).getUniqueId());
+        }
+
         CommandSender source = context.getSource();
 
         source.sendMessage(ChatColor.RED + ChatColor.STRIKETHROUGH.toString() + StringUtils.repeat(" ", 64));
@@ -69,6 +76,10 @@ public class StateViewCommand implements ArgumentCommand {
         source.sendMessage(ChatColor.WHITE + "Leader: " + ChatColor.GRAY + stateLeader);
         source.sendMessage(ChatColor.WHITE + "Towns:" + ChatColor.DARK_GRAY + townNames);
         source.sendMessage(ChatColor.WHITE + "Members:" + ChatColor.DARK_GRAY + userNames);
+
+        if(user!=null && user.getState() instanceof CustomState) {
+            source.sendMessage(ChatColor.WHITE + "Relationship: " + ChatColor.GRAY + ((CustomState) user.getState()).getRelationship(state).getStatus());
+        }
 
         source.sendMessage(ChatColor.RED + "" + ChatColor.STRIKETHROUGH + StringUtils.repeat(" ", 64));
         return true;
